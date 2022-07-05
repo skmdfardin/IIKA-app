@@ -1,10 +1,16 @@
-import React, {FC} from 'react';
-import SplashScreen from './src/screens/SplashScreen';
+import React, {FC, useEffect} from 'react';
+import {Platform, NativeModules} from 'react-native';
+import StackNavigation from './src/navigation/StackNavigation';
 //import SignIn from './screens/User/SignIn';
 //import SignUp from './screens/User/SignUp';
 
 const App: FC = () => {
-  return <SplashScreen />;
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      NativeModules.SplashScreenModule.hide();
+    }
+  }, []);
+  return <StackNavigation />;
 };
 
 export default App;

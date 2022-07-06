@@ -14,7 +14,14 @@ module.exports = {
         'react-native/no-inline-styles': 0,
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.tsx'] }],
         'no-use-before-define': 'off',
-        '@typescript-eslint/no-use-before-define': ['error'], // disable the rule for variables, but enable it for functions and classes
+        '@typescript-eslint/no-use-before-define': [
+          'error',
+          {
+            functions: true,
+            classes: true,
+            variables: false,
+          },
+        ], // disable the rule for variables, but enable it for functions and classes
         'linebreak-style': [0, 'always'],
         'comma-dangle': ['off'],
         'no-unused-vars': ['warn'],

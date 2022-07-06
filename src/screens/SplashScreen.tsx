@@ -1,13 +1,6 @@
-import React, {FC} from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  Dimensions,
-  ImageBackground,
-} from 'react-native';
-import {ProgressBar} from 'react-native-paper';
+import React, { FC } from 'react';
+import { View, StyleSheet, Image, Text, Dimensions, ImageBackground } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

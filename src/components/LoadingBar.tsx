@@ -11,14 +11,16 @@ const LoadingBar: FC = () => {
   const [percentage, setPerscentage] = useState(0);
   useEffect(() => {
     const timer = setInterval(() => {
-      setProgressCount(progressCount >= 1 ? 1 : progressCount + 0.01);
+      const temp = parseFloat(
+        (progressCount >= 1 ? 1 : progressCount + 0.01).toFixed(2),
+      );
+      setProgressCount(temp);
       setPerscentage(Math.floor(progressCount * 100));
-    }, 200);
+    }, 500);
     return () => {
       clearInterval(timer);
     };
   }, [progressCount, percentage]);
-
   return (
     <View style={Styles.contrainer}>
       <ProgressBar
@@ -28,7 +30,10 @@ const LoadingBar: FC = () => {
       />
       <View
         style={{
-          width: progressCount,
+          width:
+            progressCount > 0.04
+              ? windowWidth * 0.9 * progressCount
+              : windowWidth * 0.9 * 0.05,
         }}>
         <Text style={Styles.text}>{percentage}%</Text>
       </View>
@@ -49,5 +54,6 @@ const Styles = StyleSheet.create({
   text: {
     color: '#FFFFFF',
     fontSize: windowHeight * 0.015,
+    textAlign: 'right',
   },
 });

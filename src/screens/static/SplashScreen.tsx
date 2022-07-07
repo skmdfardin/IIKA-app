@@ -7,13 +7,13 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import {ProgressBar} from 'react-native-paper';
+import LoadingBar from '../../components/LoadingBar';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const logo = '../media/AquaLogo.gif';
-const fishLogo = '../media/FishLogo.gif';
+const logo = '../../media/AquaLogo.gif';
+const fishLogo = '../../media/FishLogo.gif';
 
 const SplashScreen: FC = () => {
   return (
@@ -27,9 +27,7 @@ const SplashScreen: FC = () => {
         <Text style={Styles.text}>"The Question is not what you look at,</Text>
         <Text style={Styles.text}>but what you see"</Text>
       </View>
-      <View style={Styles.progressContrainer}>
-        <ProgressBar progress={0.7} color="#ffffff" style={Styles.progress} />
-      </View>
+      <LoadingBar />
     </View>
   );
 };

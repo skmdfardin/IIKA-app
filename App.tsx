@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import SplashScreen from './src/screens/SplashScreen';
+import SplashScreen from './src/screens/static/SplashScreen';
 //import SignIn from './screens/User/SignIn';
 //import SignUp from './screens/User/SignUp';
 

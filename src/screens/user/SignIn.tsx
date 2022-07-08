@@ -1,15 +1,26 @@
 import React, {FC} from 'react';
-import {View, StyleSheet, Text, Dimensions, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
-import CustomButton from '../../components/CustomButton';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
+const glogo = '../../media/googleLogo.png';
 
 const SignIn: FC = () => {
+  const onSubmit = () => {
+    console.log('EXIT!');
+  };
+
   return (
     <View style={Styles.container}>
       <View style={Styles.imageContainer}>
@@ -28,10 +39,20 @@ const SignIn: FC = () => {
           placeholder="Password"
           onChangeText={text => console.log(text)}
         />
-        <CustomButton buttonText="Sign Up" />
+        <TouchableOpacity style={Styles.button} onPress={onSubmit}>
+          <Text style={Styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
         <View style={Styles.googleContainer}>
+          <Image style={Styles.glogo} source={require(glogo)} />
           <Text>Log In via Google</Text>
         </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={Styles.text}>New user?</Text>
+          <TouchableOpacity>
+            <Text style={Styles.text}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+        <Text>Forgot password?</Text>
       </View>
     </View>
   );
@@ -58,11 +79,15 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ffffff',
     borderWidth: 1,
-    padding: 10,
+    padding: 5,
+    flexDirection: 'row',
   },
   text: {
-    margin: windowHeight * 0.05,
+    marginVertical: windowHeight * 0.03,
     color: '#000000',
+  },
+  buttonText: {
+    color: '#ffffff',
   },
   imageContainer: {
     alignItems: 'center',
@@ -99,5 +124,21 @@ const Styles = StyleSheet.create({
     height: windowHeight * 0.11,
     width: windowWidth,
     opacity: 1,
+  },
+  glogo: {
+    resizeMode: 'contain',
+    height: windowHeight * 0.05,
+    width: windowWidth * 0.1,
+    marginRight: 10,
+  },
+  button: {
+    height: windowHeight * 0.06,
+    width: windowWidth * 0.3,
+    marginVertical: windowHeight * 0.02,
+    borderRadius: 10,
+    backgroundColor: '#0085FF',
+    paddingHorizontal: windowWidth * 0.05,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

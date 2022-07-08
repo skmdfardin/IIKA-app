@@ -10,7 +10,7 @@ interface Props {
 
 const CustomButton: FC<Props> = props => {
   return (
-    <View style={Styles.container}>
+    <View style={Styles.button}>
       <Text style={Styles.text}>{props.buttonText}</Text>
     </View>
   );
@@ -19,7 +19,7 @@ const CustomButton: FC<Props> = props => {
 export default CustomButton;
 
 const Styles = StyleSheet.create({
-  container: {
+  button: {
     height: windowHeight * 0.06,
     width: windowWidth * 0.3,
     marginVertical: windowHeight * 0.02,

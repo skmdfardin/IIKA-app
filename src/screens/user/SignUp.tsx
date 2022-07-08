@@ -29,15 +29,40 @@ const SignUp: FC = () => {
         <Image style={Styles.logo} source={require(logo)} />
       </View>
       <View style={Styles.subContainer}>
-        <Text style={Styles.text}>LogIn</Text>
+        <Text style={Styles.text}>Create an account</Text>
+        <View style={{flexDirection: 'row'}}>
+          <CustomeTextInput
+            placeholder="First Name"
+            onChangeText={text => console.log(text)}
+            fieldWidth={windowWidth * 0.45}
+          />
+          <CustomeTextInput
+            placeholder="Last Name"
+            onChangeText={text => console.log(text)}
+            fieldWidth={windowWidth * 0.45}
+          />
+        </View>
         <CustomeTextInput
-          placeholder="UserName"
+          placeholder="Email ID"
           onChangeText={text => console.log(text)}
+          fieldWidth={0}
         />
         <CustomeTextInput
           placeholder="Password"
           onChangeText={text => console.log(text)}
+          fieldWidth={0}
         />
+        <CustomeTextInput
+          placeholder="Confirm Password"
+          onChangeText={text => console.log(text)}
+          fieldWidth={0}
+        />
+        <CustomeTextInput
+          placeholder="Enter Mobile no"
+          onChangeText={text => console.log(text)}
+          fieldWidth={0}
+        />
+
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
@@ -55,15 +80,16 @@ const Styles = StyleSheet.create({
   },
   subContainer: {
     alignItems: 'center',
-    marginTop: windowHeight * 0.4,
+    marginTop: windowHeight * 0.35,
     backgroundColor: '#ffffff',
     width: windowWidth,
     height: windowHeight,
     borderRadius: 20,
   },
   text: {
-    margin: windowHeight * 0.05,
+    marginVertical: windowHeight * 0.03,
     color: '#000000',
+    textAlign: 'center',
   },
   buttonText: {
     color: '#ffffff',
@@ -105,8 +131,8 @@ const Styles = StyleSheet.create({
     opacity: 1,
   },
   button: {
-    height: windowHeight * 0.06,
-    width: windowWidth * 0.3,
+    height: windowHeight * 0.05,
+    width: windowWidth * 0.28,
     marginVertical: windowHeight * 0.02,
     borderRadius: 10,
     backgroundColor: '#0085FF',

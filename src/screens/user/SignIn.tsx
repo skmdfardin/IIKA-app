@@ -20,6 +20,9 @@ const SignIn: FC = () => {
   const onSubmit = () => {
     console.log('EXIT!');
   };
+  const goToSignUp = () => {
+    console.log('SignUp!');
+  };
 
   return (
     <View style={Styles.container}>
@@ -32,12 +35,14 @@ const SignIn: FC = () => {
       <View style={Styles.subContainer}>
         <Text style={Styles.text}>LogIn</Text>
         <CustomeTextInput
-          placeholder="UserName"
+          placeholder="User Name"
           onChangeText={text => console.log(text)}
+          fieldWidth={0}
         />
         <CustomeTextInput
           placeholder="Password"
           onChangeText={text => console.log(text)}
+          fieldWidth={0}
         />
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign In</Text>
@@ -48,7 +53,7 @@ const SignIn: FC = () => {
         </View>
         <View style={{flexDirection: 'row'}}>
           <Text style={Styles.text}>New user?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={goToSignUp}>
             <Text style={Styles.text}>Sign Up</Text>
           </TouchableOpacity>
         </View>
@@ -132,8 +137,8 @@ const Styles = StyleSheet.create({
     marginRight: 10,
   },
   button: {
-    height: windowHeight * 0.06,
-    width: windowWidth * 0.3,
+    height: windowHeight * 0.05,
+    width: windowWidth * 0.28,
     marginVertical: windowHeight * 0.02,
     borderRadius: 10,
     backgroundColor: '#0085FF',

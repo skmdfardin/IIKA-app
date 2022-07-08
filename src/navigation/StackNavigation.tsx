@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 //import SplashScreen from '../screens/static/SplashScreen';
-import SignUp from '../screens/user/Signup';
+import SignUp from '../screens/user/SignUp';
 import SignIn from '../screens/user/SignIn';
 
 const StackNavigation: FC = () => {

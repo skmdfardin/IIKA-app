@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {FC, useState, useEffect} from 'react';
 import {View, StyleSheet, Dimensions, Text} from 'react-native';
 import {ProgressBar} from 'react-native-paper';
@@ -9,6 +8,8 @@ const windowHeight = Dimensions.get('window').height;
 const LoadingBar: FC = () => {
   const [progressCount, setProgressCount] = useState(0);
   const [percentage, setPerscentage] = useState(0);
+  const [progressWords, setProgressWords] = useState('');
+
   useEffect(() => {
     const timer = setInterval(() => {
       const temp = parseFloat(
@@ -16,13 +17,42 @@ const LoadingBar: FC = () => {
       );
       setProgressCount(temp);
       setPerscentage(Math.floor(progressCount * 100));
-    }, 500);
+      if (percentage <= 10) {
+        setProgressWords('Loading Basic assets...');
+      } else if (percentage > 10 && percentage <= 30) {
+        setProgressWords('Loading Farms...');
+      } else if (percentage > 30 && percentage <= 57) {
+        setProgressWords('Loading Ponds...');
+      } else if (percentage > 57 && percentage <= 70) {
+        setProgressWords('Retreiving IOT sensor Data...');
+      } else if (percentage > 70 && percentage <= 84) {
+        setProgressWords('Compiling Data...');
+      } else if (percentage > 70 && percentage <= 84) {
+        setProgressWords('Loading Basic assets...');
+      } else if (percentage > 84 && percentage <= 97) {
+        setProgressWords('Loading App...');
+      } else if (percentage > 97 && percentage < 100) {
+        setProgressWords('Loading Complete...');
+      } else {
+        setProgressWords('Starting App..');
+      }
+    }, 250);
+    afterLoad();
     return () => {
       clearInterval(timer);
     };
-  }, [progressCount, percentage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progressCount, percentage, progressWords]);
+
+  const afterLoad = () => {
+    if (percentage === 100) {
+      console.log('EXIT!');
+    }
+  };
+
   return (
     <View style={Styles.contrainer}>
+      <Text style={Styles.loadText}>{progressWords}</Text>
       <ProgressBar
         progress={progressCount}
         color="#ffffff"
@@ -55,5 +85,11 @@ const Styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: windowHeight * 0.015,
     textAlign: 'right',
+  },
+  loadText: {
+    color: '#FFFFFF',
+    fontSize: windowHeight * 0.015,
+    textAlign: 'center',
+    marginBottom: windowHeight * 0.01,
   },
 });

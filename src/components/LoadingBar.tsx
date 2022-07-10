@@ -1,6 +1,6 @@
-import React, {FC} from 'react';
-import {View} from 'react-native';
-import {ProgressBar} from 'react-native-paper';
+import React, { FC } from 'react';
+import { View } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
 
 const LoadingBar: FC = () => {
   return (

@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {View, StyleSheet, Image, Dimensions} from 'react-native';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -16,7 +15,6 @@ const NewUserLanding: FC = () => {
       <View style={Styles.header}>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
-      <Icon name="rocket" size={30} color="#900" />;
       <ActivityCard />
       <UserBasicInfoCard />
       <Image source={require(fishBowl)} />

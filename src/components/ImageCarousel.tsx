@@ -1,30 +1,15 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useRef, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
-import { windowHeight, windowWidth } from '../media/css/common';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { greyColor, lightBlueColor, windowHeight, windowWidth } from '../media/css/common';
+import { ImageItems } from '../screens/SliderScreen';
 
-interface ImageCarouselProps {}
-
-interface ImageItems {
-  title: string;
-  filepath: string;
+interface ImageCarouselProps {
+  imageItem: ImageItems[];
+  callBackIndex: Function;
 }
-
-const imageItem: Array<ImageItems> = [
-  {
-    title: 'FirstImage',
-    filepath: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-  },
-  {
-    title: 'SecondImage',
-    filepath: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-  },
-  {
-    title: 'ThirdImage',
-    filepath: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg',
-  },
-];
 
 const renderItems: FunctionComponent<{ item: ImageItems }> = ({ item }) => (
   <TouchableOpacity
@@ -33,31 +18,36 @@ const renderItems: FunctionComponent<{ item: ImageItems }> = ({ item }) => (
     }}
     activeOpacity={1}
   >
-    <Image source={{ uri: item.filepath }} style={styles.image} />
-    <View style={styles.footer}>
-      <Text style={styles.footerText}>{item.title}</Text>
-    </View>
+    <Image source={item.filepath} style={styles.image} />
   </TouchableOpacity>
 );
-const ImageCarousel: FunctionComponent<ImageCarouselProps> = () => {
+
+const ImageCarousel: FunctionComponent<ImageCarouselProps> = (props: ImageCarouselProps) => {
   let flatListRef = useRef<FlatList<ImageItems> | null>();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const onViewRef = useRef(({ changed }: { changed: any }) => {
-    if (changed[0].isViewabale) {
-      setCurrentIndex(changed[0].index);
+  const onViewRef = React.useRef((viewableItems: any) => {
+    // Use viewable items in state or as intended
+    if (viewableItems.changed[0].isViewable) {
+      setCurrentIndex(viewableItems.changed[0].index);
+      props.callBackIndex(viewableItems.changed[0].index);
     }
   });
-
   const scrollToIndex = (index: number) => {
     flatListRef.current?.scrollToIndex({ animated: true, index: index });
   };
-  useEffect(() => {
-    return () => {
-      console.log('103');
-    };
-  }, []);
+  let refreshItem: boolean = true;
   return (
     <View>
+      <View style={{ alignItems: 'flex-end', marginTop: windowWidth * 0.04, marginEnd: windowWidth * 0.03 }}>
+        {currentIndex !== 2 && (
+          <MIcon
+            name="arrow-right"
+            size={windowWidth * 0.05}
+            color={greyColor}
+            onPress={() => scrollToIndex(currentIndex + 1)}
+          />
+        )}
+      </View>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -65,25 +55,44 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = () => {
         ref={(ref) => {
           flatListRef.current = ref;
         }}
-        data={imageItem}
+        data={props.imageItem}
         renderItem={renderItems}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_item, index) => index.toString()}
         style={styles.carousel}
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         onViewableItemsChanged={onViewRef.current}
       />
       <View style={styles.dotview}>
-        {imageItem.map(({}, index: number) => (
-          <TouchableOpacity
-            // eslint-disable-next-line
-            style={[styles.circle, { backgroundColor: index === currentIndex ? 'black' : 'gray' }]}
-            key={index.toString()}
-            onPress={() => {
-              scrollToIndex(index);
-              console.log('index', index, '     current', currentIndex);
-              console.log('add', index === currentIndex);
-            }}
-          />
-        ))}
+        {refreshItem &&
+          props.imageItem.map(({}, index: number) => (
+            <TouchableOpacity
+              style={[styles.circle, { backgroundColor: currentIndex === index ? lightBlueColor : greyColor }]}
+              key={index.toString()}
+              onPress={() => {
+                scrollToIndex(index);
+              }}
+            />
+          ))}
+      </View>
+      <View style={styles.footer}>
+        <Text numberOfLines={2} style={[styles.footerText, { textAlign: 'center' }]}>
+          {props.imageItem[currentIndex].title}
+        </Text>
+        <Text
+          numberOfLines={2}
+          style={{
+            marginTop: windowWidth * 0.06,
+            alignSelf: 'center',
+            textAlign: 'center',
+            color: 'black',
+            fontWeight: 'bold',
+            marginStart: windowWidth * 0.07,
+            marginEnd: windowWidth * 0.07,
+            fontSize: windowWidth * 0.05,
+          }}
+        >
+          {props.imageItem[currentIndex].descriptionText}
+        </Text>
       </View>
     </View>
   );
@@ -94,7 +103,7 @@ export default ImageCarousel;
 const styles = StyleSheet.create({
   image: {
     width: windowWidth,
-    height: windowHeight * 0.29,
+    height: windowHeight * 0.24,
     resizeMode: 'contain',
   },
   dotview: {
@@ -102,10 +111,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 20,
   },
-  footer: {},
-  footerText: {},
+  footer: {
+    alignContent: 'center',
+  },
+  footerText: {
+    marginStart: windowWidth * 0.2,
+    marginEnd: windowWidth * 0.2,
+  },
   carousel: {
-    maxHeight: windowWidth * 0.8,
+    maxHeight: windowWidth * 0.6,
   },
   circle: {
     width: 10,

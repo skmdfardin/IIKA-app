@@ -12,7 +12,7 @@ module.exports = {
         'no-shadow': 'off',
         'no-undef': 'off',
         'react-native/no-inline-styles': 0,
-        'react/jsx-filename-extension': [1, {extensions: ['.js', '.tsx']}],
+        'react/jsx-filename-extension': [1, { extensions: ['.js', '.tsx'] }],
         'no-use-before-define': 'off',
         '@typescript-eslint/no-use-before-define': [
           'error',
@@ -38,7 +38,7 @@ module.exports = {
           },
         ],
         'react/prefer-stateless-function': ['off'],
-        'react/no-unstable-nested-components': ['off', {allowAsProps: true}],
+        'react/no-unstable-nested-components': ['off', { allowAsProps: true }],
       },
     },
   ],

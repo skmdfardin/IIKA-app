@@ -1,13 +1,8 @@
-import React, {FC} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { FC } from 'react';
+import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
+import { SIGN_UP } from '../../navigation/StackNavigation';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -17,11 +12,13 @@ const logo = '../../media/AquaLogo.gif';
 const glogo = '../../media/googleLogo.png';
 
 const SignIn: FC = () => {
+  const navigation = useNavigation();
   const onSubmit = () => {
     console.log('EXIT!');
   };
   const goToSignUp = () => {
     console.log('SignUp!');
+    navigation.navigate(SIGN_UP.toString());
   };
 
   return (
@@ -34,16 +31,8 @@ const SignIn: FC = () => {
       </View>
       <View style={Styles.subContainer}>
         <Text style={Styles.text}>LogIn</Text>
-        <CustomeTextInput
-          placeholder="User Name"
-          onChangeText={text => console.log(text)}
-          fieldWidth={0}
-        />
-        <CustomeTextInput
-          placeholder="Password"
-          onChangeText={text => console.log(text)}
-          fieldWidth={0}
-        />
+        <CustomeTextInput placeholder="User Name" onChangeText={(text) => console.log(text)} fieldWidth={0} />
+        <CustomeTextInput placeholder="Password" onChangeText={(text) => console.log(text)} fieldWidth={0} />
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
@@ -51,7 +40,7 @@ const SignIn: FC = () => {
           <Image style={Styles.glogo} source={require(glogo)} />
           <Text>Log In via Google</Text>
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <Text style={Styles.text}>New user?</Text>
           <TouchableOpacity onPress={goToSignUp}>
             <Text style={Styles.text}>Sign Up</Text>

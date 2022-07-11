@@ -1,20 +1,22 @@
-import React, {FC, useState, useEffect} from 'react';
-import {View, StyleSheet, Dimensions, Text} from 'react-native';
-import {ProgressBar} from 'react-native-paper';
+import React, { FC, useState, useEffect } from 'react';
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { ProgressBar } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const LoadingBar: FC = () => {
+interface LoadingBarProps {
+  onExit: Function;
+}
+
+const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
   const [progressCount, setProgressCount] = useState(0);
   const [percentage, setPerscentage] = useState(0);
   const [progressWords, setProgressWords] = useState('');
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const temp = parseFloat(
-        (progressCount >= 1 ? 1 : progressCount + 0.01).toFixed(2),
-      );
+      const temp = parseFloat((progressCount >= 1 ? 1 : progressCount + 0.01).toFixed(2));
       setProgressCount(temp);
       setPerscentage(Math.floor(progressCount * 100));
       if (percentage <= 10) {
@@ -36,7 +38,7 @@ const LoadingBar: FC = () => {
       } else {
         setProgressWords('Starting App..');
       }
-    }, 250);
+    }, 60);
     afterLoad();
     return () => {
       clearInterval(timer);
@@ -47,24 +49,19 @@ const LoadingBar: FC = () => {
   const afterLoad = () => {
     if (percentage === 100) {
       console.log('EXIT!');
+      props.onExit();
     }
   };
 
   return (
     <View style={Styles.contrainer}>
       <Text style={Styles.loadText}>{progressWords}</Text>
-      <ProgressBar
-        progress={progressCount}
-        color="#ffffff"
-        style={Styles.progressBarStyle}
-      />
+      <ProgressBar progress={progressCount} color="#ffffff" style={Styles.progressBarStyle} />
       <View
         style={{
-          width:
-            progressCount > 0.04
-              ? windowWidth * 0.9 * progressCount
-              : windowWidth * 0.9 * 0.05,
-        }}>
+          width: progressCount > 0.04 ? windowWidth * 0.9 * progressCount : windowWidth * 0.9 * 0.05,
+        }}
+      >
         <Text style={Styles.text}>{percentage}%</Text>
       </View>
     </View>

@@ -27,7 +27,7 @@ module.exports = {
         'no-unused-vars': ['warn'],
         'object-curly-spacing': ['off'],
         'padded-blocks': ['off'],
-        'no-underscore-dangle': ['error', { allowAfterThis: true }],
+        'no-underscore-dangle': ['error', {allowAfterThis: true}],
         'import/prefer-default-export': 0,
         'import/no-unresolved': ['off'],
         'prettier/prettier': [

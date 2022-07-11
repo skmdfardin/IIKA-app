@@ -1,14 +1,16 @@
 import React, { FunctionComponent } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { windowHeight, windowWidth, whiteColor, blueColor } from '../media/css/common';
-import ImageCarousel from '../components/ImageCarousel';
+import { windowHeight, windowWidth, whiteColor, blueColor } from '../../media/css/common';
+import ImageCarousel from '../../components/ImageCarousel';
 import { useState } from 'react';
 import { Button } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { SIGN_IN, SIGN_UP } from '../../navigation/StackNavigation';
 
 interface SliderScreenProps {}
 
-const logo = '../media/AquaLogo.gif';
-const fishLogo = '../media/FishLogo.gif';
+const logo = '../../media/AquaLogo.gif';
+const fishLogo = '../../media/FishLogo.gif';
 
 export interface ImageItems {
   title: string;
@@ -23,17 +25,17 @@ interface SliderTextItems {
 const imageItem: Array<ImageItems> = [
   {
     title: '"The question is not what you look at, but what you see."',
-    filepath: require('../media/SplashSlider/image6.png'),
+    filepath: require('../../media/SplashSlider/image6.png'),
     descriptionText: 'End-to-End Aqua Farm Management App',
   },
   {
     title: 'beautiful handpicked collection lines Aquaculture made easy',
-    filepath: require('../media/SplashSlider/image9.png'),
+    filepath: require('../../media/SplashSlider/image9.png'),
     descriptionText: 'Advanced Data Analytics, Recommendations & Predictions',
   },
   {
     title: '"The question is not what you look at, but what you see."',
-    filepath: require('../media/SplashSlider/image8.png'),
+    filepath: require('../../media/SplashSlider/image8.png'),
     descriptionText: 'Automate your Farm with IOT Devices',
   },
 ];
@@ -55,6 +57,7 @@ const textList: Array<SliderTextItems> = [
 
 const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
   const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
+  const navigation = useNavigation();
   const callBackSliderIndex = (index: number) => {
     setCurrentSliderIndex(index);
     console.log('currentSliderIndex 40 ', index);
@@ -110,6 +113,7 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                 <Button
                   mode="contained"
                   uppercase={false}
+                  onPress={() => navigation.navigate(SIGN_UP.toString())}
                   style={{ backgroundColor: blueColor, marginEnd: windowWidth * 0.02, width: windowWidth * 0.45 }}
                 >
                   Create an Account
@@ -117,6 +121,7 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                 <Button
                   mode="contained"
                   uppercase={false}
+                  onPress={() => navigation.navigate(SIGN_IN.toString())}
                   style={{ backgroundColor: blueColor, marginStart: windowWidth * 0.02, width: windowWidth * 0.4 }}
                 >
                   Sign In

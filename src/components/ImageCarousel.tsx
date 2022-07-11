@@ -4,7 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { greyColor, lightBlueColor, windowHeight, windowWidth } from '../media/css/common';
-import { ImageItems } from '../screens/SliderScreen';
+import { ImageItems } from '../screens/static/SliderScreen';
 
 interface ImageCarouselProps {
   imageItem: ImageItems[];

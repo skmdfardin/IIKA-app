@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {View, StyleSheet, TextInput, Dimensions} from 'react-native';
+import React, { FC } from 'react';
+import { View, StyleSheet, Dimensions, TextInput } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -10,17 +10,10 @@ interface Props {
   fieldWidth: number;
 }
 
-const CustomeTextInput: FC<Props> = props => {
+const CustomeTextInput: FC<Props> = (props) => {
   return (
-    <View
-      style={[
-        Styles.container,
-        {width: props.fieldWidth > 0 ? props.fieldWidth : windowWidth * 0.9},
-      ]}>
-      <TextInput
-        placeholder={props.placeholder}
-        onChangeText={props.onChangeText}
-      />
+    <View style={[Styles.container, { width: props.fieldWidth > 0 ? props.fieldWidth : windowWidth * 0.9 }]}>
+      <TextInput placeholder={props.placeholder} onChangeText={props.onChangeText} />
     </View>
   );
 };

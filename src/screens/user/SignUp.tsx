@@ -1,13 +1,8 @@
-import React, {FC} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { FC } from 'react';
+import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
+import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -16,8 +11,10 @@ const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
 
 const SignUp: FC = () => {
+  const navigation = useNavigation();
   const onSubmit = () => {
-    console.log('EXIT!');
+    console.log('navigate to sign up');
+    navigation.navigate(NEW_USER_LANDING.toString());
   };
 
   return (
@@ -30,38 +27,22 @@ const SignUp: FC = () => {
       </View>
       <View style={Styles.subContainer}>
         <Text style={Styles.text}>Create an account</Text>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <CustomeTextInput
             placeholder="First Name"
-            onChangeText={text => console.log(text)}
+            onChangeText={(text) => console.log(text)}
             fieldWidth={windowWidth * 0.45}
           />
           <CustomeTextInput
             placeholder="Last Name"
-            onChangeText={text => console.log(text)}
+            onChangeText={(text) => console.log(text)}
             fieldWidth={windowWidth * 0.45}
           />
         </View>
-        <CustomeTextInput
-          placeholder="Email ID"
-          onChangeText={text => console.log(text)}
-          fieldWidth={0}
-        />
-        <CustomeTextInput
-          placeholder="Password"
-          onChangeText={text => console.log(text)}
-          fieldWidth={0}
-        />
-        <CustomeTextInput
-          placeholder="Confirm Password"
-          onChangeText={text => console.log(text)}
-          fieldWidth={0}
-        />
-        <CustomeTextInput
-          placeholder="Enter Mobile no"
-          onChangeText={text => console.log(text)}
-          fieldWidth={0}
-        />
+        <CustomeTextInput placeholder="Email ID" onChangeText={(text) => console.log(text)} fieldWidth={0} />
+        <CustomeTextInput placeholder="Password" onChangeText={(text) => console.log(text)} fieldWidth={0} />
+        <CustomeTextInput placeholder="Confirm Password" onChangeText={(text) => console.log(text)} fieldWidth={0} />
+        <CustomeTextInput placeholder="Enter Mobile no" onChangeText={(text) => console.log(text)} fieldWidth={0} />
 
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign Up</Text>

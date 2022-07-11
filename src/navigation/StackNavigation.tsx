@@ -1,23 +1,30 @@
 import React, { FC } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashScreen from '../screens/SplashScreen';
-import SliderScreen from '../screens/SliderScreen';
+import SliderScreen from '../screens/static/SliderScreen';
 import NewUserLanding from '../screens/user/NewUserLanding';
+import SignIn from '../screens/user/SignIn';
+import SignUp from '../screens/user/SignUp';
+import SplashScreen from '../screens/static/SplashScreen';
 
 const StackNavigation: FC = () => {
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="slider_screen" component={SliderScreen} />
-        <Stack.Screen name="splash_screen" component={SplashScreen} />
-        {/* <Stack.Screen name="splash_screen" component={SplashScreen} /> */}
-        {/* <Stack.Screen name="sign_in" component={SignIn} /> */}
-        {/* <Stack.Screen name="sign_up" component={SignUp} /> */}
-        <Stack.Screen name="new_user_landing" component={NewUserLanding} />
+        <Stack.Screen name={SPLASH_SCREEN} component={SplashScreen} />
+        <Stack.Screen name={SLIDER_SCREEN} component={SliderScreen} />
+        <Stack.Screen name={SIGN_IN} component={SignIn} />
+        <Stack.Screen name={SIGN_UP} component={SignUp} />
+        <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
+export const SLIDER_SCREEN: string = 'slider_screen';
+export const SPLASH_SCREEN: string = 'splash_screen';
+export const SIGN_IN: string = 'sign_in';
+export const SIGN_UP: string = 'sign_up';
+export const NEW_USER_LANDING: string = 'new_user_landing';
+
 export default StackNavigation;

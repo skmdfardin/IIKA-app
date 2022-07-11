@@ -1,10 +1,9 @@
 import React, {FC} from 'react';
-import SplashScreen from './src/screens/SplashScreen';
-//import SignIn from './screens/User/SignIn';
-//import SignUp from './screens/User/SignUp';
+
+import StackNavigation from './src/navigation/StackNavigation';
 
 const App: FC = () => {
-  return <SplashScreen />;
+  return <StackNavigation />;
 };
 
 export default App;

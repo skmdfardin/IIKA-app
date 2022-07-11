@@ -1,0 +1,14 @@
+[
+    {
+        "title":"FirstImage",
+        "filepath":"../media/SplashSlider/image6.png"
+    },
+    {
+        "title":"SecondImage",
+        "filepath":"../media/SplashSlider/image9.png"
+    },
+    {
+        "title":"ThirdImage",
+        "filepath":"../media/SplashSlider/image8.png"
+    }
+]

@@ -1,6 +1,5 @@
-import React, {FC} from 'react';
-import {View, StyleSheet, Image, Dimensions} from 'react-native';
-
+import React, { FC } from 'react';
+import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 

@@ -31,8 +31,20 @@ const SignIn: FC = () => {
       </View>
       <View style={Styles.subContainer}>
         <Text style={Styles.text}>LogIn</Text>
-        <CustomeTextInput placeholder="User Name" onChangeText={(text) => console.log(text)} fieldWidth={0} />
-        <CustomeTextInput placeholder="Password" onChangeText={(text) => console.log(text)} fieldWidth={0} />
+        <CustomeTextInput
+          placeholder="User Name"
+          onChangeText={(text) => console.log(text)}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={false}
+        />
+        <CustomeTextInput
+          placeholder="Password"
+          onChangeText={(text) => console.log(text)}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={true}
+        />
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign In</Text>
         </TouchableOpacity>

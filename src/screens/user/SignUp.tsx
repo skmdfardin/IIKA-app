@@ -32,23 +32,23 @@ const SignUp: FC = () => {
             placeholder="First Name"
             onChangeText={(text) => console.log(text)}
             fieldWidth={windowWidth * 0.45}
-            errorMessage="test"
+            errorMessage=" First Name Error"
             errorState={true}
           />
           <CustomeTextInput
             placeholder="Last Name"
             onChangeText={(text) => console.log(text)}
             fieldWidth={windowWidth * 0.45}
-            errorMessage="test!"
-            errorState={false}
+            errorMessage="Name error"
+            errorState={true}
           />
         </View>
         <CustomeTextInput
           placeholder="Email ID"
           onChangeText={(text) => console.log(text)}
           fieldWidth={0}
-          errorMessage="test!"
-          errorState={false}
+          errorMessage="Email Error"
+          errorState={true}
         />
         <CustomeTextInput
           placeholder="Password"

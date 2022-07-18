@@ -1,30 +1,29 @@
-import React, {FC} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import React, { FC } from 'react';
+import { View, StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const ActivityCard: FC = () => {
+interface Props {
+  titleText: string;
+  messageText: string;
+  buttonText: string;
+  buttonState: boolean;
+  updateStatus: (arg: string) => void;
+}
+
+const ActivityCard: FC<Props> = (props) => {
   const onSubmit = () => {
-    console.log('EXIT!');
+    props.updateStatus('Profile Updated');
   };
+
   return (
     <View style={Styles.container}>
       <View style={Styles.textContainer}>
-        <Text style={Styles.text}>
-          Wohoo! Your account has been successfully created.
-        </Text>
-        <Text style={Styles.text}>
-          Now complete your Profile & Business registration!
-        </Text>
-        <TouchableOpacity style={Styles.button} onPress={onSubmit}>
-          <Text style={Styles.buttonText}>Complete our profile</Text>
+        <Text style={Styles.textTitle}>{props.titleText}</Text>
+        <Text style={Styles.textMessage}>{props.messageText}</Text>
+        <TouchableOpacity style={Styles.button} onPress={onSubmit} disabled={!props.buttonState}>
+          <Text style={Styles.buttonText}>{props.buttonText}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -58,7 +57,10 @@ const Styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
   },
-  text: {
+  textTitle: {
+    color: '#000000',
+  },
+  textMessage: {
     color: '#000000',
   },
 });

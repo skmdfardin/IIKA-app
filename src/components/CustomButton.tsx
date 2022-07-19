@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, Dimensions, PropTypes, StyleSheetProperties } from 'react-native';
+import { StyleSheet, Text, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;

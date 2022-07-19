@@ -1,11 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { windowHeight, windowWidth, whiteColor, blueColor, commonBlueColor } from '../../media/css/common';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { windowHeight, windowWidth, whiteColor, blueColor, commonBlueColor, blackColor } from '../../media/css/common';
 import ImageCarousel from '../../components/ImageCarousel';
 import { useState } from 'react';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { SIGN_IN, SIGN_UP } from '../../navigation/StackNavigation';
+import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 interface SliderScreenProps {}
 
@@ -103,21 +104,33 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
           )}
           {currentSliderIndex === 2 && (
             <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: windowWidth * 0.07 }}>
-              <Button
-                mode="contained"
-                color={whiteColor}
-                uppercase={false}
-                style={{ backgroundColor: 'white', width: windowWidth * 0.9 }}
+              <Pressable
+                style={{
+                  backgroundColor: 'white',
+                  height: windowHeight * 0.05,
+                  borderRadius: 5,
+                  width: windowWidth * 0.9,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}
               >
                 <Image
                   source={require('../../media/SplashSlider/google_logo.png')}
-                  style={{ width: 20, height: 20, paddingTop: 3 }}
+                  style={{ width: 22, height: 22, paddingTop: 3 }}
                 />
                 <View style={{ width: 12, height: 1 }} />
-                <Text style={{ fontWeight: 'bold', textAlign: 'center', alignSelf: 'center' }}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    alignSelf: 'center',
+                    fontSize: windowWidth * 0.038,
+                  }}
+                >
                   Continue with Google
                 </Text>
-              </Button>
+              </Pressable>
               <View style={{ flexDirection: 'row', marginTop: windowWidth * 0.07 }}>
                 {/* <Button
                   mode="contained"
@@ -135,30 +148,60 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                 >
                   Sign In
                 </Button> */}
-                <Button
-                  style={{ width: windowWidth * 0.45 }}
-                  uppercase={false}
-                  mode="contained"
-                  color={commonBlueColor}
+                <Pressable
+                  style={{
+                    width: windowWidth * 0.45,
+                    height: windowHeight * 0.05,
+                    backgroundColor: commonBlueColor,
+                    borderRadius: 5,
+                    alignSelf: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
                   onPress={() => {
                     navigation.navigate(SIGN_UP.toString());
                   }}
                 >
-                  <Text>Create an Account</Text>
-                </Button>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: whiteColor,
+                      fontSize: windowWidth * 0.04,
+                    }}
+                  >
+                    Create an Account
+                  </Text>
+                </Pressable>
 
                 <View style={{ width: 10 }} />
-                <Button
-                  uppercase={false}
-                  style={{ width: windowWidth * 0.4 }}
-                  mode="contained"
-                  color={commonBlueColor}
+                <Pressable
+                  style={{
+                    width: windowWidth * 0.4,
+                    height: windowHeight * 0.05,
+                    backgroundColor: commonBlueColor,
+                    borderRadius: 5,
+                    alignSelf: 'center',
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
                   onPress={() => {
                     navigation.navigate(SIGN_IN.toString());
                   }}
                 >
-                  <Text>Sign In</Text>
-                </Button>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: whiteColor,
+                      fontSize: windowWidth * 0.043,
+                    }}
+                  >
+                    Sign In
+                  </Text>
+                </Pressable>
               </View>
             </View>
           )}

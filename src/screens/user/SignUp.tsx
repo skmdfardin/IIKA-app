@@ -32,17 +32,45 @@ const SignUp: FC = () => {
             placeholder="First Name"
             onChangeText={(text) => console.log(text)}
             fieldWidth={windowWidth * 0.45}
+            errorMessage=" First Name Error"
+            errorState={true}
           />
           <CustomeTextInput
             placeholder="Last Name"
             onChangeText={(text) => console.log(text)}
             fieldWidth={windowWidth * 0.45}
+            errorMessage="Name error"
+            errorState={true}
           />
         </View>
-        <CustomeTextInput placeholder="Email ID" onChangeText={(text) => console.log(text)} fieldWidth={0} />
-        <CustomeTextInput placeholder="Password" onChangeText={(text) => console.log(text)} fieldWidth={0} />
-        <CustomeTextInput placeholder="Confirm Password" onChangeText={(text) => console.log(text)} fieldWidth={0} />
-        <CustomeTextInput placeholder="Enter Mobile no" onChangeText={(text) => console.log(text)} fieldWidth={0} />
+        <CustomeTextInput
+          placeholder="Email ID"
+          onChangeText={(text) => console.log(text)}
+          fieldWidth={0}
+          errorMessage="Email Error"
+          errorState={true}
+        />
+        <CustomeTextInput
+          placeholder="Password"
+          onChangeText={(text) => console.log(text)}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={false}
+        />
+        <CustomeTextInput
+          placeholder="Confirm Password"
+          onChangeText={(text) => console.log(text)}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={false}
+        />
+        <CustomeTextInput
+          placeholder="Enter Mobile no"
+          onChangeText={(text) => console.log(text)}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={false}
+        />
 
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign Up</Text>

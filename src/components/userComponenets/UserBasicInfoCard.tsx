@@ -1,12 +1,5 @@
-import React, {FC} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import React, { FC } from 'react';
+import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

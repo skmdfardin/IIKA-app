@@ -363,7 +363,14 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
                   width={windowWidth * 0.89}
                   value={values.website}
                 />
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                    marginVertical: windowHeight * 0.02,
+                  }}
+                >
                   <Button color={commonBlueColor} onPress={(text) => console.log('button', text)} title="discard" />
                   <Button onPress={handleSubmit} title="Submit" />
                 </View>

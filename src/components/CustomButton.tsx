@@ -1,18 +1,22 @@
-import React, {FC} from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet, Text, Dimensions, PropTypes, StyleSheetProperties } from 'react-native';
+import { Button } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 interface Props {
   buttonText: string;
+  allCaps: boolean;
+  onPress: Function;
+  style: any;
 }
 
-const CustomButton: FC<Props> = props => {
+const CustomButton: FC<Props> = (props) => {
   return (
-    <View style={Styles.button}>
+    <Button style={[Styles.button, props.style]} onPress={props.onPress()} uppercase={props.allCaps}>
       <Text style={Styles.text}>{props.buttonText}</Text>
-    </View>
+    </Button>
   );
 };
 

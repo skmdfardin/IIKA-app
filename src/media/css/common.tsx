@@ -15,6 +15,7 @@ export const errorColor = '#B00020';
 export const successColor = '#42ba96';
 export const veryLightRed = '#EFE3E3';
 export const borderLightGrey = '#00000027';
+export const commonBlueColor = '#0085FF';
 export const profileBorder = '#707070';
 export const bgImageColor = '#F6F6F6';
 export const orangeColor = '#F34445';

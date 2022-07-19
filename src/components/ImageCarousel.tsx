@@ -38,7 +38,7 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = (props: ImageCarous
   let refreshItem: boolean = true;
   return (
     <View>
-      <View style={{ alignItems: 'flex-end', marginTop: windowWidth * 0.04, marginEnd: windowWidth * 0.03 }}>
+      <View style={{ alignItems: 'flex-end', marginTop: windowWidth * 0.01, marginEnd: windowWidth * 0.02 }}>
         {currentIndex !== 2 && (
           <MIcon
             name="arrow-right"
@@ -81,7 +81,7 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = (props: ImageCarous
         <Text
           numberOfLines={2}
           style={{
-            marginTop: windowWidth * 0.06,
+            marginTop: windowWidth * 0.01,
             alignSelf: 'center',
             textAlign: 'center',
             color: 'black',

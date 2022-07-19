@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { windowHeight, windowWidth, whiteColor, blueColor } from '../../media/css/common';
+import { windowHeight, windowWidth, whiteColor, blueColor, commonBlueColor } from '../../media/css/common';
 import ImageCarousel from '../../components/ImageCarousel';
 import { useState } from 'react';
 import { Button } from 'react-native-paper';
@@ -63,6 +63,7 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
     console.log('currentSliderIndex 40 ', index);
     console.log('currentSliderIndex', currentSliderIndex);
   };
+
   return (
     <View
       style={{
@@ -72,45 +73,53 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <View style={{ flexDirection: 'column', marginStart: windowWidth * 0.05, marginEnd: windowWidth * 0.05 }}>
           <Image
-            style={{ width: 100, marginTop: windowWidth * 0.04, alignSelf: 'flex-end', resizeMode: 'contain' }}
+            style={{ width: 100, marginTop: windowWidth * 0.01, alignSelf: 'flex-end', resizeMode: 'contain' }}
             source={require(logo)}
           />
           {currentSliderIndex === 0 && (
-            <Image style={{ width: 80, resizeMode: 'contain', height: 80 }} source={require(fishLogo)} />
+            <Image style={{ width: 60, resizeMode: 'contain', height: 65 }} source={require(fishLogo)} />
           )}
           <Text
             style={[
               Styles.whiteText,
               {
-                fontSize: windowWidth * 0.1,
+                fontSize: windowWidth * 0.08,
                 fontWeight: 'bold',
-                marginTop: currentSliderIndex === 2 ? windowHeight * 0.05 : windowHeight * 0.03,
+                marginTop: currentSliderIndex === 2 ? windowHeight * 0.02 : windowHeight * 0.009,
               },
             ]}
           >
             {textList[currentSliderIndex].titleText}
           </Text>
-          <Text
-            style={[
-              Styles.whiteText,
-              { marginTop: windowWidth * 0.02, fontWeight: 'bold', fontSize: windowWidth * 0.05 },
-            ]}
-          >
-            {textList[currentSliderIndex].descriptionText}
-          </Text>
+          {currentSliderIndex !== 2 && (
+            <Text
+              style={[
+                Styles.whiteText,
+                { marginTop: windowWidth * 0.02, fontWeight: 'bold', fontSize: windowWidth * 0.05 },
+              ]}
+            >
+              {textList[currentSliderIndex].descriptionText}
+            </Text>
+          )}
           {currentSliderIndex === 2 && (
             <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: windowWidth * 0.07 }}>
               <Button
                 mode="contained"
                 color={whiteColor}
                 uppercase={false}
-                icon="google"
                 style={{ backgroundColor: 'white', width: windowWidth * 0.9 }}
               >
-                <Text style={{ fontWeight: 'bold' }}>Continue with Google</Text>
+                <Image
+                  source={require('../../media/SplashSlider/google_logo.png')}
+                  style={{ width: 20, height: 20, paddingTop: 3 }}
+                />
+                <View style={{ width: 12, height: 1 }} />
+                <Text style={{ fontWeight: 'bold', textAlign: 'center', alignSelf: 'center' }}>
+                  Continue with Google
+                </Text>
               </Button>
               <View style={{ flexDirection: 'row', marginTop: windowWidth * 0.07 }}>
-                <Button
+                {/* <Button
                   mode="contained"
                   uppercase={false}
                   onPress={() => navigation.navigate(SIGN_UP.toString())}
@@ -125,6 +134,30 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                   style={{ backgroundColor: blueColor, marginStart: windowWidth * 0.02, width: windowWidth * 0.4 }}
                 >
                   Sign In
+                </Button> */}
+                <Button
+                  style={{ width: windowWidth * 0.45 }}
+                  uppercase={false}
+                  mode="contained"
+                  color={commonBlueColor}
+                  onPress={() => {
+                    navigation.navigate(SIGN_UP.toString());
+                  }}
+                >
+                  <Text>Create an Account</Text>
+                </Button>
+
+                <View style={{ width: 10 }} />
+                <Button
+                  uppercase={false}
+                  style={{ width: windowWidth * 0.4 }}
+                  mode="contained"
+                  color={commonBlueColor}
+                  onPress={() => {
+                    navigation.navigate(SIGN_IN.toString());
+                  }}
+                >
+                  <Text>Sign In</Text>
                 </Button>
               </View>
             </View>
@@ -137,7 +170,7 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
         </View>
       </View>
       <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <View style={{ flex: 1, borderRadius: 30, backgroundColor: 'white' }}>
+        <View style={{ flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, backgroundColor: 'white' }}>
           <ImageCarousel imageItem={imageItem} callBackIndex={(index: number) => callBackSliderIndex(index)} />
         </View>
       </View>

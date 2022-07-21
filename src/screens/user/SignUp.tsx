@@ -1,5 +1,5 @@
+import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import React, { FC } from 'react';
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
@@ -11,7 +11,19 @@ const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
 
 const SignUp: FC = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [mobileNum, setMobileNum] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [mobileNumError, setMobileNumError] = useState(false);
+
   const navigation = useNavigation();
+
   const onSubmit = () => {
     console.log('navigate to sign up');
     navigation.navigate(NEW_USER_LANDING.toString());
@@ -30,46 +42,46 @@ const SignUp: FC = () => {
         <View style={{ flexDirection: 'row' }}>
           <CustomeTextInput
             placeholder="First Name"
-            onChangeText={(text) => console.log(text)}
+            onChangeText={(text) => setFirstName(text)}
             fieldWidth={windowWidth * 0.45}
             errorMessage=" First Name Error"
-            errorState={true}
+            errorState={false}
           />
           <CustomeTextInput
             placeholder="Last Name"
-            onChangeText={(text) => console.log(text)}
+            onChangeText={(text) => setLastName(text)}
             fieldWidth={windowWidth * 0.45}
             errorMessage="Name error"
-            errorState={true}
+            errorState={false}
           />
         </View>
         <CustomeTextInput
           placeholder="Email ID"
-          onChangeText={(text) => console.log(text)}
+          onChangeText={(text) => setEmail(text)}
           fieldWidth={0}
           errorMessage="Email Error"
-          errorState={true}
+          errorState={emailError}
         />
         <CustomeTextInput
           placeholder="Password"
-          onChangeText={(text) => console.log(text)}
+          onChangeText={(text) => setPassword(text)}
           fieldWidth={0}
           errorMessage="test!"
-          errorState={false}
+          errorState={passwordError}
         />
         <CustomeTextInput
           placeholder="Confirm Password"
-          onChangeText={(text) => console.log(text)}
+          onChangeText={(text) => setConfirmPassword(text)}
           fieldWidth={0}
           errorMessage="test!"
-          errorState={false}
+          errorState={confirmPasswordError}
         />
         <CustomeTextInput
           placeholder="Enter Mobile no"
-          onChangeText={(text) => console.log(text)}
+          onChangeText={(text) => setMobileNum(text)}
           fieldWidth={0}
           errorMessage="test!"
-          errorState={false}
+          errorState={mobileNumError}
         />
 
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>

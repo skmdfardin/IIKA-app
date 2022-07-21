@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { SIGN_UP } from '../../navigation/StackNavigation';
@@ -12,9 +12,11 @@ const logo = '../../media/AquaLogo.gif';
 const glogo = '../../media/googleLogo.png';
 
 const SignIn: FC = () => {
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const onSubmit = () => {
-    console.log('EXIT!');
+    console.log('User Name', userName, 'Password', password);
   };
   const goToSignUp = () => {
     console.log('SignUp!');
@@ -33,14 +35,14 @@ const SignIn: FC = () => {
         <Text style={Styles.text}>LogIn</Text>
         <CustomeTextInput
           placeholder="User Name"
-          onChangeText={(text) => console.log(text)}
+          onChangeText={(text) => setUserName(text)}
           fieldWidth={0}
           errorMessage="test!"
           errorState={false}
         />
         <CustomeTextInput
           placeholder="Password"
-          onChangeText={(text) => console.log(text)}
+          onChangeText={(text) => setPassword(text)}
           fieldWidth={0}
           errorMessage="test!"
           errorState={true}

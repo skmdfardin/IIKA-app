@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -7,8 +9,9 @@ const windowHeight = Dimensions.get('window').height;
 const profile = '../../media/profile.png';
 
 const UserBasicInfoCard: FC = () => {
+  const navigation = useNavigation();
   const onSubmit = () => {
-    console.log('EXIT!');
+    navigation.navigate(EDIT_PROFILE_SCREEN.toString());
   };
   return (
     <View style={Styles.container}>

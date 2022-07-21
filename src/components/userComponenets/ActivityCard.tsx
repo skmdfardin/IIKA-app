@@ -22,7 +22,11 @@ const ActivityCard: FC<Props> = (props) => {
       <View style={Styles.textContainer}>
         <Text style={Styles.textTitle}>{props.titleText}</Text>
         <Text style={Styles.textMessage}>{props.messageText}</Text>
-        <TouchableOpacity style={Styles.button} onPress={onSubmit} disabled={!props.buttonState}>
+        <TouchableOpacity
+          style={[Styles.button, { opacity: props.buttonState ? 1 : 0.3 }]}
+          onPress={onSubmit}
+          disabled={!props.buttonState}
+        >
           <Text style={Styles.buttonText}>{props.buttonText}</Text>
         </TouchableOpacity>
       </View>

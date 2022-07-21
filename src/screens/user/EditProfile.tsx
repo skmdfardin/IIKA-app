@@ -12,15 +12,15 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Portal, Provider, Text, TextInput } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LabelTextInput from '../../components/LabelTextInput';
-import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { blackColor, commonBlueColor, greyColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
+import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 
 interface EditProfileScreenProps {}
 
 const logo = '../../media/AquaLogo.gif';
+const profile = '../../media/profile.png';
 
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const [userName, setuserName] = useState('');
@@ -256,7 +256,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
             >
               <Image
                 style={{ width: 100, height: 100, borderRadius: 100 / 2, marginTop: 5 }}
-                source={fileData !== undefined ? { uri: fileData } : require(logo)}
+                source={fileData !== undefined ? { uri: fileData } : require(profile)}
               />
             </TouchableOpacity>
             <View style={{ marginStart: windowWidth * 0.1 }} />
@@ -291,7 +291,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
             }}
             onSubmit={(values) => console.log('values', values)}
           >
-            {({ handleChange, handleBlur, handleSubmit, values }) => (
+            {({ handleChange, handleSubmit, values }) => (
               <View style={{ marginStart: 8 }}>
                 <LabelTextInput
                   nameOfField={'Full Name:'}

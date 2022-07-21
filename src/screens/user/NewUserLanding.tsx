@@ -1,7 +1,9 @@
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Image, Dimensions, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
+import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -12,9 +14,11 @@ const menu = '../../media/menu.png';
 
 const NewUserLanding: FC = () => {
   const [status, setStatus] = useState('Not updated');
+  const navigation = useNavigation();
 
   const updateStatus = (temp: string): void => {
     setStatus(temp);
+    navigation.navigate(EDIT_PROFILE_SCREEN.toString());
   };
 
   const updateDummy = (temp: string): void => {
@@ -108,5 +112,14 @@ const Styles = StyleSheet.create({
   image: {
     marginHorizontal: windowWidth * 0.2,
     marginVertical: windowHeight * 0.01,
+  },
+  subTabContainer: {
+    marginHorizontal: windowWidth * 0.02,
+    marginVertical: windowHeight * 0.01,
+    backgroundColor: '#ffffff',
+    height: windowHeight * 0.05,
+    borderRadius: 10,
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
   },
 });

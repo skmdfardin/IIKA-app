@@ -6,19 +6,19 @@ import NewUserLanding from '../screens/user/NewUserLanding';
 import SignIn from '../screens/user/SignIn';
 import SignUp from '../screens/user/SignUp';
 import SplashScreen from '../screens/static/SplashScreen';
-import EditProfileScreen from '../screens/home/EditProfile';
+import EditProfileScreen from '../screens/user/EditProfile';
 
 const StackNavigation: FC = () => {
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
+        <Stack.Screen name={SPLASH_SCREEN} component={SplashScreen} />
         <Stack.Screen name={SLIDER_SCREEN} component={SliderScreen} />
         <Stack.Screen name={SIGN_UP} component={SignUp} />
         <Stack.Screen name={SIGN_IN} component={SignIn} />
-        <Stack.Screen name={SPLASH_SCREEN} component={SplashScreen} />
         <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
+        <Stack.Screen name={EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

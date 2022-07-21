@@ -1,12 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { windowHeight, windowWidth, whiteColor, blueColor, commonBlueColor, blackColor } from '../../media/css/common';
+import { windowHeight, windowWidth, whiteColor, commonBlueColor } from '../../media/css/common';
 import ImageCarousel from '../../components/ImageCarousel';
 import { useState } from 'react';
-import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { SIGN_IN, SIGN_UP } from '../../navigation/StackNavigation';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 interface SliderScreenProps {}
 

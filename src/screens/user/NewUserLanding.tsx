@@ -62,6 +62,14 @@ const NewUserLanding: FC = () => {
         </View>
       ) : (
         <View>
+          <View style={Styles.subTabContainer}>
+            <View style={Styles.tabActive}>
+              <Text style={Styles.tabTextActive}>Farms & Ponds</Text>
+            </View>
+            <View style={Styles.tabInactive}>
+              <Text style={Styles.tabTextInactive}>Activity</Text>
+            </View>
+          </View>
           <ActivityCard
             titleText="Your Business has been successfully verified!"
             messageText="Let's start by creating a farm and adding the details"
@@ -116,10 +124,33 @@ const Styles = StyleSheet.create({
   subTabContainer: {
     marginHorizontal: windowWidth * 0.02,
     marginVertical: windowHeight * 0.01,
-    backgroundColor: '#ffffff',
-    height: windowHeight * 0.05,
+    backgroundColor: '#000000',
+    height: windowHeight * 0.06,
     borderRadius: 10,
     justifyContent: 'space-evenly',
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tabTextInactive: {
+    color: '#ffffff',
+    textAlign: 'center',
+  },
+  tabTextActive: {
+    color: '#000000',
+    textAlign: 'center',
+  },
+  tabActive: {
+    backgroundColor: '#ffffff',
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.42,
+    paddingTop: windowHeight * 0.005,
+    borderRadius: 5,
+  },
+  tabInactive: {
+    backgroundColor: '#000000',
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.42,
+    paddingTop: windowHeight * 0.005,
+    borderRadius: 5,
   },
 });

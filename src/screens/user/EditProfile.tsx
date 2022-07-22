@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
 import React, { FunctionComponent, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   Image,
   StyleSheet,
@@ -16,6 +17,7 @@ import { Text } from 'react-native-paper';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
+import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
 
 interface EditProfileScreenProps {}
 
@@ -27,6 +29,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const [filepath, setFilePath] = useState('');
   const [fileData, setFileData] = useState(undefined);
   const [visible, setVisible] = useState(false);
+  const navigation = useNavigation();
   const alert = (text: string) => {
     console.log('29 from alert', text);
   };
@@ -289,7 +292,10 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
               pincode: '',
               website: '',
             }}
-            onSubmit={(values) => console.log('values', values)}
+            onSubmit={(values) => {
+              console.log('values', values);
+              navigation.navigate(NEW_USER_LANDING.toString());
+            }}
           >
             {({ handleChange, handleSubmit, values }) => (
               <View style={{ marginStart: 8 }}>

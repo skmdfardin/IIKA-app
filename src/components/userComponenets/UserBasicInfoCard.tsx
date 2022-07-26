@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
+import { windowHeight, windowWidth, styles } from '../../media/css/common';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const { robotoRegular13, robotoRegular16, robotoBold20 } = styles;
 
 const profile = '../../media/profile.png';
 
@@ -25,9 +25,9 @@ const UserBasicInfoCard: FC = () => {
         <Image style={Styles.profile} source={require(profile)} />
       </View>
       <View style={Styles.textContainer}>
-        <Text style={Styles.text}>{name}</Text>
-        <Text style={Styles.text}>Admin</Text>
-        <Text style={Styles.text}>Average FCR: - </Text>
+        <Text style={[Styles.text, robotoBold20]}>{name}</Text>
+        <Text style={[Styles.text, robotoRegular13]}>Admin</Text>
+        <Text style={[Styles.text, robotoRegular16]}>Average FCR: - </Text>
       </View>
       <View style={Styles.editButtonContainer}>
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>

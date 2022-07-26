@@ -11,6 +11,7 @@ interface Props {
   fieldWidth: number;
   errorState: boolean;
   errorMessage: string;
+  isPassword: boolean;
 }
 
 const CustomeTextInput: FC<Props> = (props) => {
@@ -23,7 +24,11 @@ const CustomeTextInput: FC<Props> = (props) => {
   return (
     <View>
       <View style={[Styles.container, { width: props.fieldWidth > 0 ? props.fieldWidth : windowWidth * 0.9 }]}>
-        <TextInput placeholder={props.placeholder} onChangeText={props.onChangeText} />
+        <TextInput
+          placeholder={props.placeholder}
+          secureTextEntry={props.isPassword}
+          onChangeText={props.onChangeText}
+        />
       </View>
       {errorState && (
         <View style={[Styles.errorContainer, { width: props.fieldWidth > 0 ? props.fieldWidth : windowWidth * 0.9 }]}>

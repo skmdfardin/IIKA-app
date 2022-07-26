@@ -86,6 +86,10 @@ export const styles = StyleSheet.create({
     fontSize: windowWidth * 0.037,
     fontWeight: '700',
   },
+  robotoRegular16: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: windowWidth * 0.037,
+  },
   robotoRegular18: {
     fontFamily: 'Roboto-Regular',
     fontSize: windowWidth * 0.04,
@@ -145,6 +149,11 @@ export const styles = StyleSheet.create({
   robotoBold16: {
     fontFamily: 'Roboto-Bold',
     fontSize: windowWidth * 0.04,
+    fontWeight: '900',
+  },
+  robotoBold20: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: windowWidth * 0.045,
     fontWeight: '900',
   },
   robotoBold24: {

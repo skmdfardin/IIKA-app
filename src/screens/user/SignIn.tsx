@@ -1,8 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { SIGN_UP } from '../../navigation/StackNavigation';
+import { storeEmailId } from '../../reduxstore/userSlice';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -14,9 +16,16 @@ const glogo = '../../media/googleLogo.png';
 const SignIn: FC = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.userStore);
+
   const onSubmit = () => {
-    console.log('User Name', userName, 'Password', password);
+    console.log('STATE before UPDATE', store.email);
+    dispatch(storeEmailId({ email: userName }));
+    console.log('STATE after UPDATE', store.email);
   };
   const goToSignUp = () => {
     console.log('SignUp!');
@@ -45,7 +54,7 @@ const SignIn: FC = () => {
           onChangeText={(text) => setPassword(text)}
           fieldWidth={0}
           errorMessage="test!"
-          errorState={true}
+          errorState={passwordError}
         />
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign In</Text>

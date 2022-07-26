@@ -1,35 +1,66 @@
 import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
-import { SIGN_UP } from '../../navigation/StackNavigation';
-import { storeEmailId } from '../../reduxstore/userSlice';
+import { SIGN_UP, NEW_USER_LANDING } from '../../navigation/StackNavigation';
+import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
 const glogo = '../../media/googleLogo.png';
 
 const SignIn: FC = () => {
-  const [userName, setUserName] = useState('');
+  const [emailId, setEmailId] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState(false);
+  const [signInError, setSignInError] = useState('');
+  const [isSignInError, setIsSignInError] = useState(false);
+  const [temp, setTemp] = useState('');
+  const [tempState, setTempState] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.userStore);
 
-  const onSubmit = () => {
-    console.log('STATE before UPDATE', store.email);
-    dispatch(storeEmailId({ email: userName }));
-    console.log('STATE after UPDATE', store.email);
-  };
   const goToSignUp = () => {
-    console.log('SignUp!');
     navigation.navigate(SIGN_UP.toString());
+  };
+
+  const onForgotPassword = () => {
+    setTemp('TEMP');
+    setTempState(true);
+    console.log(temp, tempState);
+  };
+
+  const onSubmit = async () => {
+    let data;
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailId, password: password }),
+      };
+      const response = await fetch(signInURL, requestOptions);
+      data = await response.json();
+      console.log(data.message);
+      if (data.message) {
+        setIsSignInError(true);
+        setSignInError(data.message);
+        console.log('check', data.message);
+      } else {
+        dispatch(storeEmailId({ email: data.email }));
+        dispatch(storeFirstName({ firstName: data.first_name }));
+        dispatch(storeLastName({ lastName: data.last_name }));
+        dispatch(storeMobile({ mobile: data.phone_no }));
+        dispatch(storeUserName({ userName: data.username }));
+        navigation.navigate(NEW_USER_LANDING.toString());
+      }
+    } catch (error) {
+      console.log('Error', error);
+    }
   };
 
   return (
@@ -43,18 +74,18 @@ const SignIn: FC = () => {
       <View style={Styles.subContainer}>
         <Text style={Styles.text}>LogIn</Text>
         <CustomeTextInput
-          placeholder="User Name"
-          onChangeText={(text) => setUserName(text)}
+          placeholder="Enter Email"
+          onChangeText={(text) => setEmailId(text)}
           fieldWidth={0}
-          errorMessage="test!"
+          errorMessage=""
           errorState={false}
         />
         <CustomeTextInput
           placeholder="Password"
           onChangeText={(text) => setPassword(text)}
           fieldWidth={0}
-          errorMessage="test!"
-          errorState={passwordError}
+          errorMessage={temp}
+          errorState={tempState}
         />
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign In</Text>
@@ -69,7 +100,9 @@ const SignIn: FC = () => {
             <Text style={Styles.text}>Sign Up</Text>
           </TouchableOpacity>
         </View>
-        <Text>Forgot password?</Text>
+        <TouchableOpacity onPress={onForgotPassword}>
+          <Text>Forgot password?</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -151,7 +184,8 @@ const Styles = StyleSheet.create({
   button: {
     height: windowHeight * 0.05,
     width: windowWidth * 0.28,
-    marginVertical: windowHeight * 0.02,
+    marginBottom: windowHeight * 0.02,
+    marginTop: windowHeight * 0.05,
     borderRadius: 10,
     backgroundColor: '#0059AB',
     paddingHorizontal: windowWidth * 0.05,

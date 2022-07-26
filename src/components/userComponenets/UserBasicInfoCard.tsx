@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
 
 const windowWidth = Dimensions.get('window').width;
@@ -9,17 +10,22 @@ const windowHeight = Dimensions.get('window').height;
 const profile = '../../media/profile.png';
 
 const UserBasicInfoCard: FC = () => {
+  const store = useSelector((state: any) => state.userStore);
   const navigation = useNavigation();
+
+  const name = store.firstName + ' ' + store.lastName;
+
   const onSubmit = () => {
     navigation.navigate(EDIT_PROFILE_SCREEN.toString());
   };
+
   return (
     <View style={Styles.container}>
       <View style={Styles.imageContainer}>
         <Image style={Styles.profile} source={require(profile)} />
       </View>
       <View style={Styles.textContainer}>
-        <Text style={Styles.text}>John Doe</Text>
+        <Text style={Styles.text}>{name}</Text>
         <Text style={Styles.text}>Admin</Text>
         <Text style={Styles.text}>Average FCR: - </Text>
       </View>

@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
 
@@ -9,6 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
+const signInURL = 'http://103.127.146.20:4000/api/v1/account/register';
 
 const SignUp: FC = () => {
   const [firstName, setFirstName] = useState('');
@@ -16,17 +18,48 @@ const SignUp: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [mobileNum, setMobileNum] = useState('');
+  const [mobileNum, setMobileNum] = useState(0);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [mobileNumError, setMobileNumError] = useState(false);
 
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const onSubmit = () => {
-    console.log('navigate to sign up');
-    navigation.navigate(NEW_USER_LANDING.toString());
+  const onSubmit = async () => {
+    let data;
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          first_name: firstName,
+          last_name: lastName,
+          password: password,
+          password2: confirmPassword,
+          phone_no: mobileNum,
+        }),
+      };
+      const response = await fetch(signInURL, requestOptions);
+      data = await response.json();
+      console.log(data.message);
+      if (data.message) {
+        setIsSignInError(true);
+        setSignInError(data.message);
+        console.log('check', data.message);
+      } else {
+        dispatch(storeEmailId({ email: data.email }));
+        dispatch(storeFirstName({ firstName: data.first_name }));
+        dispatch(storeLastName({ lastName: data.last_name }));
+        dispatch(storeMobile({ mobile: data.phone_no }));
+        dispatch(storeUserName({ userName: data.username }));
+        navigation.navigate(NEW_USER_LANDING.toString());
+      }
+    } catch (error) {
+      console.log('Error', error);
+    }
   };
 
   return (

@@ -48,7 +48,6 @@ const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
 
   const afterLoad = () => {
     if (percentage === 100) {
-      console.log('EXIT!');
       props.onExit();
     }
   };

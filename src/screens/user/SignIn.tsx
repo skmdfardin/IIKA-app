@@ -5,9 +5,8 @@ import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'rea
 import CustomeTextInput from '../../components/CustomTextInput';
 import { SIGN_UP, NEW_USER_LANDING } from '../../navigation/StackNavigation';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
+import { windowHeight, windowWidth } from '../../media/css/common';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 
 const fishLogo = '../../media/FishLogo.gif';
@@ -29,6 +28,13 @@ const SignIn: FC = () => {
 
   const toggle = () => {
     setIsSignInError(!signInError);
+  };
+
+  const resetState = () => {
+    setEmailId('');
+    setPassword('');
+    setSignInError('');
+    setIsSignInError(false);
   };
 
   const onForgotPassword = () => {};
@@ -53,6 +59,7 @@ const SignIn: FC = () => {
         dispatch(storeLastName({ lastName: data.last_name }));
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
+        resetState();
         navigation.navigate(NEW_USER_LANDING.toString());
       }
     } catch (error) {
@@ -76,6 +83,7 @@ const SignIn: FC = () => {
           fieldWidth={0}
           errorMessage=""
           errorState={false}
+          isPassword={false}
         />
         <CustomeTextInput
           placeholder="Password"
@@ -83,6 +91,7 @@ const SignIn: FC = () => {
           fieldWidth={0}
           errorMessage={signInError}
           errorState={isSignInError}
+          isPassword={true}
         />
         {isSignInError && (
           <View style={[Styles.errorContainer, { width: windowWidth * 0.9 }]}>

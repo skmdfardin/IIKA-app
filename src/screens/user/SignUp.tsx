@@ -1,13 +1,11 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import { windowHeight, windowWidth } from '../../media/css/common';
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
@@ -27,6 +25,19 @@ const SignUp: FC = () => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const resetState = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setMobileNum(0);
+    setEmailError(false);
+    setPasswordError(false);
+    setConfirmPasswordError(false);
+    setMobileNumError(false);
+  };
 
   const onSubmit = async () => {
     let data;
@@ -52,9 +63,10 @@ const SignUp: FC = () => {
         dispatch(storeLastName({ lastName: data.last_name }));
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
-        navigation.navigate(NEW_USER_LANDING.toString());
         console.log('responce', data.responce);
         console.log('Data', data);
+        resetState();
+        navigation.navigate(NEW_USER_LANDING.toString());
       } else {
         console.log('Response', data);
       }
@@ -80,6 +92,7 @@ const SignUp: FC = () => {
             fieldWidth={windowWidth * 0.45}
             errorMessage=" First Name Error"
             errorState={false}
+            isPassword={false}
           />
           <CustomeTextInput
             placeholder="Last Name"
@@ -87,6 +100,7 @@ const SignUp: FC = () => {
             fieldWidth={windowWidth * 0.45}
             errorMessage="Name error"
             errorState={false}
+            isPassword={false}
           />
         </View>
         <CustomeTextInput
@@ -95,6 +109,7 @@ const SignUp: FC = () => {
           fieldWidth={0}
           errorMessage="Email Error"
           errorState={emailError}
+          isPassword={false}
         />
         <CustomeTextInput
           placeholder="Password"
@@ -102,6 +117,7 @@ const SignUp: FC = () => {
           fieldWidth={0}
           errorMessage="test!"
           errorState={passwordError}
+          isPassword={true}
         />
         <CustomeTextInput
           placeholder="Confirm Password"
@@ -109,13 +125,15 @@ const SignUp: FC = () => {
           fieldWidth={0}
           errorMessage="test!"
           errorState={confirmPasswordError}
+          isPassword={true}
         />
         <CustomeTextInput
           placeholder="Enter Mobile no"
-          onChangeText={(text) => setMobileNum(text)}
+          onChangeText={(text) => setMobileNum(parseInt(text, 10))}
           fieldWidth={0}
           errorMessage="test!"
           errorState={mobileNumError}
+          isPassword={false}
         />
 
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>

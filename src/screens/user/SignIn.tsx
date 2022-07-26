@@ -49,7 +49,6 @@ const SignIn: FC = () => {
       if (data.message) {
         setIsSignInError(true);
         setSignInError(data.message);
-        console.log('check', data.message);
       } else {
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));

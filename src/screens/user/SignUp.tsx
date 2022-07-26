@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'rea
 import { useDispatch } from 'react-redux';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
+import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -44,19 +45,14 @@ const SignUp: FC = () => {
       };
       const response = await fetch(signInURL, requestOptions);
       data = await response.json();
-      console.log(data.message);
-      if (data.message) {
-        setIsSignInError(true);
-        setSignInError(data.message);
-        console.log('check', data.message);
-      } else {
-        dispatch(storeEmailId({ email: data.email }));
-        dispatch(storeFirstName({ firstName: data.first_name }));
-        dispatch(storeLastName({ lastName: data.last_name }));
-        dispatch(storeMobile({ mobile: data.phone_no }));
-        dispatch(storeUserName({ userName: data.username }));
-        navigation.navigate(NEW_USER_LANDING.toString());
-      }
+      console.log('DATA /n', data);
+      dispatch(storeEmailId({ email: data.email }));
+      dispatch(storeFirstName({ firstName: data.first_name }));
+      dispatch(storeLastName({ lastName: data.last_name }));
+      dispatch(storeMobile({ mobile: data.phone_no }));
+      dispatch(storeUserName({ userName: data.username }));
+      navigation.navigate(NEW_USER_LANDING.toString());
+      console.log('responce', data.responce);
     } catch (error) {
       console.log('Error', error);
     }

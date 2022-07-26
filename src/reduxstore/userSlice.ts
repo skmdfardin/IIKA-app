@@ -5,7 +5,7 @@ export type UserDetails = {
 };
 
 const userSlice = createSlice({
-  name: 'exampleStore',
+  name: 'userStore',
   initialState: {
     email: 'example@text.com',
   },

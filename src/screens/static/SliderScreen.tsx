@@ -130,22 +130,6 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                 </Text>
               </Pressable>
               <View style={{ flexDirection: 'row', marginTop: windowWidth * 0.07 }}>
-                {/* <Button
-                  mode="contained"
-                  uppercase={false}
-                  onPress={() => navigation.navigate(SIGN_UP.toString())}
-                  style={{ backgroundColor: blueColor, marginEnd: windowWidth * 0.02, width: windowWidth * 0.45 }}
-                >
-                  Create an Account
-                </Button>
-                <Button
-                  mode="contained"
-                  uppercase={false}
-                  onPress={() => navigation.navigate(SIGN_IN.toString())}
-                  style={{ backgroundColor: blueColor, marginStart: windowWidth * 0.02, width: windowWidth * 0.4 }}
-                >
-                  Sign In
-                </Button> */}
                 <Pressable
                   style={{
                     width: windowWidth * 0.45,

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
 
-const { robotoBold16, robotoRegular13, robotoRegular16, robotoBold20 } = styles;
+const { robotoRegular13, robotoRegular16, robotoBold20 } = styles;
 
 const profile = '../../media/profile.png';
 

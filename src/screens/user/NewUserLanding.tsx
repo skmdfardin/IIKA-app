@@ -50,7 +50,7 @@ const NewUserLanding: FC = () => {
       ) : status === 'Profile Updated' ? (
         <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
           <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
-            <Text style={[robotoBold16, { textAlign: 'center' }]}>
+            <Text style={[robotoBold20, { textAlign: 'center' }]}>
               Your business has been Successfully regestered.Please wait while we review your business details
             </Text>
           </View>

@@ -45,14 +45,19 @@ const SignUp: FC = () => {
       };
       const response = await fetch(signInURL, requestOptions);
       data = await response.json();
-      console.log('DATA /n', data);
-      dispatch(storeEmailId({ email: data.email }));
-      dispatch(storeFirstName({ firstName: data.first_name }));
-      dispatch(storeLastName({ lastName: data.last_name }));
-      dispatch(storeMobile({ mobile: data.phone_no }));
-      dispatch(storeUserName({ userName: data.username }));
-      navigation.navigate(NEW_USER_LANDING.toString());
-      console.log('responce', data.responce);
+      if (data.response) {
+        console.log('DATA /n', data);
+        dispatch(storeEmailId({ email: data.email }));
+        dispatch(storeFirstName({ firstName: data.first_name }));
+        dispatch(storeLastName({ lastName: data.last_name }));
+        dispatch(storeMobile({ mobile: data.phone_no }));
+        dispatch(storeUserName({ userName: data.username }));
+        navigation.navigate(NEW_USER_LANDING.toString());
+        console.log('responce', data.responce);
+        console.log('Data', data);
+      } else {
+        console.log('Response', data);
+      }
     } catch (error) {
       console.log('Error', error);
     }

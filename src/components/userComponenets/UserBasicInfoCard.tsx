@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
+import { styles, blackColor } from '../../media/css/common';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

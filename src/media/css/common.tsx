@@ -32,6 +32,7 @@ export const addNotesGreyColor = '#c5c4c5';
 export const blueItenaryColor = '#2192FF';
 export const buttonGreyColor = '#d1d1d1';
 export const buttonPressedGreyColor = '#e3e3e3';
+export const greenColour = '#037F4C';
 
 export const styles = StyleSheet.create({
   robotoLight13: {

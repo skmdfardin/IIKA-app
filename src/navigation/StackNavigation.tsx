@@ -7,6 +7,7 @@ import SignIn from '../screens/user/SignIn';
 import SignUp from '../screens/user/SignUp';
 import SplashScreen from '../screens/static/SplashScreen';
 import EditProfileScreen from '../screens/user/EditProfile';
+import AddFarm from '../screens/farm/AddFarm';
 
 const StackNavigation: FC = () => {
   const Stack = createNativeStackNavigator();
@@ -18,7 +19,8 @@ const StackNavigation: FC = () => {
         <Stack.Screen name={SIGN_IN} component={SignIn} />
         <Stack.Screen name={SIGN_UP} component={SignUp} />
         <Stack.Screen name={EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
-        <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
+        <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} /
+        <Stack.Screen name={ADD_FARM} component={AddFarm} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -29,5 +31,6 @@ export const SIGN_IN: string = 'sign_in';
 export const SIGN_UP: string = 'sign_up';
 export const NEW_USER_LANDING: string = 'new_user_landing';
 export const EDIT_PROFILE_SCREEN = 'edit_profile_screen';
+export const ADD_FARM = 'add_farm';
 
 export default StackNavigation;

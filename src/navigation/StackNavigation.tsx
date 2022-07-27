@@ -19,7 +19,7 @@ const StackNavigation: FC = () => {
         <Stack.Screen name={SIGN_IN} component={SignIn} />
         <Stack.Screen name={SIGN_UP} component={SignUp} />
         <Stack.Screen name={EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
-        <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} /
+        <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
         <Stack.Screen name={ADD_FARM} component={AddFarm} />
       </Stack.Navigator>
     </NavigationContainer>

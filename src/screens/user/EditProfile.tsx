@@ -27,21 +27,6 @@ const profile = '../../media/profile.png';
 
 const token = 'testuser4@gmail.com';
 
-interface valuesInterface {
-  username: string;
-  fullname: string;
-  emailId: string;
-  mobileNo: string;
-  companyName: string;
-  gstCode: string;
-  panNo: string;
-  addressOne: string;
-  addressTwo: string;
-  pincode: string;
-  website: string;
-  is_verified: boolean;
-}
-
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const [userName, setuserName] = useState('');
   const [fileUri, setFileUri] = useState(undefined);
@@ -150,13 +135,17 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     return true;
   };
 
-  const onSubmitPressed = async (values: valuesInterface) => {
+  const onSubmitPressed = async (values: any) => {
     const formData = new FormData();
     formData.append('email', values.emailId);
     formData.append('phone_no', values.mobileNo);
     formData.append('first_name', values.fullname);
     formData.append('username', userName);
-    formData.append('image', fileResponse);
+    formData.append('image', {
+      uri: fileResponse.assets[0].uri,
+      type: fileResponse.assets[0].type,
+      name: fileResponse.assets[0].fileName,
+    });
     formData.append('company_name', values.companyName);
     formData.append('sic_gst_code', values.gstCode);
     formData.append('pan_no', values.panNo);
@@ -166,31 +155,8 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     formData.append('website', values.website);
 
     console.log('values', formData);
-    // CallApi('http://103.127.146.20:4000/api/v1/account/profile', 'POST', formData, {
-    //   'AQUA-AUTH-TOKEN': `${token}`,
-    // }).then((response) => {
-    //   console.log('response 170', response);
-    // });
-
-    // axios({
-    //   method: 'post',
-    //   url: 'http://103.127.146.20:4000/api/v1/account/profile',
-    //   data: formData,
-    //   headers: {
-    //     'Content-Type': 'multipart/form-data',
-    //     'AQUA-AUTH-TOKEN': `${token}`,
-    //   },
-    // })
-    //   .then(function (response) {
-    //     //handle success
-    //     console.log('188', response);
-    //   })
-    //   .catch(function (response) {
-    //     //handle error
-    //     console.log(response);
-    //   });
     CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
-      console.log('194 reponse', response);
+      console.log('194 reponse', response.data);
       navigation.navigate(NEW_USER_LANDING.toString());
     });
   };

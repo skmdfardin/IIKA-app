@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { windowHeight, windowWidth, styles } from '../../media/css/common';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const { robotoBold16 } = styles;
 
 interface Props {
   titleText: string;
@@ -20,7 +20,7 @@ const ActivityCard: FC<Props> = (props) => {
   return (
     <View style={Styles.container}>
       <View style={Styles.textContainer}>
-        <Text style={Styles.textTitle}>{props.titleText}</Text>
+        <Text style={[Styles.textTitle, robotoBold16]}>{props.titleText}</Text>
         <Text style={Styles.textMessage}>{props.messageText}</Text>
         <TouchableOpacity
           style={[Styles.button, { opacity: props.buttonState ? 1 : 0.3 }]}

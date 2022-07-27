@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
-import { View, StyleSheet, Image, Dimensions, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
+import { windowHeight, windowWidth, styles } from '../../media/css/common';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const { robotoBold16, robotoRegular13, robotoRegular16, robotoBold20 } = styles;
 
 const fishBowl = '../../media/SplashSlider/undraw_fish_bowl_uu881.png';
 const logo = '../../media/AquaLogo.gif';
@@ -50,14 +50,17 @@ const NewUserLanding: FC = () => {
       ) : status === 'Profile Updated' ? (
         <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
           <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
-            <Text>Your business has been Successfully regestered.</Text>
-            <Text>Please wait while we review your business details</Text>
+            <Text style={[robotoBold20, { textAlign: 'center' }]}>
+              Your business has been Successfully regestered.Please wait while we review your business details
+            </Text>
           </View>
           <TouchableOpacity onPress={onSubmit}>
             <Image style={Styles.image} source={require(fishBowl)} />
           </TouchableOpacity>
           <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
-            <Text>You will recive a email when your accounthas been verified and approved</Text>
+            <Text style={[robotoRegular16, { textAlign: 'center' }]}>
+              You will recive a email when your accounthas been verified and approved
+            </Text>
           </View>
         </View>
       ) : (

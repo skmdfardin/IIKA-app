@@ -16,7 +16,7 @@ const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const temp = parseFloat((progressCount >= 1 ? 1 : progressCount + 0.01).toFixed(2));
+      const temp = parseFloat((progressCount >= 1 ? 1 : progressCount + 0.02).toFixed(2));
       setProgressCount(temp);
       setPerscentage(Math.floor(progressCount * 100));
       if (percentage <= 10) {

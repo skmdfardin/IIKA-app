@@ -5,9 +5,8 @@ import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'rea
 import CustomeTextInput from '../../components/CustomTextInput';
 import { SIGN_UP, NEW_USER_LANDING } from '../../navigation/StackNavigation';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
+import { windowHeight, windowWidth } from '../../media/css/common';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 
 const fishLogo = '../../media/FishLogo.gif';
@@ -19,8 +18,6 @@ const SignIn: FC = () => {
   const [password, setPassword] = useState('');
   const [signInError, setSignInError] = useState('');
   const [isSignInError, setIsSignInError] = useState(false);
-  const [temp, setTemp] = useState('');
-  const [tempState, setTempState] = useState(false);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -29,11 +26,18 @@ const SignIn: FC = () => {
     navigation.navigate(SIGN_UP.toString());
   };
 
-  const onForgotPassword = () => {
-    setTemp('TEMP');
-    setTempState(true);
-    console.log(temp, tempState);
+  const toggle = () => {
+    setIsSignInError(!signInError);
   };
+
+  const resetState = () => {
+    setEmailId('');
+    setPassword('');
+    setSignInError('');
+    setIsSignInError(false);
+  };
+
+  const onForgotPassword = () => {};
 
   const onSubmit = async () => {
     let data;
@@ -45,17 +49,17 @@ const SignIn: FC = () => {
       };
       const response = await fetch(signInURL, requestOptions);
       data = await response.json();
-      console.log(data.message);
+      console.log(data);
       if (data.message) {
         setIsSignInError(true);
-        setSignInError(data.message);
-        console.log('check', data.message);
+        setSignInError('Incorrect Email or Password');
       } else {
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));
         dispatch(storeLastName({ lastName: data.last_name }));
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
+        resetState();
         navigation.navigate(NEW_USER_LANDING.toString());
       }
     } catch (error) {
@@ -79,14 +83,24 @@ const SignIn: FC = () => {
           fieldWidth={0}
           errorMessage=""
           errorState={false}
+          isPassword={false}
         />
         <CustomeTextInput
           placeholder="Password"
           onChangeText={(text) => setPassword(text)}
           fieldWidth={0}
-          errorMessage={temp}
-          errorState={tempState}
+          errorMessage={signInError}
+          errorState={isSignInError}
+          isPassword={true}
         />
+        {isSignInError && (
+          <View style={[Styles.errorContainer, { width: windowWidth * 0.9 }]}>
+            <TouchableOpacity onPress={toggle}>
+              <Text style={Styles.errorText}>X</Text>
+            </TouchableOpacity>
+            <Text style={Styles.errorText}>{signInError}</Text>
+          </View>
+        )}
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
           <Text style={Styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
@@ -184,12 +198,26 @@ const Styles = StyleSheet.create({
   button: {
     height: windowHeight * 0.05,
     width: windowWidth * 0.28,
-    marginBottom: windowHeight * 0.02,
-    marginTop: windowHeight * 0.05,
+    marginVertical: windowHeight * 0.02,
     borderRadius: 10,
     backgroundColor: '#0059AB',
     paddingHorizontal: windowWidth * 0.05,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  errorContainer: {
+    marginHorizontal: windowWidth * 0.01,
+    backgroundColor: '#C5C7D0',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  errorText: {
+    marginVertical: windowHeight * 0.005,
+    marginLeft: windowWidth * 0.03,
+    marginRight: windowWidth * 0.01,
+    textAlign: 'center',
+    color: '#ffffff',
+    flexShrink: 1,
   },
 });

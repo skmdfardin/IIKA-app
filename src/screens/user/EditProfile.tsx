@@ -18,14 +18,12 @@ import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } 
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
-import { CallPostApi } from '../../components/Util';
+import { CallPostApi, getToken } from '../../components/Util';
 
-interface EditProfileScreenProps { }
+interface EditProfileScreenProps {}
 
 const logo = '../../media/AquaLogo.gif';
 const profile = '../../media/profile.png';
-
-const token = 'testuser4@gmail.com';
 
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const [userName, setuserName] = useState('');
@@ -155,7 +153,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     formData.append('website', values.website);
 
     console.log('values', formData);
-    CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
+    CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, getToken()).then((response) => {
       console.log('194 reponse', response.data);
       navigation.navigate(NEW_USER_LANDING.toString());
     });

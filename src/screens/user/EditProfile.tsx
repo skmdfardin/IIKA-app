@@ -18,16 +18,34 @@ import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } 
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
+import { CallApi, CallPostApi } from '../../components/Util';
+import axios from 'axios';
 
-interface EditProfileScreenProps {}
+interface EditProfileScreenProps { }
 
 const logo = '../../media/AquaLogo.gif';
 const profile = '../../media/profile.png';
 
+const token = 'testuser3@gmail.com';
+
+interface valuesInterface {
+  username: string;
+  fullname: string;
+  emailId: string;
+  mobileNo: string;
+  companyName: string;
+  gstCode: string;
+  panNo: string;
+  addressOne: string;
+  addressTwo: string;
+  pincode: string;
+  website: string;
+}
+
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const [userName, setuserName] = useState('');
-  const [filepath, setFilePath] = useState('');
-  const [fileData, setFileData] = useState(undefined);
+  const [fileUri, setFileUri] = useState(undefined);
+  const [fileResponse, setFileResponse] = useState(undefined);
   const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   const alert = (text: string) => {
@@ -59,9 +77,10 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
           return;
         }
         if (response.errorCode === 'others') {
-          alert(response.errorMessage?.toString());
+          alert(response.errorMessage ? response.errorMessage : '');
           return;
         }
+        const assetsOfImage = response.assets[0];
         // console.log('base64 -> ', response.assets[0].base64);
         // console.log('uri -> ', response.uri);
         // console.log('width -> ', response.width);
@@ -69,8 +88,10 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
         // console.log('fileSize -> ', response.fileSize);
         // console.log('type -> ', response.type);
         // console.log('fileName -> ', response.assets[0].fileName);
-        setFilePath(response);
-        setFileData(response.data);
+        console.log('86', response);
+
+        setFileResponse(response);
+        setFileUri(assetsOfImage.uri);
         setVisible(false);
       });
     }
@@ -98,10 +119,10 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
         return;
       }
       if (response.errorCode === 'others') {
-        alert(response.errorMessage);
+        alert(response.errorMessage ? response.errorMessage : '');
         return;
       }
-      const assetsOfImage = response.assets[0];
+      const assetsOfImage = response.assets[0] ? response.assets[0] : '';
       // console.log("base64 -> ", response.base64);
       // console.log("uri -> ", response.assets[0].uri);
       // console.log("width -> ", response.width);
@@ -109,8 +130,8 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
       // console.log("fileSize -> ", response.fileSize);
       // console.log("type -> ", response.type);
       console.log('fileName -> ', assetsOfImage.uri);
-      setFilePath(response);
-      setFileData(assetsOfImage.uri);
+      setFileResponse(response);
+      setFileUri(assetsOfImage.uri);
       setVisible(false);
     });
   };
@@ -127,6 +148,52 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
       }
     }
     return true;
+  };
+
+  const onSubmitPressed = async (values: valuesInterface) => {
+    console.log('values 147', values);
+    const formData = new FormData();
+    formData.append('email', values.emailId);
+    formData.append('phone_no', values.mobileNo);
+    formData.append('first_name', values.fullname);
+    formData.append('username', userName);
+    formData.append('image', '');
+    formData.append('company_name', values.companyName);
+    formData.append('sic_gst_code', values.gstCode);
+    formData.append('pan_no', values.panNo);
+    formData.append('address_one', values.addressOne);
+    formData.append('address_two', values.addressTwo);
+    formData.append('pincode', values.pincode);
+    formData.append('website', values.website);
+
+    console.log('values', formData);
+    // CallApi('http://103.127.146.20:4000/api/v1/account/profile', 'POST', formData, {
+    //   'AQUA-AUTH-TOKEN': `${token}`,
+    // }).then((response) => {
+    //   console.log('response 170', response);
+    // });
+
+    // axios({
+    //   method: 'post',
+    //   url: 'http://103.127.146.20:4000/api/v1/account/profile',
+    //   data: formData,
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //     'AQUA-AUTH-TOKEN': `${token}`,
+    //   },
+    // })
+    //   .then(function (response) {
+    //     //handle success
+    //     console.log('188', response);
+    //   })
+    //   .catch(function (response) {
+    //     //handle error
+    //     console.log(response);
+    //   });
+    CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
+      console.log('194 reponse', response);
+      navigation.navigate(NEW_USER_LANDING.toString());
+    });
   };
 
   const requestExternalWritePermission = async () => {
@@ -259,7 +326,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
             >
               <Image
                 style={{ width: 100, height: 100, borderRadius: 100 / 2, marginTop: 5 }}
-                source={fileData !== undefined ? { uri: fileData } : require(profile)}
+                source={fileUri !== undefined ? { uri: fileUri } : require(profile)}
               />
             </TouchableOpacity>
             <View style={{ marginStart: windowWidth * 0.1 }} />
@@ -294,7 +361,8 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
             }}
             onSubmit={(values) => {
               console.log('values', values);
-              navigation.navigate(NEW_USER_LANDING.toString());
+              // navigation.navigate(NEW_USER_LANDING.toString());
+              onSubmitPressed(values);
             }}
           >
             {({ handleChange, handleSubmit, values }) => (

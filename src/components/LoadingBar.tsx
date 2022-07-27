@@ -38,7 +38,7 @@ const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
       } else {
         setProgressWords('Starting App..');
       }
-    }, 1);
+    }, 50);
     afterLoad();
     return () => {
       clearInterval(timer);

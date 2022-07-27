@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
-import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
+import { EDIT_PROFILE_SCREEN, ADD_FARM } from '../../navigation/StackNavigation';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
 
 const { robotoBold16, robotoRegular13, robotoRegular16, robotoBold20 } = styles;
@@ -23,6 +23,7 @@ const NewUserLanding: FC = () => {
 
   const updateDummy = (temp: string): void => {
     console.log(temp);
+    navigation.navigate(ADD_FARM.toString());
   };
 
   const onSubmit = () => {

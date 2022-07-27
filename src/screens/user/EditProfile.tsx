@@ -26,7 +26,7 @@ interface EditProfileScreenProps { }
 const logo = '../../media/AquaLogo.gif';
 const profile = '../../media/profile.png';
 
-const token = 'testuser3@gmail.com';
+const token = 'testuser4@gmail.com';
 
 interface valuesInterface {
   username: string;
@@ -40,6 +40,7 @@ interface valuesInterface {
   addressTwo: string;
   pincode: string;
   website: string;
+  is_verified: boolean;
 }
 
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
@@ -151,7 +152,6 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   };
 
   const onSubmitPressed = async (values: valuesInterface) => {
-    console.log('values 147', values);
     const formData = new FormData();
     formData.append('email', values.emailId);
     formData.append('phone_no', values.mobileNo);

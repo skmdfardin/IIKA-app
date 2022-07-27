@@ -18,8 +18,7 @@ import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } 
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
-import { CallApi, CallPostApi } from '../../components/Util';
-import axios from 'axios';
+import { CallPostApi } from '../../components/Util';
 
 interface EditProfileScreenProps { }
 
@@ -157,7 +156,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     formData.append('phone_no', values.mobileNo);
     formData.append('first_name', values.fullname);
     formData.append('username', userName);
-    formData.append('image', '');
+    formData.append('image', fileResponse);
     formData.append('company_name', values.companyName);
     formData.append('sic_gst_code', values.gstCode);
     formData.append('pan_no', values.panNo);

@@ -13,6 +13,33 @@ export const CallPostApi = async (urlString: string, formData: any, token: strin
   return returnResponse;
 };
 
-export const CallGetApi = async (url: string) => {
-  return await axios.get(url);
+export const CallGetApi = async (urlString: string, token: string) => {
+  let res;
+  axios
+    .get(urlString, {
+      headers: {
+        'AQUA-AUTH-TOKEN': token,
+      },
+    })
+    .then((response) => {
+      res = response;
+    });
+  return res ? res : null;
+};
+
+export const CallGetFetchApi = (urlString: string, token: string) => {
+  let response;
+  fetch(urlString, {
+    method: 'GET',
+    headers: {
+      'AQUA-AUTH-TOKEN': token,
+    },
+  }).then((res) => {
+    response = res;
+  });
+  return response;
+};
+
+export const getToken = () => {
+  return 'testuser4@gmail.com';
 };

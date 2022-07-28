@@ -12,6 +12,8 @@ const userSlice = createSlice({
     lastName: '',
     mobile: '',
     userName: '',
+    isVerified: false,
+    isProfileComplete: false,
   },
   reducers: {
     storeEmailId: (storeEmailId, action) => {
@@ -29,9 +31,23 @@ const userSlice = createSlice({
     storeUserName: (storeUserName, action) => {
       storeUserName.userName = action.payload.userName;
     },
+    storeIsVerified: (storeIsVerified, action) => {
+      storeIsVerified.isVerified = action.payload.isVerified;
+    },
+    storeIsProfileComplete: (storeIsProfileComplete, action) => {
+      storeIsProfileComplete.isProfileComplete = action.payload.isProfileComplete;
+    },
   },
 });
 
-export const { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } = userSlice.actions;
+export const {
+  storeEmailId,
+  storeFirstName,
+  storeLastName,
+  storeMobile,
+  storeUserName,
+  storeIsVerified,
+  storeIsProfileComplete,
+} = userSlice.actions;
 
 export default userSlice.reducer;

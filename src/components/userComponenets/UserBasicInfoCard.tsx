@@ -16,6 +16,7 @@ const UserBasicInfoCard: FC = () => {
   const name = store.firstName + ' ' + store.lastName;
 
   const onSubmit = () => {
+    console.log('STORE:', store);
     navigation.navigate(EDIT_PROFILE_SCREEN.toString());
   };
 

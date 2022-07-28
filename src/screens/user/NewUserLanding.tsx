@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import { EDIT_PROFILE_SCREEN, ADD_FARM } from '../../navigation/StackNavigation';
@@ -13,11 +14,11 @@ const logo = '../../media/AquaLogo.gif';
 const menu = '../../media/menu.png';
 
 const NewUserLanding: FC = () => {
-  const [status, setStatus] = useState('Not updated');
   const navigation = useNavigation();
+  const store = useSelector((state: any) => state.userStore);
 
   const updateStatus = (temp: string): void => {
-    setStatus(temp);
+    console.log(temp);
     navigation.navigate(EDIT_PROFILE_SCREEN.toString());
   };
 
@@ -37,7 +38,7 @@ const NewUserLanding: FC = () => {
         <Image style={Styles.logo} source={require(logo)} />
       </View>
       <UserBasicInfoCard />
-      {status === 'Not updated' ? (
+      {!store.isProfileComplete ? (
         <View>
           <ActivityCard
             titleText="Wohoo! Your account has been successfully created."
@@ -48,16 +49,16 @@ const NewUserLanding: FC = () => {
           />
           <Image style={Styles.image} source={require(fishBowl)} />
         </View>
-      ) : status === 'Profile Updated' ? (
+      ) : !store.isVerified ? (
         <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
           <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
             <Text style={[robotoBold20, { textAlign: 'center' }]}>
               Your business has been Successfully regestered.Please wait while we review your business details
             </Text>
           </View>
-          <TouchableOpacity onPress={onSubmit}>
-            <Image style={Styles.image} source={require(fishBowl)} />
-          </TouchableOpacity>
+
+          <Image style={Styles.image} source={require(fishBowl)} />
+
           <View style={{ marginHorizontal: windowWidth * 0.01, padding: windowWidth * 0.005 }}>
             <Text style={[robotoRegular16, { textAlign: 'center' }]}>
               You will recive a email when your accounthas been verified and approved

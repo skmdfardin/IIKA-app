@@ -1,11 +1,20 @@
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import React, { FC, useState } from 'react';
-import { View, StyleSheet, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { SIGN_UP, NEW_USER_LANDING } from '../../navigation/StackNavigation';
-import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
+import {
+  storeEmailId,
+  storeFirstName,
+  storeLastName,
+  storeMobile,
+  storeUserName,
+  storeIsVerified,
+  storeIsProfileComplete,
+} from '../../reduxstore/userSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
+import { CallGetApi } from '../../components/Util';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 
@@ -54,11 +63,17 @@ const SignIn: FC = () => {
         setIsSignInError(true);
         setSignInError('Incorrect Email or Password');
       } else {
+        const profileCheck = await CallGetApi('http://103.127.146.20:4000/api/v1/account/profile', data.email);
+        const profileData = profileCheck.data;
+        if (profileData.company_name !== '') {
+          dispatch(storeIsProfileComplete({ isProfileComplete: true }));
+        }
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));
         dispatch(storeLastName({ lastName: data.last_name }));
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
+        dispatch(storeIsVerified({ isVerified: data.is_verified }));
         resetState();
         navigation.navigate(NEW_USER_LANDING.toString());
       }

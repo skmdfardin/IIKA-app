@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import { EDIT_PROFILE_SCREEN, ADD_FARM } from '../../navigation/StackNavigation';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
+import { CallGetApi, CallGetFetchApi, getToken } from '../../components/Util';
 
 const { robotoBold16, robotoRegular13, robotoRegular16, robotoBold20 } = styles;
 
@@ -16,6 +17,24 @@ const menu = '../../media/menu.png';
 const NewUserLanding: FC = () => {
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
+
+  useEffect(() => {
+    return () => {
+      console.log('useEffect');
+      fetch('http://103.127.146.20:4000/api/v1/account/profile', {
+        method: 'GET',
+        headers: {
+          'AQUA-AUTH-TOKEN': getToken(),
+        },
+      })
+        .then((res) => {
+          console.log('resonse for fetch', res); // after fetching we need to take is_verified flag as input
+        })
+        .catch((error) => {
+          console.log('error 31', error);
+        });
+    };
+  }, []);
 
   const updateStatus = (temp: string): void => {
     console.log(temp);

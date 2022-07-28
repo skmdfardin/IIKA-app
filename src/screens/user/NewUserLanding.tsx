@@ -6,7 +6,7 @@ import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import { EDIT_PROFILE_SCREEN, ADD_FARM } from '../../navigation/StackNavigation';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
-import { CallGetApi, CallGetFetchApi, getToken } from '../../components/Util';
+import { CallGetApi, CallGetFetchApi } from '../../components/Util';
 
 const { robotoBold16, robotoRegular13, robotoRegular16, robotoBold20 } = styles;
 
@@ -17,6 +17,7 @@ const menu = '../../media/menu.png';
 const NewUserLanding: FC = () => {
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
+  const token = store.email;
 
   useEffect(() => {
     return () => {
@@ -24,7 +25,7 @@ const NewUserLanding: FC = () => {
       fetch('http://103.127.146.20:4000/api/v1/account/profile', {
         method: 'GET',
         headers: {
-          'AQUA-AUTH-TOKEN': getToken(),
+          'AQUA-AUTH-TOKEN': token,
         },
       })
         .then((res) => {

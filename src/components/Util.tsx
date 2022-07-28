@@ -15,7 +15,7 @@ export const CallPostApi = async (urlString: string, formData: any, token: strin
 
 export const CallGetApi = async (urlString: string, token: string) => {
   let res;
-  axios
+  await axios
     .get(urlString, {
       headers: {
         'AQUA-AUTH-TOKEN': token,
@@ -24,6 +24,7 @@ export const CallGetApi = async (urlString: string, token: string) => {
     .then((response) => {
       res = response;
     });
+  console.log;
   return res ? res : null;
 };
 
@@ -38,8 +39,4 @@ export const CallGetFetchApi = (urlString: string, token: string) => {
     response = res;
   });
   return response;
-};
-
-export const getToken = () => {
-  return 'testuser4@gmail.com';
 };

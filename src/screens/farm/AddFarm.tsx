@@ -1,13 +1,11 @@
-import { Formik } from 'formik';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-import { windowHeight, windowWidth, greenColour, whiteColor, styles } from '../../media/css/common';
+import { windowHeight, windowWidth, greenColour, whiteColor, styles, blackColor } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 
 const logo = '../../media/AquaLogo.gif';
 
 const AddFarm: FC = () => {
-  const [temp, setTemp] = useState('TEST');
   return (
     <View style={Styles.container}>
       <View style={Styles.header}>
@@ -100,6 +98,55 @@ const AddFarm: FC = () => {
             width={windowWidth * 0.9}
             value=""
           />
+          <View
+            style={{
+              height: windowHeight * 0.35,
+              width: windowWidth * 0.85,
+              backgroundColor: greenColour,
+              marginTop: windowHeight * 0.04,
+            }}
+          >
+            <Text> Place Holder</Text>
+          </View>
+          <LabelTextInput
+            nameOfField="farm Description:"
+            onChange={(text) => {
+              console.log(text);
+            }}
+            width={windowWidth * 0.9}
+            value=""
+          />
+          <View style={{ width: windowWidth * 0.9, flex: 1 }}>
+            <Text>Farm images*</Text>
+            <View
+              style={{
+                width: windowWidth * 0.9,
+                flex: 1,
+                flexDirection: 'row',
+                backgroundColor: blackColor,
+                height: windowHeight * 0.3,
+                alignItems: 'center',
+                justifyContent: 'space-around',
+              }}
+            >
+              <View
+                style={{
+                  width: windowWidth * 0.3,
+                  backgroundColor: whiteColor,
+                  height: windowHeight * 0.15,
+                  marginHorizontal: windowWidth * 0.01,
+                }}
+              />
+              <View
+                style={{
+                  width: windowWidth * 0.3,
+                  backgroundColor: whiteColor,
+                  height: windowHeight * 0.15,
+                  marginHorizontal: windowWidth * 0.01,
+                }}
+              />
+            </View>
+          </View>
         </View>
       </ScrollView>
     </View>

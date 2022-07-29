@@ -1,15 +1,20 @@
 import axios from 'axios';
 
 export const CallPostApi = async (urlString: string, formData: any, token: string) => {
-  let returnResponse = await axios({
-    method: 'post',
-    url: urlString,
-    data: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'AQUA-AUTH-TOKEN': `${token}`,
-    },
-  });
+  let returnResponse;
+  try {
+    returnResponse = await axios({
+      method: 'post',
+      url: urlString,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'AQUA-AUTH-TOKEN': `${token}`,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
   return returnResponse;
 };
 
@@ -24,7 +29,6 @@ export const CallGetApi = async (urlString: string, token: string) => {
     .then((response) => {
       res = response;
     });
-  console.log;
   return res ? res : null;
 };
 

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-import { windowHeight, windowWidth, greenColour, whiteColor, styles, blackColor } from '../../media/css/common';
+import { windowHeight, windowWidth, greenColour, whiteColor, blackColor } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 
 const logo = '../../media/AquaLogo.gif';
@@ -123,8 +123,9 @@ const AddFarm: FC = () => {
                 width: windowWidth * 0.9,
                 flex: 1,
                 flexDirection: 'row',
+                flexWrap: 'wrap',
                 backgroundColor: blackColor,
-                height: windowHeight * 0.3,
+                padding: 10,
                 alignItems: 'center',
                 justifyContent: 'space-around',
               }}
@@ -145,8 +146,65 @@ const AddFarm: FC = () => {
                   marginHorizontal: windowWidth * 0.01,
                 }}
               />
+              <View
+                style={{
+                  width: windowWidth * 0.3,
+                  backgroundColor: whiteColor,
+                  height: windowHeight * 0.15,
+                  marginHorizontal: windowWidth * 0.01,
+                }}
+              />
+              <View
+                style={{
+                  width: windowWidth * 0.3,
+                  backgroundColor: whiteColor,
+                  height: windowHeight * 0.15,
+                  marginHorizontal: windowWidth * 0.01,
+                }}
+              />
+              <View
+                style={{
+                  width: windowWidth * 0.3,
+                  backgroundColor: whiteColor,
+                  height: windowHeight * 0.15,
+                  marginHorizontal: windowWidth * 0.01,
+                }}
+              />
+
+              <View
+                style={{
+                  width: windowWidth * 0.3,
+                  backgroundColor: whiteColor,
+                  height: windowHeight * 0.15,
+                  marginHorizontal: windowWidth * 0.01,
+                }}
+              />
             </View>
           </View>
+          <LabelTextInput
+            nameOfField="farm Description:"
+            onChange={(text) => {
+              console.log(text);
+            }}
+            width={windowWidth * 0.9}
+            value=""
+          />
+          <LabelTextInput
+            nameOfField="farm Description:"
+            onChange={(text) => {
+              console.log(text);
+            }}
+            width={windowWidth * 0.9}
+            value=""
+          />
+          <LabelTextInput
+            nameOfField="farm Description:"
+            onChange={(text) => {
+              console.log(text);
+            }}
+            width={windowWidth * 0.9}
+            value=""
+          />
         </View>
       </ScrollView>
     </View>

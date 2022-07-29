@@ -6,7 +6,7 @@ import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import { EDIT_PROFILE_SCREEN, ADD_FARM } from '../../navigation/StackNavigation';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
-import { CallGetApi, CallGetFetchApi } from '../../components/Util';
+import { CallGetApi, CallGetFetchApi } from '../../utilites/Util';
 
 const { robotoBold16, robotoRegular13, robotoRegular16, robotoBold20 } = styles;
 

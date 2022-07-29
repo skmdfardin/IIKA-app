@@ -14,7 +14,7 @@ import {
   storeIsProfileComplete,
 } from '../../reduxstore/userSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
-import { CallGetApi } from '../../components/Util';
+import { CallGetApi } from '../../utilites/Util';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 
@@ -65,6 +65,7 @@ const SignIn: FC = () => {
       } else {
         const profileCheck = await CallGetApi('http://103.127.146.20:4000/api/v1/account/profile', data.email);
         const profileData = profileCheck.data;
+        console.log('profileData', profileData);
         if (profileData.company_name !== '') {
           dispatch(storeIsProfileComplete({ isProfileComplete: true }));
         }

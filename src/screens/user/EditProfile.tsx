@@ -19,7 +19,7 @@ import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } 
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
-import { CallPostApi } from '../../components/Util';
+import { CallPostApi } from '../../utilites/Util';
 
 interface EditProfileScreenProps {}
 
@@ -33,7 +33,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const [visible, setVisible] = useState(false);
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
-  const token = store.emal;
+  const token = store.email;
   const alert = (text: string) => {
     console.log('29 from alert', text);
   };
@@ -156,6 +156,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     formData.append('website', values.website);
 
     console.log('values', formData);
+    console.log('TOKEN', token);
     CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
       console.log('194 reponse', response.data);
       navigation.navigate(NEW_USER_LANDING.toString());

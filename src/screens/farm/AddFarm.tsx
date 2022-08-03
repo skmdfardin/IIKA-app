@@ -1,12 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
-import { windowHeight, windowWidth, greenColour, whiteColor, blackColor } from '../../media/css/common';
+import AIcon from 'react-native-vector-icons/AntDesign';
+import { windowHeight, windowWidth, greenColour, whiteColor, asphaltGreyColour } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
 
 const logo = '../../media/AquaLogo.gif';
 
 const AddFarm: FC = () => {
+  const [imageList, setImageList] = useState([]);
   return (
     <View style={Styles.container}>
       <View style={Styles.header}>
@@ -116,61 +118,25 @@ const AddFarm: FC = () => {
                 flex: 1,
                 flexDirection: 'row',
                 flexWrap: 'wrap',
-                backgroundColor: blackColor,
                 padding: 10,
-                alignItems: 'center',
-                justifyContent: 'space-around',
               }}
             >
+              {}
               <View
                 style={{
-                  width: windowWidth * 0.3,
-                  backgroundColor: whiteColor,
-                  height: windowHeight * 0.15,
-                  marginHorizontal: windowWidth * 0.01,
+                  height: windowHeight * 0.2,
+                  width: windowWidth * 0.4,
+                  margin: windowWidth * 0.025,
+                  backgroundColor: '#F5F6F8',
+                  borderStyle: 'dashed',
+                  borderWidth: 2,
+                  borderColor: '#C5C7D0',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-              />
-              <View
-                style={{
-                  width: windowWidth * 0.3,
-                  backgroundColor: whiteColor,
-                  height: windowHeight * 0.15,
-                  marginHorizontal: windowWidth * 0.01,
-                }}
-              />
-              <View
-                style={{
-                  width: windowWidth * 0.3,
-                  backgroundColor: whiteColor,
-                  height: windowHeight * 0.15,
-                  marginHorizontal: windowWidth * 0.01,
-                }}
-              />
-              <View
-                style={{
-                  width: windowWidth * 0.3,
-                  backgroundColor: whiteColor,
-                  height: windowHeight * 0.15,
-                  marginHorizontal: windowWidth * 0.01,
-                }}
-              />
-              <View
-                style={{
-                  width: windowWidth * 0.3,
-                  backgroundColor: whiteColor,
-                  height: windowHeight * 0.15,
-                  marginHorizontal: windowWidth * 0.01,
-                }}
-              />
-
-              <View
-                style={{
-                  width: windowWidth * 0.3,
-                  backgroundColor: whiteColor,
-                  height: windowHeight * 0.15,
-                  marginHorizontal: windowWidth * 0.01,
-                }}
-              />
+              >
+                <AIcon name="plus" size={30} color={asphaltGreyColour} />
+              </View>
             </View>
           </View>
           <LabelTextInput
@@ -208,7 +174,7 @@ export default AddFarm;
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#E5E5E5',
   },
   header: {
     flexDirection: 'row',

@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { windowHeight, windowWidth, greenColour } from '../media/css/common';
+import { windowHeight, windowWidth } from '../media/css/common';
 
 const Map: FC = () => {
   return (
     <View style={Styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE}
-        style={{ backgroundColor: greenColour }}
+        style={{ flex: 1 }}
         region={{
           latitude: 37.78825,
           longitude: -122.4324,

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { windowHeight, windowWidth, greenColour, whiteColor, blackColor } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
+import Map from '../../components/Map';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -98,16 +99,7 @@ const AddFarm: FC = () => {
             width={windowWidth * 0.9}
             value=""
           />
-          <View
-            style={{
-              height: windowHeight * 0.35,
-              width: windowWidth * 0.85,
-              backgroundColor: greenColour,
-              marginTop: windowHeight * 0.04,
-            }}
-          >
-            <Text> Place Holder</Text>
-          </View>
+          <Map />
           <LabelTextInput
             nameOfField="farm Description:"
             onChange={(text) => {

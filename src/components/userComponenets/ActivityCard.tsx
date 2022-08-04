@@ -9,14 +9,10 @@ interface Props {
   messageText: string;
   buttonText: string;
   buttonState: boolean;
-  updateStatus: (arg: string) => void;
+  callBack: () => void;
 }
 
 const ActivityCard: FC<Props> = (props) => {
-  const onSubmit = () => {
-    props.updateStatus('Profile Updated');
-  };
-
   return (
     <View style={Styles.container}>
       <View style={Styles.textContainer}>
@@ -24,7 +20,7 @@ const ActivityCard: FC<Props> = (props) => {
         <Text style={Styles.textMessage}>{props.messageText}</Text>
         <TouchableOpacity
           style={[Styles.button, { opacity: props.buttonState ? 1 : 0.3 }]}
-          onPress={onSubmit}
+          onPress={props.callBack}
           disabled={!props.buttonState}
         >
           <Text style={Styles.buttonText}>{props.buttonText}</Text>

@@ -37,18 +37,12 @@ const NewUserLanding: FC = () => {
     };
   }, []);
 
-  const updateStatus = (temp: string): void => {
-    console.log(temp);
+  const updateStatus = (): void => {
     navigation.navigate(EDIT_PROFILE_SCREEN.toString());
   };
 
-  const updateDummy = (temp: string): void => {
-    console.log(temp);
+  const updateDummy = (): void => {
     navigation.navigate(ADD_FARM.toString());
-  };
-
-  const onSubmit = () => {
-    setStatus('Verified');
   };
 
   return (
@@ -64,7 +58,7 @@ const NewUserLanding: FC = () => {
             titleText="Wohoo! Your account has been successfully created."
             messageText="Now complete your Profile & Business registration!"
             buttonText="Complete your profile"
-            updateStatus={updateStatus}
+            callBack={updateStatus}
             buttonState={true}
           />
           <Image style={Styles.image} source={require(fishBowl)} />
@@ -99,14 +93,14 @@ const NewUserLanding: FC = () => {
             titleText="Your Business has been successfully verified!"
             messageText="Let's start by creating a farm and adding the details"
             buttonText="Add Farm"
-            updateStatus={updateDummy}
+            callBack={updateDummy}
             buttonState={true}
           />
           <ActivityCard
             titleText="Wohoo! Your account has been successfully created."
             messageText="Now complete your Profile & Business registration!"
             buttonText="Complete your profile"
-            updateStatus={updateStatus}
+            callBack={updateStatus}
             buttonState={false}
           />
           <Image style={Styles.image} source={require(fishBowl)} />

@@ -30,12 +30,14 @@ const logo = '../../media/AquaLogo.gif';
 const AddFarm: FC = () => {
   const [imageList, setImageList] = useState([]);
   const [userName, setuserName] = useState('');
-  const [fileUri, setFileUri] = useState(undefined);
+  const [fileUri, setFileUri] = useState('');
   const [fileResponse, setFileResponse] = useState(undefined);
   const [visible, setVisible] = useState(false);
+  const [isCertificateImage, setIsCertificateImage] = useState(false);
+  const [certificateImage, setCertificateImage] = useState('');
 
   const addImage = () => {
-    console.log('ADD IMAGE');
+    console.log('FILE RESPONSE', fileResponse);
     setVisible(true);
   };
 
@@ -90,7 +92,16 @@ const AddFarm: FC = () => {
 
         console.log('86', response);
         setFileResponse(response);
+        console.log('FILE RESPONSE', fileResponse);
         setFileUri(assetsOfImage.uri);
+        console.log('FILE URI', fileUri);
+        if (!isCertificateImage && fileUri) {
+          setImageList([...imageList, fileUri]);
+          console.log(imageList);
+        } else {
+          setCertificateImage(fileUri);
+          setIsCertificateImage(false);
+        }
         setVisible(false);
       });
     }
@@ -125,6 +136,13 @@ const AddFarm: FC = () => {
       console.log('fileName -> ', assetsOfImage.uri);
       setFileResponse(response);
       setFileUri(assetsOfImage.uri);
+      if (!isCertificateImage && fileUri) {
+        setImageList([...imageList, fileUri]);
+        console.log(imageList);
+      } else {
+        setCertificateImage(fileUri);
+        setIsCertificateImage(false);
+      }
       setVisible(false);
     });
   };
@@ -142,6 +160,7 @@ const AddFarm: FC = () => {
     }
     return true;
   };
+
   return (
     <View style={Styles.container}>
       <Modal visible={visible} transparent>
@@ -243,7 +262,7 @@ const AddFarm: FC = () => {
         </View>
       </Modal>
       <View style={Styles.header}>
-        <Text style={{ color: whiteColor }}>BACK</Text>
+        <Text style={Styles.buttonText}>BACK</Text>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
       <View style={{ backgroundColor: greenColour, height: windowHeight * 0.04 }}>
@@ -352,25 +371,24 @@ const AddFarm: FC = () => {
                 padding: 10,
               }}
             >
-              {fileUri && (
-                <View style={{ margin: windowWidth * 0.01 }}>
-                  <View
-                    style={{
-                      backgroundColor: blackColor,
-                      height: windowHeight * 0.15,
-                      width: windowWidth * 0.3,
-                    }}
-                  />
-                  <TouchableOpacity
-                    style={Styles.button}
-                    onPress={() => {
-                      console.log('change');
-                    }}
-                  >
-                    <Text style={Styles.buttonText}>change image</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+              {imageList &&
+                imageList.map((imageUri) => {
+                  return (
+                    <View style={Styles.imageContainer}>
+                      <View style={Styles.image}>
+                        <Image source={{ uri: imageUri }} style={{ flex: 1 }} />
+                      </View>
+                      <TouchableOpacity
+                        style={Styles.imageButton}
+                        onPress={() => {
+                          console.log('change');
+                        }}
+                      >
+                        <Text style={Styles.buttonText}>change image</Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
               <TouchableOpacity onPress={addImage}>
                 <View
                   style={{
@@ -390,30 +408,72 @@ const AddFarm: FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <LabelTextInput
-            nameOfField="farm Description:"
-            onChange={(text) => {
-              console.log(text);
-            }}
-            width={windowWidth * 0.9}
-            value=""
-          />
-          <LabelTextInput
-            nameOfField="farm Description:"
-            onChange={(text) => {
-              console.log(text);
-            }}
-            width={windowWidth * 0.9}
-            value=""
-          />
-          <LabelTextInput
-            nameOfField="farm Description:"
-            onChange={(text) => {
-              console.log(text);
-            }}
-            width={windowWidth * 0.9}
-            value=""
-          />
+          <View>
+            <Text>Farm Certifications*</Text>
+            <View
+              style={{
+                height: windowHeight * 0.2,
+                width: windowWidth * 0.4,
+                margin: windowWidth * 0.01,
+                marginLeft: windowWidth * 0.25,
+                backgroundColor: '#F5F6F8',
+                borderStyle: 'dashed',
+                borderWidth: 2,
+                borderColor: '#C5C7D0',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <AIcon name="plus" size={30} color={asphaltGreyColour} />
+            </View>
+            <TouchableOpacity
+              style={Styles.certificateButton}
+              onPress={() => {
+                console.log('change');
+              }}
+            >
+              <Text style={Styles.buttonText}>Upload Certificate</Text>
+            </TouchableOpacity>
+            <LabelTextInput
+              nameOfField="Select New Certificate:"
+              onChange={(text) => {
+                console.log(text);
+              }}
+              width={windowWidth * 0.9}
+              value=""
+            />
+            <LabelTextInput
+              nameOfField="Certificate No:"
+              onChange={(text) => {
+                console.log(text);
+              }}
+              width={windowWidth * 0.9}
+              value=""
+            />
+            <LabelTextInput
+              nameOfField="Another Identifier:"
+              onChange={(text) => {
+                console.log(text);
+              }}
+              width={windowWidth * 0.9}
+              value=""
+            />
+            <TouchableOpacity
+              style={[Styles.certificateButton, { backgroundColor: greenColour }]}
+              onPress={() => {
+                console.log('change');
+              }}
+            >
+              <Text style={Styles.buttonText}>Add New Certificate</Text>
+            </TouchableOpacity>
+            <View>
+              <View style={Styles.image}>{/* <Image source={{ uri: certificateImage }} style={{ flex: 1 }} /> */}</View>
+              <View>
+                <Text>DETAILS 1</Text>
+                <Text>DETAILS 2</Text>
+              </View>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -445,14 +505,33 @@ const Styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff',
+    fontSize: windowHeight * 0.02,
   },
-  button: {
+  certificateButton: {
     height: windowHeight * 0.05,
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.5,
+    marginVertical: windowHeight * 0.02,
+    marginLeft: windowWidth * 0.2,
     borderRadius: 10,
     backgroundColor: '#0059AB',
-    paddingHorizontal: windowWidth * 0.05,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageButton: {
+    height: windowHeight * 0.03,
+    width: windowWidth * 0.35,
+    borderRadius: 10,
+    backgroundColor: '#0059AB',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageContainer: { margin: windowWidth * 0.01, alignItems: 'center', justifyContent: 'center' },
+  image: {
+    backgroundColor: whiteColor,
+    height: windowHeight * 0.17,
+    width: windowWidth * 0.34,
+    borderColor: '#BDBDBD',
+    borderWidth: 2,
+    borderStyle: 'solid',
   },
 });

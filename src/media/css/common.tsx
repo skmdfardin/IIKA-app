@@ -169,6 +169,17 @@ export const styles = StyleSheet.create({
     fontSize: windowWidth * 0.07,
     fontWeight: '900',
   },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
 });
 
 // Roboto Condensed

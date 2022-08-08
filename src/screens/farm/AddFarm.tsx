@@ -10,6 +10,7 @@ import {
   Modal,
   Pressable,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -21,23 +22,28 @@ import {
   asphaltGreyColour,
   blackColor,
   commonBlueColor,
+  styles,
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
 
 const logo = '../../media/AquaLogo.gif';
 
+const shadow = styles.shadow;
+
 const AddFarm: FC = () => {
   const [imageList, setImageList] = useState([]);
   const [userName, setuserName] = useState('');
-  const [fileUri, setFileUri] = useState('');
-  const [fileResponse, setFileResponse] = useState(undefined);
   const [visible, setVisible] = useState(false);
   const [isCertificateImage, setIsCertificateImage] = useState(false);
   const [certificateImage, setCertificateImage] = useState('');
 
   const addImage = () => {
-    console.log('FILE RESPONSE', fileResponse);
+    setVisible(true);
+  };
+
+  const addCertificateImage = () => {
+    setIsCertificateImage(true);
     setVisible(true);
   };
 
@@ -89,17 +95,14 @@ const AddFarm: FC = () => {
           return;
         }
         const assetsOfImage = response.assets[0];
+        const imageURI = assetsOfImage.uri;
 
         console.log('86', response);
-        setFileResponse(response);
-        console.log('FILE RESPONSE', fileResponse);
-        setFileUri(assetsOfImage.uri);
-        console.log('FILE URI', fileUri);
-        if (!isCertificateImage && fileUri) {
-          setImageList([...imageList, fileUri]);
+        if (!isCertificateImage) {
+          setImageList([...imageList, imageURI]);
           console.log(imageList);
         } else {
-          setCertificateImage(fileUri);
+          setCertificateImage(imageURI);
           setIsCertificateImage(false);
         }
         setVisible(false);
@@ -132,15 +135,15 @@ const AddFarm: FC = () => {
         alert(response.errorMessage ? response.errorMessage : '');
         return;
       }
-      const assetsOfImage = response.assets[0] ? response.assets[0] : '';
-      console.log('fileName -> ', assetsOfImage.uri);
-      setFileResponse(response);
-      setFileUri(assetsOfImage.uri);
-      if (!isCertificateImage && fileUri) {
-        setImageList([...imageList, fileUri]);
+      const assetsOfImage = response.assets[0];
+      const imageURI = assetsOfImage.uri;
+
+      console.log('86', response);
+      if (!isCertificateImage) {
+        setImageList([...imageList, imageURI]);
         console.log(imageList);
       } else {
-        setCertificateImage(fileUri);
+        setCertificateImage(imageURI);
         setIsCertificateImage(false);
       }
       setVisible(false);
@@ -162,7 +165,7 @@ const AddFarm: FC = () => {
   };
 
   return (
-    <View style={Styles.container}>
+    <View style={PageStyles.container}>
       <Modal visible={visible} transparent>
         <View style={{ backgroundColor: '#000000aa', flex: 1 }}>
           <View
@@ -261,16 +264,16 @@ const AddFarm: FC = () => {
           </View>
         </View>
       </Modal>
-      <View style={Styles.header}>
-        <Text style={Styles.buttonText}>BACK</Text>
-        <Image style={Styles.logo} source={require(logo)} />
+      <View style={PageStyles.header}>
+        <Text style={PageStyles.buttonText}>BACK</Text>
+        <Image style={PageStyles.logo} source={require(logo)} />
       </View>
       <View style={{ backgroundColor: greenColour, height: windowHeight * 0.04 }}>
         <Text> + Add New Farm</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={Styles.scroll}>
+        <View style={PageStyles.scroll}>
           <LabelTextInput
             nameOfField="Farm Name*:"
             onChange={(text) => {
@@ -372,37 +375,25 @@ const AddFarm: FC = () => {
               }}
             >
               {imageList &&
-                imageList.map((imageUri) => {
+                imageList.map((imageUri, id) => {
                   return (
-                    <View style={Styles.imageContainer}>
-                      <View style={Styles.image}>
+                    <View style={PageStyles.imageContainer}>
+                      <View style={PageStyles.image}>
                         <Image source={{ uri: imageUri }} style={{ flex: 1 }} />
                       </View>
                       <TouchableOpacity
-                        style={Styles.imageButton}
+                        style={PageStyles.imageButton}
                         onPress={() => {
                           console.log('change');
                         }}
                       >
-                        <Text style={Styles.buttonText}>change image</Text>
+                        <Text style={PageStyles.buttonText}>remove image</Text>
                       </TouchableOpacity>
                     </View>
                   );
                 })}
               <TouchableOpacity onPress={addImage}>
-                <View
-                  style={{
-                    height: windowHeight * 0.2,
-                    width: windowWidth * 0.4,
-                    margin: windowWidth * 0.01,
-                    backgroundColor: '#F5F6F8',
-                    borderStyle: 'dashed',
-                    borderWidth: 2,
-                    borderColor: '#C5C7D0',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+                <View style={[PageStyles.addImage]}>
                   <AIcon name="plus" size={30} color={asphaltGreyColour} />
                 </View>
               </TouchableOpacity>
@@ -410,64 +401,91 @@ const AddFarm: FC = () => {
           </View>
           <View>
             <Text>Farm Certifications*</Text>
-            <View
-              style={{
-                height: windowHeight * 0.2,
-                width: windowWidth * 0.4,
-                margin: windowWidth * 0.01,
-                marginLeft: windowWidth * 0.25,
-                backgroundColor: '#F5F6F8',
-                borderStyle: 'dashed',
-                borderWidth: 2,
-                borderColor: '#C5C7D0',
-                alignItems: 'center',
-                justifyContent: 'center',
+            <TouchableOpacity onPress={addCertificateImage}>
+              <View style={[PageStyles.addImage, { marginLeft: windowWidth * 0.25 }]}>
+                <AIcon name="plus" size={30} color={asphaltGreyColour} />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={PageStyles.certificateButton}
+              onPress={() => {
+                console.log('UPDATE');
               }}
             >
-              <AIcon name="plus" size={30} color={asphaltGreyColour} />
+              <Text style={PageStyles.buttonText}>Upload Certificate</Text>
+            </TouchableOpacity>
+            <View style={{ marginVertical: windowHeight * 0.01 }}>
+              <Text>Select New Certificate:</Text>
+              <View style={[PageStyles.certificateInput, shadow]}>
+                <TextInput
+                  onChangeText={(text) => {
+                    console.log(text);
+                    setuserName(text);
+                  }}
+                  value={userName}
+                  placeholder=""
+                />
+              </View>
+            </View>
+            <View style={{ marginVertical: windowHeight * 0.01 }}>
+              <Text>Certificate No:</Text>
+              <View style={[PageStyles.certificateInput, shadow]}>
+                <TextInput
+                  onChangeText={(text) => {
+                    console.log(text);
+                    setuserName(text);
+                  }}
+                  value={userName}
+                  placeholder=""
+                />
+              </View>
+            </View>
+            <View style={{ marginVertical: windowHeight * 0.01 }}>
+              <Text>Another Identifier:</Text>
+              <View style={[PageStyles.certificateInput, shadow]}>
+                <TextInput
+                  onChangeText={(text) => {
+                    console.log(text);
+                    setuserName(text);
+                  }}
+                  value={userName}
+                  placeholder=""
+                />
+              </View>
             </View>
             <TouchableOpacity
-              style={Styles.certificateButton}
+              style={[PageStyles.certificateButton, { backgroundColor: greenColour }]}
               onPress={() => {
                 console.log('change');
               }}
             >
-              <Text style={Styles.buttonText}>Upload Certificate</Text>
+              <Text style={PageStyles.buttonText}>Add New Certificate</Text>
             </TouchableOpacity>
-            <LabelTextInput
-              nameOfField="Select New Certificate:"
-              onChange={(text) => {
-                console.log(text);
-              }}
-              width={windowWidth * 0.9}
-              value=""
-            />
-            <LabelTextInput
-              nameOfField="Certificate No:"
-              onChange={(text) => {
-                console.log(text);
-              }}
-              width={windowWidth * 0.9}
-              value=""
-            />
-            <LabelTextInput
-              nameOfField="Another Identifier:"
-              onChange={(text) => {
-                console.log(text);
-              }}
-              width={windowWidth * 0.9}
-              value=""
-            />
-            <TouchableOpacity
-              style={[Styles.certificateButton, { backgroundColor: greenColour }]}
-              onPress={() => {
-                console.log('change');
-              }}
+            <View
+              style={[
+                shadow,
+                {
+                  backgroundColor: whiteColor,
+                  borderRadius: 30,
+                  width: windowWidth * 0.9,
+                  paddingVertical: 20,
+                  paddingHorizontal: 10,
+                },
+              ]}
             >
-              <Text style={Styles.buttonText}>Add New Certificate</Text>
-            </TouchableOpacity>
-            <View>
-              <View style={Styles.image}>{/* <Image source={{ uri: certificateImage }} style={{ flex: 1 }} /> */}</View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={[PageStyles.certificateImage]}>
+                  <Image source={{ uri: certificateImage }} style={{ flex: 1 }} />
+                </View>
+                <TouchableOpacity
+                  style={[PageStyles.certificateDeleteButton]}
+                  onPress={() => {
+                    console.log('change');
+                  }}
+                >
+                  <Text style={PageStyles.buttonText}>Delete Certificate</Text>
+                </TouchableOpacity>
+              </View>
               <View>
                 <Text>DETAILS 1</Text>
                 <Text>DETAILS 2</Text>
@@ -482,15 +500,14 @@ const AddFarm: FC = () => {
 
 export default AddFarm;
 
-const Styles = StyleSheet.create({
+const PageStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E5E5E5',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth,
+
     height: windowHeight * 0.09,
     backgroundColor: '#000000',
     alignItems: 'center',
@@ -517,6 +534,14 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  certificateDeleteButton: {
+    height: windowHeight * 0.05,
+    width: windowWidth * 0.5,
+    borderRadius: 10,
+    backgroundColor: '#B63546',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   imageButton: {
     height: windowHeight * 0.03,
     width: windowWidth * 0.35,
@@ -533,5 +558,27 @@ const Styles = StyleSheet.create({
     borderColor: '#BDBDBD',
     borderWidth: 2,
     borderStyle: 'solid',
+  },
+  certificateImage: {
+    backgroundColor: whiteColor,
+    height: windowHeight * 0.075,
+    width: windowWidth * 0.3,
+  },
+  certificateInput: {
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.07,
+    backgroundColor: whiteColor,
+    borderRadius: 5,
+  },
+  addImage: {
+    height: windowHeight * 0.2,
+    width: windowWidth * 0.4,
+    margin: windowWidth * 0.01,
+    backgroundColor: '#F5F6F8',
+    borderStyle: 'dashed',
+    borderWidth: 2,
+    borderColor: '#C5C7D0',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

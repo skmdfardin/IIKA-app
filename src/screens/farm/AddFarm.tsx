@@ -1,4 +1,6 @@
 import React, { FC, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -28,13 +30,12 @@ import {
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
-import { CallGetApi, CallPostApi } from '../../utilites/Util';
+import { CallPostApiJson } from '../../utilites/Util';
 
 const logo = '../../media/AquaLogo.gif';
 
 const shadow = styles.shadow;
 
-const token = 'demouser@gmail.com';
 const url = 'http://103.127.146.20:4000/api/v1/farms/farmregist/';
 
 type imageFrame = {
@@ -68,6 +69,9 @@ const AddFarm: FC = () => {
   const [certificateDetail, setCertificateDetail] = useState('');
   const [certificateList, setCertificateList] = useState<certificateFrame[]>([]);
   const [imageList, setImageList] = useState<imageFrame[]>([]);
+  const navigation = useNavigation();
+  const store = useSelector((state: any) => state.userStore);
+  const token = store.email;
 
   const addImage = () => {
     setVisible(true);
@@ -155,21 +159,11 @@ const AddFarm: FC = () => {
           image: null,
         },
       ],
-      farm_images: [
-        {
-          name: 'rn_image_picker_lib_temp_87050418-6dc7-47c3-b82f-2befde1e3e68.jpg',
-          type: 'image/jpg',
-          uri: 'file:///data/user/0/com.aqua/cache/rn_image_picker_lib_temp_87050418-6dc7-47c3-b82f-2befde1e3e68.jpg',
-        },
-        {
-          name: 'rn_image_picker_lib_temp_f88856f0-3f2d-470a-84d9-a509a5186b86.jpg',
-          type: 'image/jpg',
-          uri: 'file:///data/user/0/com.aqua/cache/rn_image_picker_lib_temp_f88856f0-3f2d-470a-84d9-a509a5186b86.jpg',
-        },
-      ],
+      farm_images: imageList,
     };
-    CallPostApi(url, payload, token).then((response) => {
-      console.log('RESPONSE', response);
+    CallPostApiJson(url, payload, token).then((response) => {
+      console.log('RESPONSE', response?.data?.stringify);
+      //  navigation.goBack();
     });
   };
 
@@ -400,11 +394,17 @@ const AddFarm: FC = () => {
         </View>
       </Modal>
       <View style={PageStyles.header}>
-        <Text style={PageStyles.buttonText}>BACK</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={PageStyles.buttonText}>BACK</Text>
+        </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
       <View style={{ backgroundColor: greenColour, height: windowHeight * 0.04 }}>
-        <Text> + Add New Farm</Text>
+        <Text style={{ color: whiteColor }}> + Add New Farm</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>

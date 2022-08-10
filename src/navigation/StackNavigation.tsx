@@ -9,6 +9,7 @@ import SplashScreen from '../screens/static/SplashScreen';
 import EditProfileScreen from '../screens/user/EditProfile';
 import AddFarm from '../screens/farm/AddFarm';
 import AddCycle from '../screens/cycle/AddCycle';
+import AddPond from '../screens/pond/AddPond';
 
 const StackNavigation: FC = () => {
   const Stack = createNativeStackNavigator();
@@ -23,6 +24,7 @@ const StackNavigation: FC = () => {
         <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
         <Stack.Screen name={ADD_CYCLE} component={AddCycle} />
         <Stack.Screen name={ADD_FARM} component={AddFarm} />
+        <Stack.Screen name={ADD_POND} component={AddPond} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -34,6 +36,7 @@ export const SIGN_UP: string = 'sign_up';
 export const NEW_USER_LANDING: string = 'new_user_landing';
 export const EDIT_PROFILE_SCREEN = 'edit_profile_screen';
 export const ADD_FARM = 'add_farm';
+export const ADD_POND = 'add_pond';
 export const ADD_CYCLE = 'add_cycle';
 
 export default StackNavigation;

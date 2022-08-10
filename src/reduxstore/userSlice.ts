@@ -8,6 +8,7 @@ const userSlice = createSlice({
     lastName: '',
     mobile: '',
     userName: '',
+    profileImage: '',
     isVerified: false,
     isProfileComplete: false,
   },
@@ -27,6 +28,9 @@ const userSlice = createSlice({
     storeUserName: (storeUserName, action) => {
       storeUserName.userName = action.payload.userName;
     },
+    storeProfileImage: (storeProfileImage, action) => {
+      storeProfileImage.profileImage = action.payload.profileImage;
+    },
     storeIsVerified: (storeIsVerified, action) => {
       storeIsVerified.isVerified = action.payload.isVerified;
     },
@@ -44,6 +48,7 @@ export const {
   storeUserName,
   storeIsVerified,
   storeIsProfileComplete,
+  storeProfileImage,
 } = userSlice.actions;
 
 export default userSlice.reducer;

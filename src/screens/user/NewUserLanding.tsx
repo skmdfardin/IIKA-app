@@ -1,14 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
-import { EDIT_PROFILE_SCREEN, ADD_FARM } from '../../navigation/StackNavigation';
+import HorizontalBigCardFarmInfo from '../../components/farmComponenets/HorizontalBigCardFarmInfo';
+import { EDIT_PROFILE_SCREEN, ADD_FARM, ADD_POND } from '../../navigation/StackNavigation';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
-import { CallGetApi, CallGetFetchApi } from '../../utilites/Util';
 
-const { robotoBold16, robotoRegular13, robotoRegular16, robotoBold20 } = styles;
+const { robotoRegular16, robotoBold20 } = styles;
 
 const fishBowl = '../../media/SplashSlider/undraw_fish_bowl_uu881.png';
 const logo = '../../media/AquaLogo.gif';
@@ -18,7 +18,7 @@ const NewUserLanding: FC = () => {
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
   const farmStore = useSelector((state: any) => state.farmStore);
-  console.log('FARM STORE', farmStore);
+  const farmID = farmStore.farmID;
 
   const updateStatus = (): void => {
     navigation.navigate(EDIT_PROFILE_SCREEN.toString());
@@ -26,6 +26,10 @@ const NewUserLanding: FC = () => {
 
   const updateDummy = (): void => {
     navigation.navigate(ADD_FARM.toString());
+  };
+
+  const goToAddPond = (): void => {
+    navigation.navigate(ADD_POND.toString());
   };
 
   return (
@@ -62,7 +66,7 @@ const NewUserLanding: FC = () => {
             </Text>
           </View>
         </View>
-      ) : (
+      ) : farmID === '' ? (
         <View>
           <View style={Styles.subTabContainer}>
             <View style={Styles.tabActive}>
@@ -87,6 +91,25 @@ const NewUserLanding: FC = () => {
             buttonState={false}
           />
           <Image style={Styles.image} source={require(fishBowl)} />
+        </View>
+      ) : (
+        <View>
+          <View style={Styles.subTabContainer}>
+            <View style={Styles.tabActive}>
+              <Text style={Styles.tabTextActive}>Farms & Ponds</Text>
+            </View>
+            <View style={Styles.tabInactive}>
+              <Text style={Styles.tabTextInactive}>Activity</Text>
+            </View>
+          </View>
+          <HorizontalBigCardFarmInfo />
+          <ActivityCard
+            titleText="Your Farm has been successfully created"
+            messageText="Let's start by adding ponds to your farm"
+            buttonText="Add Pond"
+            callBack={goToAddPond}
+            buttonState={true}
+          />
         </View>
       )}
     </View>

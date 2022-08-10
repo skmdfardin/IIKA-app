@@ -6,7 +6,9 @@ const farmSlice = createSlice({
     farmName: '',
     farmDescription: '',
     farmID: '',
-    farmImages: [],
+    farmImages: [
+      'http://103.127.146.20:9000/aqua/user_image/2022-08-09_094200.516549_rn_image_picker_lib_temp_5e4e10ce-593b-418e-b64a-e418c03a597.jpg',
+    ],
     certificateArray: [],
   },
   reducers: {
@@ -28,6 +30,7 @@ const farmSlice = createSlice({
   },
 });
 
-export const { storeFarmName, storeFarmDescription, storeFarmImages, storeCertificateArray } = farmSlice.actions;
+export const { storeFarmID, storeFarmName, storeFarmDescription, storeFarmImages, storeCertificateArray } =
+  farmSlice.actions;
 
 export default farmSlice.reducer;

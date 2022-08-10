@@ -12,11 +12,14 @@ import {
   storeUserName,
   storeIsVerified,
   storeIsProfileComplete,
+  storeProfileImage,
 } from '../../reduxstore/userSlice';
+import { storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
-import { CallGetApi } from '../../utilites/Util';
+import { CallGetApi, CallGetApiNoHeader } from '../../utilites/Util';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
+const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
@@ -40,6 +43,7 @@ const SignIn: FC = () => {
   };
 
   const resetState = () => {
+    console.log('TESTT');
     setEmailId('');
     setPassword('');
     setSignInError('');
@@ -50,6 +54,7 @@ const SignIn: FC = () => {
 
   const onSubmit = async () => {
     let data;
+    let profileImageUrl;
     try {
       const requestOptions = {
         method: 'POST',
@@ -63,11 +68,23 @@ const SignIn: FC = () => {
         setIsSignInError(true);
         setSignInError('Incorrect Email or Password');
       } else {
-        const profileCheck = await CallGetApi('http://103.127.146.20:4000/api/v1/account/profile', data.email);
+        console.log('DATA', data);
+        const profileCheck = await CallGetApi(profileURL, data.email);
         const profileData = profileCheck.data;
         console.log('profileData', profileData);
         if (profileData.company_name !== '') {
+          profileImageUrl = profileData.image.replace('localhost', '103.127.146.20');
+          console.log(profileImageUrl);
           dispatch(storeIsProfileComplete({ isProfileComplete: true }));
+          dispatch(storeProfileImage({ profileImage: profileImageUrl }));
+        }
+        if (data.farm_id !== null) {
+          const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
+          console.log('FARM URL:', farmURL);
+          dispatch(storeFarmID({ farmID: data.farm_id }));
+          const farmApicall = await CallGetApi(farmURL, data.email);
+          const farmData = farmApicall.data.result;
+          dispatch(storeFarmName({ farmName: farmData.farm_name }));
         }
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));

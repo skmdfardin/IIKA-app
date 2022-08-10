@@ -1,9 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export type UserDetails = {
-  email: string;
-};
-
 const userSlice = createSlice({
   name: 'userStore',
   initialState: {

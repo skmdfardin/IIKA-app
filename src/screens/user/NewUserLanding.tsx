@@ -17,25 +17,8 @@ const menu = '../../media/menu.png';
 const NewUserLanding: FC = () => {
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
-  const token = store.email;
-
-  useEffect(() => {
-    return () => {
-      console.log('useEffect');
-      fetch('http://103.127.146.20:4000/api/v1/account/profile', {
-        method: 'GET',
-        headers: {
-          'AQUA-AUTH-TOKEN': token,
-        },
-      })
-        .then((res) => {
-          console.log('resonse for fetch', res); // after fetching we need to take is_verified flag as input
-        })
-        .catch((error) => {
-          console.log('error 31', error);
-        });
-    };
-  }, []);
+  const farmStore = useSelector((state: any) => state.farmStore);
+  console.log('FARM STORE', farmStore);
 
   const updateStatus = (): void => {
     navigation.navigate(EDIT_PROFILE_SCREEN.toString());

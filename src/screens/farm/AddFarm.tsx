@@ -23,28 +23,154 @@ import {
   blackColor,
   commonBlueColor,
   styles,
+  discardColour,
+  saveColour,
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
+import { CallGetApi, CallPostApi } from '../../utilites/Util';
 
 const logo = '../../media/AquaLogo.gif';
 
 const shadow = styles.shadow;
 
+const token = 'demouser@gmail.com';
+const url = 'http://103.127.146.20:4000/api/v1/farms/farmregist/';
+
+type imageFrame = {
+  uri: string | undefined;
+  type: string | undefined;
+  name: string | undefined;
+};
+
+type certificateFrame = {
+  certificate_name: string | undefined;
+  certificate_number: number | undefined;
+  add_information: string | undefined;
+  image: imageFrame;
+};
+
 const AddFarm: FC = () => {
-  const [imageList, setImageList] = useState([]);
-  const [userName, setuserName] = useState('');
   const [visible, setVisible] = useState(false);
   const [isCertificateImage, setIsCertificateImage] = useState(false);
-  const [certificateImage, setCertificateImage] = useState('');
+  const [farmName, setFarmName] = useState('');
+  const [farmArea, setFarmArea] = useState('');
+  const [farmAddr1, setFarmAddr1] = useState('');
+  const [farmAddr2, setFarmAddr2] = useState('');
+  const [addrState, setAddrState] = useState('');
+  const [district, setDistrict] = useState('');
+  const [townVill, setTownVill] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [farmDesc, setFarmDesc] = useState('');
+  const [certificateImage, setCertificateImage] = useState<imageFrame | null>(null);
+  const [certificateName, setCertificateName] = useState('');
+  const [certificateNumber, setCertificateNumber] = useState(0);
+  const [certificateDetail, setCertificateDetail] = useState('');
+  const [certificateList, setCertificateList] = useState<certificateFrame[]>([]);
+  const [imageList, setImageList] = useState<imageFrame[]>([]);
 
   const addImage = () => {
     setVisible(true);
   };
 
+  const initialState = () => {
+    setFarmName('');
+    setFarmArea('');
+    setFarmAddr1('');
+    setFarmAddr2('');
+    setAddrState('');
+    setDistrict('');
+    setTownVill('');
+    setPincode('');
+    setFarmDesc('');
+    setCertificateImage(null);
+    setCertificateName('');
+    setCertificateNumber(0);
+    setCertificateDetail('');
+    setCertificateList([]);
+    setImageList([]);
+  };
+
+  const certificateInitialState = () => {
+    console.log('CERTIFCATE LIST', certificateList);
+    setCertificateImage(null);
+    setCertificateName('');
+    setCertificateNumber(0);
+    setCertificateDetail('');
+  };
+
   const addCertificateImage = () => {
     setIsCertificateImage(true);
     setVisible(true);
+  };
+
+  const addCertificate = () => {
+    const certificate = {
+      certificate_name: certificateName,
+      certificate_number: certificateNumber,
+      add_information: certificateDetail,
+      image: certificateImage,
+    };
+    setCertificateList([...certificateList, certificate]);
+    certificateInitialState();
+  };
+  const deleteCertificate = (id: number) => {
+    const newCertificateList = certificateList.filter((item) => item.certificate_number !== id);
+    setCertificateList(newCertificateList);
+  };
+  const removeimage = (name: string) => {
+    const newImageList = imageList.filter((item) => item.name !== name);
+    setImageList(newImageList);
+  };
+  const onSave = () => {
+    const formData = new FormData();
+
+    formData.append('farm_name', farmName);
+    formData.append('farm_area', parseInt(farmArea, 10));
+    formData.append('address_line_one', farmAddr1);
+    formData.append('address_line_two', farmAddr2);
+    formData.append('state', addrState);
+    formData.append('pincode', pincode);
+    formData.append('district', district);
+    formData.append('town_village', townVill);
+    formData.append('description', farmDesc);
+    formData.append('certificate', null);
+    formData.append('farm_images', null);
+    console.log('FormData', formData);
+    const payload = {
+      farm_name: farmName,
+      farm_area: parseInt(farmArea, 10),
+      address_line_one: farmAddr1,
+      address_line_two: farmAddr2,
+      state: addrState,
+      pincode: pincode,
+      district: district,
+      town_village: townVill,
+      description: farmDesc,
+      certificate: [
+        {
+          add_information: 'Drawer ',
+          certificate_name: 'Drawer ',
+          certificate_number: 1,
+          image: null,
+        },
+      ],
+      farm_images: [
+        {
+          name: 'rn_image_picker_lib_temp_87050418-6dc7-47c3-b82f-2befde1e3e68.jpg',
+          type: 'image/jpg',
+          uri: 'file:///data/user/0/com.aqua/cache/rn_image_picker_lib_temp_87050418-6dc7-47c3-b82f-2befde1e3e68.jpg',
+        },
+        {
+          name: 'rn_image_picker_lib_temp_f88856f0-3f2d-470a-84d9-a509a5186b86.jpg',
+          type: 'image/jpg',
+          uri: 'file:///data/user/0/com.aqua/cache/rn_image_picker_lib_temp_f88856f0-3f2d-470a-84d9-a509a5186b86.jpg',
+        },
+      ],
+    };
+    CallPostApi(url, payload, token).then((response) => {
+      console.log('RESPONSE', response);
+    });
   };
 
   const alert = (text: string) => {
@@ -95,14 +221,18 @@ const AddFarm: FC = () => {
           return;
         }
         const assetsOfImage = response.assets[0];
-        const imageURI = assetsOfImage.uri;
+        const imageURI = {
+          uri: assetsOfImage.uri,
+          type: assetsOfImage.type,
+          name: assetsOfImage.fileName,
+        };
 
         console.log('86', response);
         if (!isCertificateImage) {
-          setImageList([...imageList, imageURI]);
+          setImageList([...imageList, imageURI!]);
           console.log(imageList);
         } else {
-          setCertificateImage(imageURI);
+          setCertificateImage(imageURI!);
           setIsCertificateImage(false);
         }
         setVisible(false);
@@ -135,15 +265,20 @@ const AddFarm: FC = () => {
         alert(response.errorMessage ? response.errorMessage : '');
         return;
       }
+      console.log('RESPONSE', response);
       const assetsOfImage = response.assets[0];
-      const imageURI = assetsOfImage.uri;
+      const imageURI = {
+        uri: assetsOfImage.uri,
+        type: assetsOfImage.type,
+        name: assetsOfImage.fileName,
+      };
 
       console.log('86', response);
       if (!isCertificateImage) {
-        setImageList([...imageList, imageURI]);
+        setImageList([...imageList, imageURI!]);
         console.log(imageList);
       } else {
-        setCertificateImage(imageURI);
+        setCertificateImage(imageURI!);
         setIsCertificateImage(false);
       }
       setVisible(false);
@@ -277,53 +412,53 @@ const AddFarm: FC = () => {
           <LabelTextInput
             nameOfField="Farm Name*:"
             onChange={(text) => {
-              console.log(text);
+              setFarmName(text);
             }}
             width={windowWidth * 0.9}
-            value=""
+            value={farmName}
           />
           <LabelTextInput
             nameOfField="Farm area*(acres):"
             onChange={(text) => {
-              console.log(text);
+              setFarmArea(text);
             }}
             width={windowWidth * 0.9}
-            value=""
+            value={farmArea}
           />
           <LabelTextInput
             nameOfField="Address Line 1*:"
             onChange={(text) => {
-              console.log(text);
+              setFarmAddr1(text);
             }}
             width={windowWidth * 0.9}
-            value=""
+            value={farmAddr1}
           />
           <LabelTextInput
             nameOfField="Address Line 2*:"
             onChange={(text) => {
-              console.log(text);
+              setFarmAddr2(text);
             }}
             width={windowWidth * 0.9}
-            value=""
+            value={farmAddr2}
           />
           <View style={{ flexDirection: 'row' }}>
             <View style={{ marginRight: windowWidth * 0.05 }}>
               <LabelTextInput
                 nameOfField="State*:"
                 onChange={(text) => {
-                  console.log(text);
+                  setAddrState(text);
                 }}
                 width={windowWidth * 0.425}
-                value=""
+                value={addrState}
               />
             </View>
             <LabelTextInput
               nameOfField="District*:"
               onChange={(text) => {
-                console.log(text);
+                setDistrict(text);
               }}
               width={windowWidth * 0.425}
-              value=""
+              value={district}
             />
           </View>
           <View style={{ flexDirection: 'row' }}>
@@ -331,19 +466,19 @@ const AddFarm: FC = () => {
               <LabelTextInput
                 nameOfField="Town/Village*:"
                 onChange={(text) => {
-                  console.log(text);
+                  setTownVill(text);
                 }}
                 width={windowWidth * 0.425}
-                value=""
+                value={townVill}
               />
             </View>
             <LabelTextInput
               nameOfField="Pincode*:"
               onChange={(text) => {
-                console.log(text);
+                setPincode(text);
               }}
               width={windowWidth * 0.425}
-              value=""
+              value={pincode}
             />
           </View>
           <LabelTextInput
@@ -358,10 +493,10 @@ const AddFarm: FC = () => {
           <LabelTextInput
             nameOfField="farm Description:"
             onChange={(text) => {
-              console.log(text);
+              setFarmDesc(text);
             }}
             width={windowWidth * 0.9}
-            value=""
+            value={farmDesc}
           />
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
             <Text>Farm images*</Text>
@@ -375,16 +510,16 @@ const AddFarm: FC = () => {
               }}
             >
               {imageList &&
-                imageList.map((imageUri, id) => {
+                imageList.map((image, id) => {
                   return (
-                    <View style={PageStyles.imageContainer}>
+                    <View style={PageStyles.imageContainer} key={id}>
                       <View style={PageStyles.image}>
-                        <Image source={{ uri: imageUri }} style={{ flex: 1 }} />
+                        <Image source={{ uri: image.uri }} style={{ flex: 1 }} />
                       </View>
                       <TouchableOpacity
                         style={PageStyles.imageButton}
                         onPress={() => {
-                          console.log('change');
+                          removeimage(image.name!);
                         }}
                       >
                         <Text style={PageStyles.buttonText}>remove image</Text>
@@ -401,11 +536,19 @@ const AddFarm: FC = () => {
           </View>
           <View>
             <Text>Farm Certifications*</Text>
-            <TouchableOpacity onPress={addCertificateImage}>
-              <View style={[PageStyles.addImage, { marginLeft: windowWidth * 0.25 }]}>
-                <AIcon name="plus" size={30} color={asphaltGreyColour} />
+            {certificateImage === null ? (
+              <TouchableOpacity onPress={addCertificateImage}>
+                <View style={[PageStyles.addImage, { marginLeft: windowWidth * 0.25 }]}>
+                  <AIcon name="plus" size={30} color={asphaltGreyColour} />
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <View style={PageStyles.imageContainer}>
+                <View style={PageStyles.image}>
+                  <Image source={{ uri: certificateImage.uri }} style={{ flex: 1 }} />
+                </View>
               </View>
-            </TouchableOpacity>
+            )}
             <TouchableOpacity
               style={PageStyles.certificateButton}
               onPress={() => {
@@ -419,11 +562,10 @@ const AddFarm: FC = () => {
               <View style={[PageStyles.certificateInput, shadow]}>
                 <TextInput
                   onChangeText={(text) => {
-                    console.log(text);
-                    setuserName(text);
+                    setCertificateName(text);
                   }}
-                  value={userName}
-                  placeholder=""
+                  value={certificateName}
+                  placeholder="Certificate"
                 />
               </View>
             </View>
@@ -432,65 +574,80 @@ const AddFarm: FC = () => {
               <View style={[PageStyles.certificateInput, shadow]}>
                 <TextInput
                   onChangeText={(text) => {
-                    console.log(text);
-                    setuserName(text);
+                    setCertificateNumber(parseInt(text, 10));
                   }}
-                  value={userName}
-                  placeholder=""
+                  value={certificateNumber > 0 ? certificateNumber.toString() : ''}
+                  placeholder="No"
                 />
               </View>
             </View>
             <View style={{ marginVertical: windowHeight * 0.01 }}>
-              <Text>Another Identifier:</Text>
+              <Text>Additional Details:</Text>
               <View style={[PageStyles.certificateInput, shadow]}>
                 <TextInput
                   onChangeText={(text) => {
-                    console.log(text);
-                    setuserName(text);
+                    setCertificateDetail(text);
                   }}
-                  value={userName}
-                  placeholder=""
+                  value={certificateDetail}
+                  placeholder="Detail"
                 />
               </View>
             </View>
             <TouchableOpacity
               style={[PageStyles.certificateButton, { backgroundColor: greenColour }]}
-              onPress={() => {
-                console.log('change');
-              }}
+              onPress={addCertificate}
             >
               <Text style={PageStyles.buttonText}>Add New Certificate</Text>
             </TouchableOpacity>
-            <View
-              style={[
-                shadow,
-                {
-                  backgroundColor: whiteColor,
-                  borderRadius: 30,
-                  width: windowWidth * 0.9,
-                  paddingVertical: 20,
-                  paddingHorizontal: 10,
-                },
-              ]}
+            {certificateList &&
+              certificateList.map((certificate, index) => {
+                return (
+                  <View style={[shadow, PageStyles.certificateCard]} key={index}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <View style={[PageStyles.certificateImage]}>
+                        <Image source={{ uri: certificate.image.uri! }} style={{ flex: 1 }} />
+                      </View>
+                      <TouchableOpacity
+                        style={[PageStyles.certificateDeleteButton]}
+                        onPress={() => {
+                          deleteCertificate(certificate.certificate_number!);
+                        }}
+                      >
+                        <Text style={PageStyles.buttonText}>Delete Certificate</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View>
+                      <Text>Certificate Name: {certificate.certificate_name}</Text>
+                      <Text>Certificate No: #{certificate.certificate_number}</Text>
+                      <Text>Additional Detais: {certificate.add_information}</Text>
+                    </View>
+                  </View>
+                );
+              })}
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: windowWidth * 0.6,
+              justifyContent: 'space-around',
+            }}
+          >
+            <TouchableOpacity
+              style={[PageStyles.endButton, { backgroundColor: discardColour }]}
+              onPress={() => {
+                initialState();
+              }}
             >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={[PageStyles.certificateImage]}>
-                  <Image source={{ uri: certificateImage }} style={{ flex: 1 }} />
-                </View>
-                <TouchableOpacity
-                  style={[PageStyles.certificateDeleteButton]}
-                  onPress={() => {
-                    console.log('change');
-                  }}
-                >
-                  <Text style={PageStyles.buttonText}>Delete Certificate</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <Text>DETAILS 1</Text>
-                <Text>DETAILS 2</Text>
-              </View>
-            </View>
+              <Text style={PageStyles.buttonText}>Discard</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[PageStyles.endButton, { backgroundColor: saveColour }]}
+              onPress={() => {
+                onSave();
+              }}
+            >
+              <Text style={PageStyles.buttonText}>Save</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -578,6 +735,23 @@ const PageStyles = StyleSheet.create({
     borderStyle: 'dashed',
     borderWidth: 2,
     borderColor: '#C5C7D0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  certificateCard: {
+    backgroundColor: whiteColor,
+    marginVertical: windowHeight * 0.005,
+    borderRadius: 30,
+    width: windowWidth * 0.9,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  endButton: {
+    height: windowHeight * 0.05,
+    width: windowWidth * 0.2,
+    marginVertical: windowHeight * 0.02,
+    borderRadius: 10,
+    backgroundColor: '#0059AB',
     alignItems: 'center',
     justifyContent: 'center',
   },

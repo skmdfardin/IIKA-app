@@ -35,6 +35,8 @@ export const buttonPressedGreyColor = '#e3e3e3';
 export const greenColour = '#037F4C';
 export const pearlGreyColour = '#F5F6F8';
 export const asphaltGreyColour = '#676879';
+export const discardColour = '#E44258';
+export const saveColour = '#2797FF';
 
 export const styles = StyleSheet.create({
   robotoLight13: {

@@ -13,7 +13,7 @@ const UserBasicInfoCard: FC = () => {
   const store = useSelector((state: any) => state.userStore);
   const navigation = useNavigation();
 
-  const name = store.firstName + ' ' + store.lastName;
+  const name = store.firstName;
 
   const onSubmit = () => {
     console.log('STORE:', store);

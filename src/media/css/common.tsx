@@ -37,6 +37,7 @@ export const pearlGreyColour = '#F5F6F8';
 export const asphaltGreyColour = '#676879';
 export const discardColour = '#E44258';
 export const saveColour = '#2797FF';
+export const orangeColor2 = '#ff9b12'
 
 export const styles = StyleSheet.create({
   robotoLight13: {

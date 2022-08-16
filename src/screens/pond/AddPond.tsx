@@ -109,7 +109,7 @@ const AddPond: FC = () => {
       pond_length: parseInt(pondLength, 10),
       pond_breadth: parseInt(pondBreadth, 10),
       pond_depth: parseInt(pondDepth, 10),
-      pond_surface_area: parseInt(pondSurfaceArea),
+      pond_surface_area: parseInt(pondSurfaceArea,10),
       // pincode: pincode,
       // district: district,
       // town_village: townVill,

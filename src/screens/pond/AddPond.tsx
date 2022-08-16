@@ -49,7 +49,7 @@ type imageFrame = {
 
 const AddPond: FC = () => {
   const [visible, setVisible] = useState(false);
-  // const [isCertificateImage, setIsCertificateImage] = useState(false);
+  const [isCertificateImage, setIsCertificateImage] = useState(false);
   const [pondName, setPondName] = useState('');
   const [pondLength, setPondLength] = useState('');
   const [pondBreadth, setPondBreadth] = useState('');
@@ -96,8 +96,8 @@ const AddPond: FC = () => {
     formData.append('pond_length', parseInt(pondLength, 10));
     formData.append('pond_breadth', parseInt(pondBreadth, 10));
     formData.append('pond_depth', parseInt(pondDepth, 10));
-    formData.append('pond_surface_area', parseInt(pondSurfaceArea));
-    formData.append('pond_capacity', parseInt(pondCapacity));
+    formData.append('pond_surface_area', parseInt(pondSurfaceArea,10));
+    formData.append('pond_capacity', parseInt(pondCapacity,10));
     // formData.append('location', location);
     // formData.append('district', district);
     // formData.append('town_village', townVill);
@@ -399,8 +399,8 @@ const AddPond: FC = () => {
             bottomOffset={100}
 
           />
-        </View>
-        <View>
+        {/* </View> */}
+          {/* <View> */}
           {/* <label>Choose Pond Type</label> */}
           <DropDownPicker
             open={pondTypeOpen}
@@ -411,7 +411,7 @@ const AddPond: FC = () => {
             setItems={setPondTypeItems}
             placeholder={"Choose Pond Type"}
           />
-        </View>
+          {/* </View> */}
         {/* <LabelTextInput
             nameOfField="Choose Pond Type*:"
             onChange={(text) => {
@@ -453,7 +453,7 @@ const AddPond: FC = () => {
           width={windowWidth * 0.9}
           value={pondDepth}
         />
-        <View style={{ flexDirection: 'row' }}>
+        {/* <View style={{ flexDirection: 'row' }}> */}
           <View style={{ marginRight: windowWidth * 0.05 }}>
             <LabelTextInput
               nameOfField="Pond Surface Area*:"
@@ -473,7 +473,7 @@ const AddPond: FC = () => {
             value=""
           />
           <Map />
-          <View>
+          {/* <View style={PageStyles.scroll}> */}
 
           <LabelTextInput
             nameOfField="Pond Description:"
@@ -483,7 +483,7 @@ const AddPond: FC = () => {
             width={windowWidth * 0.9}
             value={pondDesc}
             />
-            </View>
+            {/* </View> */}
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
             <Text>Farm images*</Text>
             <View
@@ -543,8 +543,10 @@ const AddPond: FC = () => {
             >
               <Text style={PageStyles.buttonText}>Save</Text>
             </TouchableOpacity>
-          </View>
+          {/* </View> */}
         </View>
+        </View>
+        {/* </View> */}
       </ScrollView>
     </View>
   );

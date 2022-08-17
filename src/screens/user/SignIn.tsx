@@ -43,7 +43,6 @@ const SignIn: FC = () => {
   };
 
   const resetState = () => {
-    console.log('TESTT');
     setEmailId('');
     setPassword('');
     setSignInError('');
@@ -80,10 +79,10 @@ const SignIn: FC = () => {
         }
         if (data.farm_id !== null) {
           const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
-          console.log('FARM URL:', farmURL);
           dispatch(storeFarmID({ farmID: data.farm_id }));
           const farmApicall = await CallGetApi(farmURL, data.email);
           const farmData = farmApicall.data.result;
+          console.log('FARM DATA!', farmData);
           dispatch(storeFarmName({ farmName: farmData.farm_name }));
         }
         dispatch(storeEmailId({ email: data.email }));
@@ -91,7 +90,7 @@ const SignIn: FC = () => {
         dispatch(storeLastName({ lastName: data.last_name }));
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
-        dispatch(storeIsVerified({ isVerified: true }));
+        dispatch(storeIsVerified({ isVerified: data.is_verified }));
         resetState();
         navigation.navigate(NEW_USER_LANDING.toString());
       }

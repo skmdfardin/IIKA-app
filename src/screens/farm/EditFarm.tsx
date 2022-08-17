@@ -72,7 +72,9 @@ const EditFarm: FC = () => {
   const [certificateImageList, setCertificateImageList] = useState<imageFrame[]>([]);
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
+  const farmStore = useSelector((state: any) => state.farmStore);
   const token = store.email;
+  let image_num = 0;
 
   const addImage = () => {
     setVisible(true);
@@ -218,7 +220,7 @@ const EditFarm: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: assetsOfImage.fileName,
+          name: 'farm' + image_num,
         };
 
         console.log('86', response);
@@ -405,8 +407,9 @@ const EditFarm: FC = () => {
         </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
-      <View style={{ backgroundColor: greenColour, height: windowHeight * 0.04 }}>
+      <View style={{ backgroundColor: greenColour, height: windowHeight * 0.04, flexDirection: 'row', justifyContent: 'space-between', }}>
         <Text style={{ color: whiteColor }}> + Add New Farm</Text>
+        <Text style={{ color: whiteColor }}>#{farmStore.farmID}</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>

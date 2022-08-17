@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import HorizontalBigCardFarmInfo from '../../components/farmComponenets/HorizontalBigCardFarmInfo';
-import { EDIT_PROFILE_SCREEN, ADD_FARM, ADD_POND } from '../../navigation/StackNavigation';
+import PondCardArray from '../../components/pondComponenets/PondCardArray';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
+import { EDIT_PROFILE_SCREEN, ADD_FARM, ADD_POND } from '../../navigation/StackNavigation';
 
 const { robotoRegular16, robotoBold20 } = styles;
 
@@ -103,6 +104,7 @@ const NewUserLanding: FC = () => {
             </View>
           </View>
           <HorizontalBigCardFarmInfo />
+          <PondCardArray />
           <ActivityCard
             titleText="Your Farm has been successfully created"
             messageText="Let's start by adding ponds to your farm"

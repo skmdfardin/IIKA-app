@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 export const CallPostApi = async (urlString: string, formData: any, token: string) => {
+  console.log('URL Api', urlString);
+  console.log('token Api', token);
+  console.log('Formdata Api', formData);
   console.log('API CALLED');
   let returnResponse;
   try {
@@ -10,11 +13,15 @@ export const CallPostApi = async (urlString: string, formData: any, token: strin
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
-        'AQUA-AUTH-TOKEN': `${token}`,
+        'Aqua-Auth-Token': token,
       },
     });
   } catch (error) {
     console.log('API CALL ERROR:', error);
+    console.log('error data', error.response.data);
+    console.log('error status', error.response.status);
+    console.log('error header', error.response.headers);
+    console.log('error message', error.message);
   }
   return returnResponse;
 };

@@ -16,7 +16,7 @@ import {
 } from '../../reduxstore/userSlice';
 import { storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
-import { CallGetApi, CallGetApiNoHeader } from '../../utilites/Util';
+import { CallGetApi } from '../../utilites/Util';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
@@ -79,18 +79,18 @@ const SignIn: FC = () => {
         }
         if (data.farm_id !== null) {
           const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
-          dispatch(storeFarmID({ farmID: data.farm_id }));
           const farmApicall = await CallGetApi(farmURL, data.email);
           const farmData = farmApicall.data.result;
-          console.log('FARM DATA!', farmData);
           dispatch(storeFarmName({ farmName: farmData.farm_name }));
+          dispatch(storeFarmImages({ farmImages: farmData.farm_images }));
+          dispatch(storeFarmID({ farmID: data.farm_id }));
         }
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));
         dispatch(storeLastName({ lastName: data.last_name }));
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
-        dispatch(storeIsVerified({ isVerified: true }));
+        dispatch(storeIsVerified({ isVerified: data.is_verified }));
         resetState();
         navigation.navigate(NEW_USER_LANDING.toString());
       }

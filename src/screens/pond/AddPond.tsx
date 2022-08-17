@@ -27,14 +27,14 @@ import {
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
-import { CallPostApiJson } from '../../utilites/Util';
+import { CallPostApi, CallPostApiJson } from '../../utilites/Util';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 // const pondConstructTypesOptions = ["Soil", "Tarpaulin"]
 
 const logo = '../../media/AquaLogo.gif';
 
-const url = 'http://103.127.146.20:4000/api/v1/farms/farmregist/';
+const url = ' http://103.127.146.20:4000/api/v1/ponds/pondregist/';
 
 type imageFrame = {
   uri: string | undefined;
@@ -44,16 +44,12 @@ type imageFrame = {
 
 const AddPond: FC = () => {
   const [visible, setVisible] = useState(false);
-  const [isCertificateImage, setIsCertificateImage] = useState(false);
   const [pondName, setPondName] = useState('');
   const [pondLength, setPondLength] = useState('');
   const [pondBreadth, setPondBreadth] = useState('');
   const [pondDepth, setPondDepth] = useState('');
   const [pondSurfaceArea, setPondSurfaceArea] = useState('');
   const [pondCapacity, setPondCapacity] = useState('');
-  // const [district, setDistrict] = useState('');
-  // const [townVill, setTownVill] = useState('');
-  // const [pincode, setPincode] = useState('');
   const [pondLocation, setPondLocation] = useState('');
   const [pondDesc, setPondDesc] = useState('');
   const [imageList, setImageList] = useState<imageFrame[]>([]);
@@ -62,19 +58,20 @@ const AddPond: FC = () => {
   const farmStore = useSelector((state: any) => state.farmStore);
   const token = store.email;
   const farmID = farmStore.farmID;
-  const [pondOpen, setPondConstructOpen] = useState(false);
-  const [pondConstructValue, setPondConstructValue] = useState(null);
+  const [pondConstructOpen, setPondConstructOpen] = useState(false);
+  const [pondConstructValue, setPondConstructValue] = useState(0);
   const [pondConstructItems, setPondConstructTypeItems] = useState([
-    { label: 'Soil', value: 'Soil' },
-    { label: 'Tarpaulin', value: 'Tarpaulin' },
+    { label: 'Soil', value: 1 },
+    { label: 'Tarpaulin', value: 2 },
   ]);
   const [pondTypeOpen, setPondTypeOpen] = useState(false);
-  const [pondTypeValue, setPondTypeValue] = useState(null);
+  const [pondTypeValue, setPondTypeValue] = useState(0);
   const [pondTypeItems, setPondTypeItems] = useState([
-    { label: 'Nursery', value: 'Nursery' },
-    { label: 'Effluent Treatment Pond (ETS)', value: 'Effluent Treatment Pond (ETS)' },
-    { label: 'Reservoir Pond', value: 'Reservoir Pond' },
+    { label: 'Nursery', value: 1 },
+    { label: 'Effluent Treatment Pond (ETS)', value: 2 },
+    { label: 'Reservoir Pond', value: 3 },
   ]);
+  let image_num = 0;
 
   const addImage = () => {
     setVisible(true);
@@ -88,7 +85,6 @@ const AddPond: FC = () => {
     setPondSurfaceArea('');
     setPondCapacity('');
     setPondLocation('');
-    // setPincode('');
     setPondDesc('');
     setImageList([]);
   };
@@ -100,33 +96,30 @@ const AddPond: FC = () => {
   const onSave = () => {
     const formData = new FormData();
 
+    formData.append('farm', farmID);
     formData.append('pond_name', pondName);
+    formData.append('pond_type', pondTypeValue);
+    formData.append('pond_construct_type', pondConstructValue);
     formData.append('pond_length', parseInt(pondLength, 10));
     formData.append('pond_breadth', parseInt(pondBreadth, 10));
     formData.append('pond_depth', parseInt(pondDepth, 10));
-    formData.append('pond_surface_area', parseInt(pondSurfaceArea, 10));
+    formData.append('pond_area', parseInt(pondSurfaceArea, 10));
     formData.append('pond_capacity', parseInt(pondCapacity, 10));
-    // formData.append('location', location);
-    // formData.append('district', district);
-    // formData.append('town_village', townVill);
     formData.append('description', pondDesc);
-    formData.append('pond_images', null);
+    if (imageList.length > 0) {
+      for (let i = 0; i < imageList.length; i++) {
+        const photo = imageList[i];
+        formData.append('pond_images', {
+          name: photo.name,
+          type: photo.type,
+          uri: photo.uri,
+        });
+      }
+    }
     console.log('FormData', formData);
-    const payload = {
-      pond_name: pondName,
-      pond_length: parseInt(pondLength, 10),
-      pond_breadth: parseInt(pondBreadth, 10),
-      pond_depth: parseInt(pondDepth, 10),
-      pond_surface_area: parseInt(pondSurfaceArea, 10),
-      // pincode: pincode,
-      // district: district,
-      // town_village: townVill,
-      description: pondDesc,
-      farm_images: imageList,
-    };
-    CallPostApiJson(url, payload, token).then((response) => {
-      console.log('RESPONSE', response?.data?.stringify);
-      //  navigation.goBack();
+    CallPostApi(url, formData, token).then((response) => {
+      console.log('RESPONSE', response?.data);
+      navigation.goBack();
     });
   };
 
@@ -181,9 +174,9 @@ const AddPond: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: assetsOfImage.fileName,
+          name: 'PondImage' + image_num + 'jpg',
         };
-
+        image_num++;
         console.log('86', response);
 
         setImageList([...imageList, imageURI!]);
@@ -224,8 +217,9 @@ const AddPond: FC = () => {
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: assetsOfImage.fileName,
+        name: 'PondImage' + image_num + 'jpg',
       };
+      image_num++;
 
       console.log('86', response);
 
@@ -373,28 +367,40 @@ const AddPond: FC = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={PageStyles.scroll}>
-          <DropDownPicker
-            open={pondOpen}
-            value={pondConstructValue}
-            items={pondConstructItems}
-            setOpen={setPondConstructOpen}
-            setValue={setPondConstructValue}
-            setItems={setPondConstructTypeItems}
-            stickyHeader={true}
-            placeholder={'Choose Pond Construct Type'}
-            dropDownDirection="AUTO"
-            bottomOffset={100}
-          />
-
-          <DropDownPicker
-            open={pondTypeOpen}
-            value={pondTypeValue}
-            items={pondTypeItems}
-            setOpen={setPondTypeOpen}
-            setValue={setPondTypeValue}
-            setItems={setPondTypeItems}
-            placeholder={'Choose Pond Type'}
-          />
+          <View
+            style={{
+              width: windowWidth * 0.9,
+              marginBottom: pondConstructOpen ? windowHeight * 0.15 : windowHeight * 0.02,
+            }}
+          >
+            <Text> Choose pond construct type:</Text>
+            <DropDownPicker
+              open={pondConstructOpen}
+              value={pondConstructValue}
+              items={pondConstructItems}
+              setOpen={setPondConstructOpen}
+              setValue={setPondConstructValue}
+              setItems={setPondConstructTypeItems}
+              stickyHeader={true}
+              placeholder={''}
+              listMode="SCROLLVIEW"
+            />
+          </View>
+          <View
+            style={{ width: windowWidth * 0.9, marginBottom: pondTypeOpen ? windowHeight * 0.15 : windowHeight * 0.02 }}
+          >
+            <Text> Choose pond type:</Text>
+            <DropDownPicker
+              open={pondTypeOpen}
+              value={pondTypeValue}
+              items={pondTypeItems}
+              setOpen={setPondTypeOpen}
+              setValue={setPondTypeValue}
+              setItems={setPondTypeItems}
+              placeholder={''}
+              listMode="SCROLLVIEW"
+            />
+          </View>
 
           <LabelTextInput
             nameOfField="Pond Name*:"
@@ -444,7 +450,7 @@ const AddPond: FC = () => {
               setPondCapacity(text);
             }}
             width={windowWidth * 0.9}
-            value=""
+            value={pondCapacity}
           />
           <Map />
 

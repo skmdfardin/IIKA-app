@@ -73,6 +73,7 @@ const AddFarm: FC = () => {
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
   const token = store.email;
+  let image_num = 0;
 
   const addImage = () => {
     setVisible(true);
@@ -160,9 +161,12 @@ const AddFarm: FC = () => {
       }
     }
     console.log('called');
+    console.log('URL', url);
+    console.log('token', token);
+    console.log('Formdata', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
-      //  navigation.goBack();
+      navigation.goBack();
     });
   };
 
@@ -214,12 +218,13 @@ const AddFarm: FC = () => {
           return;
         }
         const assetsOfImage = response.assets[0];
+        console.log('IMAGE NAME:', assetsOfImage.fileName);
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: assetsOfImage.fileName,
+          name: 'farm' + image_num + 'jpg',
         };
-
+        image_num++;
         console.log('86', response);
         if (!isCertificateImage) {
           setImageList([...imageList, imageURI!]);
@@ -261,12 +266,13 @@ const AddFarm: FC = () => {
       }
       console.log('RESPONSE', response);
       const assetsOfImage = response.assets[0];
+      console.log('IMAGE NAME GALLARY', assetsOfImage.fileName);
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: assetsOfImage.fileName,
+        name: 'farm' + image_num + 'jpg',
       };
-
+      image_num++;
       console.log('86', response);
       if (!isCertificateImage) {
         setImageList([...imageList, imageURI!]);

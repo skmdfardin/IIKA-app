@@ -145,7 +145,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     formData.append('image', {
       uri: fileResponse.assets[0].uri,
       type: fileResponse.assets[0].type,
-      name: fileResponse.assets[0].fileName,
+      name: 'profile.jpg',
     });
     formData.append('company_name', values.companyName);
     formData.append('sic_gst_code', values.gstCode);

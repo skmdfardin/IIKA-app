@@ -90,7 +90,7 @@ const SignIn: FC = () => {
         dispatch(storeLastName({ lastName: data.last_name }));
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
-        dispatch(storeIsVerified({ isVerified: data.is_verified }));
+        dispatch(storeIsVerified({ isVerified: true }));
         resetState();
         navigation.navigate(NEW_USER_LANDING.toString());
       }

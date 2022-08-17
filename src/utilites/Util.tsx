@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const CallPostApi = async (urlString: string, formData: any, token: string) => {
+  console.log('API CALLED');
   let returnResponse;
   try {
     returnResponse = await axios({

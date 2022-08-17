@@ -1,10 +1,30 @@
 import axios from 'axios';
 
 export const CallPostApi = async (urlString: string, formData: any, token: string) => {
+  console.log('API CALLED');
   let returnResponse;
   try {
     returnResponse = await axios({
       method: 'post',
+      url: urlString,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'AQUA-AUTH-TOKEN': `${token}`,
+      },
+    });
+  } catch (error) {
+    console.log('API CALL ERROR:', error);
+  }
+  return returnResponse;
+};
+
+export const CallPatchApi = async (urlString: string, formData: any, token: string) => {
+  console.log('API CALLED');
+  let returnResponse;
+  try {
+    returnResponse = await axios({
+      method: 'patch',
       url: urlString,
       data: formData,
       headers: {

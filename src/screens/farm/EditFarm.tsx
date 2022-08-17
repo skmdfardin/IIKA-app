@@ -51,7 +51,7 @@ type certificateFrame = {
   image: imageFrame;
 };
 
-const AddFarm: FC = () => {
+const EditFarm: FC = () => {
   const [visible, setVisible] = useState(false);
   const [isCertificateImage, setIsCertificateImage] = useState(false);
   const [farmName, setFarmName] = useState('');
@@ -131,7 +131,7 @@ const AddFarm: FC = () => {
     const formData = new FormData();
 
     formData.append('farm_name', farmName);
-    formData.append('farm_area', farmArea);
+    formData.append('farm_area', farmArea, 10));
     formData.append('address_line_one', farmAddr1);
     formData.append('address_line_two', farmAddr2);
     formData.append('state', addrState);
@@ -139,6 +139,7 @@ const AddFarm: FC = () => {
     formData.append('district', district);
     formData.append('town_village', townVill);
     formData.append('description', farmDesc);
+    formData.append('certificate', null);
     if (imageList.length > 0) {
       for (let i = 0; i < imageList.length; i++) {
         const photo = imageList[i];
@@ -656,7 +657,7 @@ const AddFarm: FC = () => {
   );
 };
 
-export default AddFarm;
+export default EditFarm;
 
 const PageStyles = StyleSheet.create({
   container: {

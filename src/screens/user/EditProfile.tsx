@@ -154,9 +154,11 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     formData.append('address_two', values.addressTwo);
     formData.append('pincode', values.pincode);
     formData.append('website', values.website);
+    console.log('FORM DATA:', formData);
+    console.log('Token', token);
     CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
       console.log('RESPONSE', response);
-      navigation.navigate(NEW_USER_LANDING.toString());
+      //navigation.goBack();
     });
   };
 

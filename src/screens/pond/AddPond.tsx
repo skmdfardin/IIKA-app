@@ -22,7 +22,6 @@ import {
   asphaltGreyColour,
   blackColor,
   commonBlueColor,
-  styles,
   discardColour,
   saveColour,
 } from '../../media/css/common';
@@ -30,14 +29,10 @@ import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
 import { CallPostApiJson } from '../../utilites/Util';
 import DropDownPicker from 'react-native-dropdown-picker';
-import CustomButton from '../../components/CustomButton'
 
 // const pondConstructTypesOptions = ["Soil", "Tarpaulin"]
 
-
 const logo = '../../media/AquaLogo.gif';
-
-const shadow = styles.shadow;
 
 const url = 'http://103.127.146.20:4000/api/v1/farms/farmregist/';
 
@@ -67,6 +62,19 @@ const AddPond: FC = () => {
   const farmStore = useSelector((state: any) => state.farmStore);
   const token = store.email;
   const farmID = farmStore.farmID;
+  const [pondOpen, setPondConstructOpen] = useState(false);
+  const [pondConstructValue, setPondConstructValue] = useState(null);
+  const [pondConstructItems, setPondConstructTypeItems] = useState([
+    { label: 'Soil', value: 'Soil' },
+    { label: 'Tarpaulin', value: 'Tarpaulin' },
+  ]);
+  const [pondTypeOpen, setPondTypeOpen] = useState(false);
+  const [pondTypeValue, setPondTypeValue] = useState(null);
+  const [pondTypeItems, setPondTypeItems] = useState([
+    { label: 'Nursery', value: 'Nursery' },
+    { label: 'Effluent Treatment Pond (ETS)', value: 'Effluent Treatment Pond (ETS)' },
+    { label: 'Reservoir Pond', value: 'Reservoir Pond' },
+  ]);
 
   const addImage = () => {
     setVisible(true);
@@ -96,8 +104,8 @@ const AddPond: FC = () => {
     formData.append('pond_length', parseInt(pondLength, 10));
     formData.append('pond_breadth', parseInt(pondBreadth, 10));
     formData.append('pond_depth', parseInt(pondDepth, 10));
-    formData.append('pond_surface_area', parseInt(pondSurfaceArea,10));
-    formData.append('pond_capacity', parseInt(pondCapacity,10));
+    formData.append('pond_surface_area', parseInt(pondSurfaceArea, 10));
+    formData.append('pond_capacity', parseInt(pondCapacity, 10));
     // formData.append('location', location);
     // formData.append('district', district);
     // formData.append('town_village', townVill);
@@ -109,7 +117,7 @@ const AddPond: FC = () => {
       pond_length: parseInt(pondLength, 10),
       pond_breadth: parseInt(pondBreadth, 10),
       pond_depth: parseInt(pondDepth, 10),
-      pond_surface_area: parseInt(pondSurfaceArea,10),
+      pond_surface_area: parseInt(pondSurfaceArea, 10),
       // pincode: pincode,
       // district: district,
       // town_village: townVill,
@@ -177,13 +185,10 @@ const AddPond: FC = () => {
         };
 
         console.log('86', response);
-        if (!isCertificateImage) {
-          setImageList([...imageList, imageURI!]);
-          console.log(imageList);
-        } else {
-          setCertificateImage(imageURI!);
-          setIsCertificateImage(false);
-        }
+
+        setImageList([...imageList, imageURI!]);
+        console.log(imageList);
+
         setVisible(false);
       });
     }
@@ -223,29 +228,13 @@ const AddPond: FC = () => {
       };
 
       console.log('86', response);
-      if (!isCertificateImage) {
-        setImageList([...imageList, imageURI!]);
-        console.log(imageList);
-      } else {
-        setCertificateImage(imageURI!);
-        setIsCertificateImage(false);
-      }
+
+      setImageList([...imageList, imageURI!]);
+      console.log(imageList);
+
       setVisible(false);
     });
   };
-  const [pondOpen, setPondConstructOpen] = useState(false);
-  const [pondConstructValue, setPondConstructValue] = useState(null);
-  const [pondConstructItems, setPondConstructTypeItems] = useState([
-    { label: 'Soil', value: 'Soil' },
-    { label: 'Tarpaulin', value: 'Tarpaulin' }
-  ]);
-  const [pondTypeOpen, setPondTypeOpen] = useState(false);
-  const [pondTypeValue, setPondTypeValue] = useState(null);
-  const [pondTypeItems, setPondTypeItems] = useState([
-    { label: 'Nursery', value: 'Nursery' },
-    { label: 'Effluent Treatment Pond (ETS)', value: 'Effluent Treatment Pond (ETS)' },
-    { label: 'Reservoir Pond', value: 'Reservoir Pond' }
-  ]);
 
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
@@ -380,12 +369,10 @@ const AddPond: FC = () => {
         }}
       >
         <Text style={{ color: whiteColor }}> + Add New Pond</Text>
-        <Text style={{ color: whiteColor }}>#{farmID}</Text>
       </View>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={PageStyles.scroll}>
-          {/* <label>Choose Pond Construction Type</label> */}
           <DropDownPicker
             open={pondOpen}
             value={pondConstructValue}
@@ -394,14 +381,11 @@ const AddPond: FC = () => {
             setValue={setPondConstructValue}
             setItems={setPondConstructTypeItems}
             stickyHeader={true}
-            placeholder={"Choose Pond Construct Type"}
+            placeholder={'Choose Pond Construct Type'}
             dropDownDirection="AUTO"
             bottomOffset={100}
-
           />
-        {/* </View> */}
-          {/* <View> */}
-          {/* <label>Choose Pond Type</label> */}
+
           <DropDownPicker
             open={pondTypeOpen}
             value={pondTypeValue}
@@ -409,61 +393,51 @@ const AddPond: FC = () => {
             setOpen={setPondTypeOpen}
             setValue={setPondTypeValue}
             setItems={setPondTypeItems}
-            placeholder={"Choose Pond Type"}
+            placeholder={'Choose Pond Type'}
           />
-          {/* </View> */}
-        {/* <LabelTextInput
-            nameOfField="Choose Pond Type*:"
+
+          <LabelTextInput
+            nameOfField="Pond Name*:"
             onChange={(text) => {
-              setPondArea(text);
+              setPondName(text);
             }}
             width={windowWidth * 0.9}
-            value={farmArea}
-          /> */}
+            value={pondName}
+          />
+          <LabelTextInput
+            nameOfField="Pond Length*:"
+            onChange={(text) => {
+              setPondLength(text);
+            }}
+            width={windowWidth * 0.9}
+            value={pondLength}
+          />
+          <LabelTextInput
+            nameOfField="Pond Breadth*:"
+            onChange={(text) => {
+              setPondBreadth(text);
+            }}
+            width={windowWidth * 0.9}
+            value={pondBreadth}
+          />
+          <LabelTextInput
+            nameOfField="Pond Depth*:"
+            onChange={(text) => {
+              setPondDepth(text);
+            }}
+            width={windowWidth * 0.9}
+            value={pondDepth}
+          />
 
-        <LabelTextInput
-          nameOfField="Pond Name*:"
-          onChange={(text) => {
-            setPondName(text);
-          }}
-          width={windowWidth * 0.9}
-          value={pondName}
-        />
-        <LabelTextInput
-          nameOfField="Pond Length*:"
-          onChange={(text) => {
-            setPondLength(text);
-          }}
-          width={windowWidth * 0.9}
-          value={pondLength}
-        />
-        <LabelTextInput
-          nameOfField="Pond Breadth*:"
-          onChange={(text) => {
-            setPondBreadth(text);
-          }}
-          width={windowWidth * 0.9}
-          value={pondBreadth}
-        />
-        <LabelTextInput
-          nameOfField="Pond Depth*:"
-          onChange={(text) => {
-            setPondDepth(text);
-          }}
-          width={windowWidth * 0.9}
-          value={pondDepth}
-        />
-        {/* <View style={{ flexDirection: 'row' }}> */}
-          <View style={{ marginRight: windowWidth * 0.05 }}>
-            <LabelTextInput
-              nameOfField="Pond Surface Area*:"
-              onChange={(text) => {
-                setPondSurfaceArea(text);
-              }}
-              width={windowWidth * 0.425}
-              value={pondSurfaceArea}
-            />
-          </View>
+          <LabelTextInput
+            nameOfField="Pond Surface Area*:"
+            onChange={(text) => {
+              setPondSurfaceArea(text);
+            }}
+            width={windowWidth * 0.9}
+            value={pondSurfaceArea}
+          />
+
           <LabelTextInput
             nameOfField="Pond Capacity*:"
             onChange={(text) => {
@@ -473,7 +447,6 @@ const AddPond: FC = () => {
             value=""
           />
           <Map />
-          {/* <View style={PageStyles.scroll}> */}
 
           <LabelTextInput
             nameOfField="Pond Description:"
@@ -482,10 +455,10 @@ const AddPond: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={pondDesc}
-            />
-            {/* </View> */}
+          />
+
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>Farm images*</Text>
+            <Text>pond images*</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -494,7 +467,7 @@ const AddPond: FC = () => {
                 flexWrap: 'wrap',
                 padding: 10,
               }}
-              >
+            >
               {imageList &&
                 imageList.map((image, id) => {
                   return (
@@ -543,10 +516,8 @@ const AddPond: FC = () => {
             >
               <Text style={PageStyles.buttonText}>Save</Text>
             </TouchableOpacity>
-          {/* </View> */}
+          </View>
         </View>
-        </View>
-        {/* </View> */}
       </ScrollView>
     </View>
   );
@@ -554,7 +525,7 @@ const AddPond: FC = () => {
 
 export default AddPond;
 
-const  PageStyles = StyleSheet.create({
+const PageStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -579,7 +550,7 @@ const  PageStyles = StyleSheet.create({
     alignItems: 'center',
     height: windowHeight * 0.05,
     justifyContent: 'center',
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   buttonText: {
     color: '#ffffff',

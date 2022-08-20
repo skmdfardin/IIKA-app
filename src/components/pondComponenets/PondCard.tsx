@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Card, Title, Paragraph } from 'react-native-paper';
-import { windowHeight, windowWidth } from '../../media/css/common';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { whiteColor, windowHeight, windowWidth, styles } from '../../media/css/common';
+const shadow = styles.shadow;
 
 interface Props {
   onPress: any | undefined;
@@ -12,15 +12,18 @@ interface Props {
 
 const PondCard: FC<Props> = (props) => {
   return (
-    <TouchableOpacity onPress={props.onPress}>
-      <Card style={Styles.container}>
-        <Card.Cover style={Styles.image} source={{ uri: `${props.pondImage}` }} />
-        <Card.Content>
-          <Title style={Styles.title}>{props.pondName}</Title>
-          <Paragraph style={Styles.subtitle}>{props.pondType}</Paragraph>
-        </Card.Content>
-      </Card>
-    </TouchableOpacity>
+    <View style={[Styles.container, shadow]}>
+      <TouchableOpacity onPress={props.onPress}>
+        <Image
+          style={Styles.image}
+          source={{
+            uri: `${props.pondImage}`,
+          }}
+        />
+        <Text style={Styles.title}>{props.pondName}</Text>
+        <Text style={Styles.subtitle}>{props.pondType}</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 export default PondCard;
@@ -28,26 +31,40 @@ export default PondCard;
 const Styles = StyleSheet.create({
   container: {
     alignContent: 'center',
-    alignItems: 'center',
-    flexWrap: 'wrap',
+    alignItems: 'flex-start',
     margin: 5,
     borderRadius: 10,
-    height: windowHeight * 0.16,
-    width: windowWidth * 0.3,
+    height: windowHeight * 0.14,
+    width: windowWidth * 0.29,
+    backgroundColor: whiteColor,
   },
   image: {
-    borderRadius: 10,
-    borderTopEndRadius: 10,
-    borderTopLeftRadius: 10,
-    margin: 5,
-    marginBottom: -5,
-    height: windowHeight * 0.1,
+    borderRadius: 8,
+    margin: 5.5,
+    marginBottom: 1,
+    height: windowHeight * 0.085,
+    width: windowWidth * 0.26,
   },
   title: {
     fontSize: 13,
-    marginBottom: -10,
+    marginBottom: 0,
+    marginLeft: 7,
+    fontWeight: '600',
+    color: '#000000',
   },
   subtitle: {
     fontSize: 11,
+    marginLeft: 7,
+    fontWeight: '500',
+  },
+  shadowProp: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 0.75,
+    shadowRadius: 6.68,
+    elevation: 3,
   },
 });

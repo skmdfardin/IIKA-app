@@ -73,7 +73,7 @@ const AddFarm: FC = () => {
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
   const token = store.email;
-  let image_num = 0;
+  const [imageNum, setImageNum] = useState(0);
 
   const addImage = () => {
     setVisible(true);
@@ -222,9 +222,10 @@ const AddFarm: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: 'farm' + image_num + 'jpg',
+          name: 'farm' + imageNum + '.jpg',
         };
-        image_num++;
+        console.log('IMAGE URI!', imageURI);
+        setImageNum(imageNum + 1);
         console.log('86', response);
         if (!isCertificateImage) {
           setImageList([...imageList, imageURI!]);
@@ -270,9 +271,10 @@ const AddFarm: FC = () => {
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: 'farm' + image_num + 'jpg',
+        name: 'farm' + imageNum + '.jpg',
       };
-      image_num++;
+      console.log('IMAGE URI!', imageURI);
+      setImageNum(imageNum + 1);
       console.log('86', response);
       if (!isCertificateImage) {
         setImageList([...imageList, imageURI!]);

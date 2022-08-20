@@ -158,7 +158,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     console.log('Token', token);
     CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
       console.log('RESPONSE', response);
-      //navigation.goBack();
+      navigation.goBack();
     });
   };
 

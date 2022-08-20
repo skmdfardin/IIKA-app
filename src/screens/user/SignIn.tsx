@@ -81,8 +81,14 @@ const SignIn: FC = () => {
           const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
           const farmApicall = await CallGetApi(farmURL, data.email);
           const farmData = farmApicall.data.result;
+          const temp = farmData.farm_images;
+          const farmImageArray = temp.map((item) => {
+            return item.image.replace('localhost', '103.127.146.20');
+          });
+          console.log('FARM images:', farmImageArray);
+
           dispatch(storeFarmName({ farmName: farmData.farm_name }));
-          dispatch(storeFarmImages({ farmImages: farmData.farm_images }));
+          dispatch(storeFarmImages({ farmImages: farmImageArray }));
           dispatch(storeFarmID({ farmID: data.farm_id }));
         }
         dispatch(storeEmailId({ email: data.email }));

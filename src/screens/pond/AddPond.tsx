@@ -34,7 +34,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 const logo = '../../media/AquaLogo.gif';
 
-const url = ' http://103.127.146.20:4000/api/v1/ponds/pondregist/';
+const url = 'http://103.127.146.20:4000/api/v1/ponds/pondregist/';
 
 type imageFrame = {
   uri: string | undefined;
@@ -71,7 +71,7 @@ const AddPond: FC = () => {
     { label: 'Effluent Treatment Pond (ETS)', value: 2 },
     { label: 'Reservoir Pond', value: 3 },
   ]);
-  let image_num = 0;
+  const [imageNum, setImageNum] = useState(0);
 
   const addImage = () => {
     setVisible(true);
@@ -174,9 +174,10 @@ const AddPond: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: 'PondImage' + image_num + 'jpg',
+          name: 'PondImage' + imageNum + 'jpg',
         };
-        image_num++;
+        setImageNum(imageNum + 1);
+        console.log('IMAGE URL', imageURI);
         console.log('86', response);
 
         setImageList([...imageList, imageURI!]);
@@ -217,9 +218,10 @@ const AddPond: FC = () => {
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: 'PondImage' + image_num + 'jpg',
+        name: 'PondImage' + imageNum + 'jpg',
       };
-      image_num++;
+      setImageNum(imageNum + 1);
+      console.log('IMAGE URL', imageURI);
 
       console.log('86', response);
 

@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import moment from 'moment';
 import {
   windowHeight,
   windowWidth,
@@ -189,7 +190,6 @@ const AddFarm: FC = () => {
   };
 
   const pictureFromCamera = async (type: any) => {
-    console.log('type', type);
     const options: CameraOptions = {
       quality: 1,
       mediaType: type,
@@ -222,7 +222,7 @@ const AddFarm: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: 'farm' + imageNum + '.jpg',
+          name: 'farm-' + farmName.split(' ').join('') + '-' + imageNum + '.jpg',
         };
         console.log('IMAGE URI!', imageURI);
         setImageNum(imageNum + 1);
@@ -271,7 +271,7 @@ const AddFarm: FC = () => {
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: 'farm' + imageNum + '.jpg',
+        name: 'farm-' + farmName.split(' ').join('') + '-' + imageNum + '.jpg',
       };
       console.log('IMAGE URI!', imageURI);
       setImageNum(imageNum + 1);

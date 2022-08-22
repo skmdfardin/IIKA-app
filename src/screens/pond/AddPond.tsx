@@ -174,7 +174,7 @@ const AddPond: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: 'PondImage' + imageNum + 'jpg',
+          name: 'farm-' + pondName.split(' ').join('') + '-' + imageNum + '.jpg',
         };
         setImageNum(imageNum + 1);
         console.log('IMAGE URL', imageURI);
@@ -218,7 +218,7 @@ const AddPond: FC = () => {
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: 'PondImage' + imageNum + 'jpg',
+        name: 'farm-' + pondName.split(' ').join('') + '-' + imageNum + '.jpg',
       };
       setImageNum(imageNum + 1);
       console.log('IMAGE URL', imageURI);

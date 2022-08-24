@@ -34,10 +34,8 @@ const FarmDetails: FC = () => {
                 <Text style={{ marginTop: 20, marginLeft: 6 }}>Avg FCR: 1.2</Text>
               </View>
               <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginRight: 10, marginBottom: 8 }}>
-                <View>
                   <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#FarmID</Text>
                   <Text style={{ fontSize: 12, fontWeight: '400', color: '#000000' }}>Location</Text>
-                </View>
               </View>
             </View>
           </View>

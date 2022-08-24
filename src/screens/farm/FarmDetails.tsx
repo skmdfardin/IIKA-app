@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { FlipInEasyX } from 'react-native-reanimated';
+import PondCardArray from '../../components/pondComponenets/PondCardArray';
 import { windowHeight, windowWidth, whiteColor } from '../../media/css/common';
 
 const logo = '../../media/AquaLogo.gif';
@@ -11,38 +11,38 @@ const FarmDetails: FC = () => {
   };
 
   return (
-    <View style={Styles.container}>
+    <SafeAreaView style={Styles.container}>
       <View style={Styles.header}>
         <Text style={Styles.backButton}>BACK</Text>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ margin: 13, marginTop: 20 }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={[Styles.farmCard, Styles.shadowProp]}>
-          <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Image style={Styles.image} source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }} />
-            <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-              <Text style={Styles.farmName}>Farm Name</Text>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ flexDirection: 'column' }}>
-                  <TouchableOpacity
-                    style={Styles.EditFarmDetails}
-                    onPress={() => {
-                      farmEdit();
-                    }}
-                  >
-                    <Text style={{ fontSize: 13, fontWeight: '900', color: '#479dfb' }}>Edit Farm Details</Text>
-                  </TouchableOpacity>
-                  <Text style={{ marginTop: 0, marginLeft: 6 }}>Avg FCR: 1.2</Text>
-                </View>
-                <View style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
-                  <Text>#FarmID</Text>
-                  <Text>Location</Text>
+          <Image style={Styles.image} source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }} />
+          <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
+            <Text style={Styles.farmName}>Farm Name</Text>
+            <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
+              <View style={{ flexDirection: 'column' }}>
+                <TouchableOpacity
+                  style={Styles.EditFarmDetails}
+                  onPress={() => {
+                    farmEdit();
+                  }}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: '900', color: '#479dfb' }}>Edit Farm Details</Text>
+                </TouchableOpacity>
+                <Text style={{ marginTop: 20, marginLeft: 6 }}>Avg FCR: 1.2</Text>
+              </View>
+              <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginRight: 10, marginBottom: 8 }}>
+                <View>
+                  <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#FarmID</Text>
+                  <Text style={{ fontSize: 12, fontWeight: '400', color: '#000000' }}>Location</Text>
                 </View>
               </View>
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+        <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
               <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Total Harvest</Text>
@@ -65,7 +65,7 @@ const FarmDetails: FC = () => {
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 25, margin: 7 }}>
+        <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
           <Text style={{ fontSize: 18, fontWeight: '400', color: '#000000' }}>
             This is where the description of the Farm goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed
             do eiusmod tempor incididunt ut labore et dolore magna aliqua.This is where the description of the Farm
@@ -77,9 +77,15 @@ const FarmDetails: FC = () => {
         <View style={[Styles.graph, Styles.shadowProp]}></View>
         <View style={{ marginTop: 25 }}>
           <Text style={{ alignSelf: 'center', fontSize: 20, fontWeight: '800', color: '#000000' }}>All Ponds</Text>
+          <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            <PondCardArray />
+          </View>
+        </View>
+        <View style={{ marginTop: 10 }}>
+          <Image style={Styles.imageBottom} source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }} />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 export default FarmDetails;
@@ -96,6 +102,7 @@ const Styles = StyleSheet.create({
     width: windowWidth * 0.93,
     backgroundColor: whiteColor,
     flexDirection: 'row',
+    marginTop: 20,
   },
   backButton: {
     color: '#ffffff',
@@ -142,49 +149,27 @@ const Styles = StyleSheet.create({
     height: windowHeight * 0.09,
     width: windowWidth * 0.28,
     backgroundColor: '#0059ab',
-    margin: 7,
     marginTop: 10,
-    marginRight: 1,
+    marginRight: 10,
     borderRadius: 10,
   },
   graph: {
     borderRadius: 10,
     padding: 2.5,
-    height: windowHeight * 0.35,
+    height: windowHeight * 0.3,
     width: windowWidth * 0.93,
     backgroundColor: whiteColor,
     marginTop: 15,
+    marginBottom: 15,
     marginRight: 5,
     alignSelf: 'center',
   },
-  // container: {
-  //   alignContent: 'center',
-  //   alignItems: 'flex-start',
-  //   margin: 5,
-  //   borderRadius: 10,
-  //   height: windowHeight * 0.14,
-  //   width: windowWidth * 0.29,
-  //   backgroundColor: whiteColor,
-  // },
-  // image: {
-  //   borderRadius: 8,
-  //   margin: 5.5,
-  //   marginBottom: 1,
-  //   height: windowHeight * 0.085,
-  //   width: windowWidth * 0.26,
-  // },
-  // title: {
-  //   fontSize: 13,
-  //   marginBottom: 0,
-  //   marginLeft: 7,
-  //   fontWeight: '600',
-  //   color: '#000000',
-  // },
-  // subtitle: {
-  //   fontSize: 11,
-  //   marginLeft: 7,
-  //   fontWeight: '500',
-  // },
+  imageBottom: {
+    height: windowHeight * 0.3,
+    width: windowWidth * 0.92,
+    borderRadius: 7,
+    alignSelf: 'center',
+  },
   shadowProp: {
     shadowColor: '#000',
     shadowOffset: {

@@ -14,6 +14,7 @@ const UserBasicInfoCard: FC = () => {
   const navigation = useNavigation();
 
   const name = store.firstName;
+  const profileImage = store.profileImage;
 
   const onSubmit = () => {
     console.log('STORE:', store);
@@ -23,7 +24,7 @@ const UserBasicInfoCard: FC = () => {
   return (
     <View style={Styles.container}>
       <View style={Styles.imageContainer}>
-        <Image style={Styles.profile} source={require(profile)} />
+        <Image style={Styles.profile} source={profileImage !== '' ? { uri: profileImage } : require(profile)} />
       </View>
       <View style={Styles.textContainer}>
         <Text style={[Styles.text, robotoBold20]}>{name}</Text>

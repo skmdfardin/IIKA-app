@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import moment from 'moment';
 import {
   windowHeight,
   windowWidth,
@@ -73,6 +74,7 @@ const AddFarm: FC = () => {
   const navigation = useNavigation();
   const store = useSelector((state: any) => state.userStore);
   const token = store.email;
+  const [imageNum, setImageNum] = useState(0);
 
   const addImage = () => {
     setVisible(true);
@@ -160,9 +162,12 @@ const AddFarm: FC = () => {
       }
     }
     console.log('called');
+    console.log('URL', url);
+    console.log('token', token);
+    console.log('Formdata', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
-      //  navigation.goBack();
+      navigation.goBack();
     });
   };
 
@@ -185,7 +190,6 @@ const AddFarm: FC = () => {
   };
 
   const pictureFromCamera = async (type: any) => {
-    console.log('type', type);
     const options: CameraOptions = {
       quality: 1,
       mediaType: type,
@@ -214,12 +218,14 @@ const AddFarm: FC = () => {
           return;
         }
         const assetsOfImage = response.assets[0];
+        console.log('IMAGE NAME:', assetsOfImage.fileName);
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: assetsOfImage.fileName,
+          name: 'farm-' + farmName.split(' ').join('') + '-' + imageNum + '.jpg',
         };
-
+        console.log('IMAGE URI!', imageURI);
+        setImageNum(imageNum + 1);
         console.log('86', response);
         if (!isCertificateImage) {
           setImageList([...imageList, imageURI!]);
@@ -261,12 +267,14 @@ const AddFarm: FC = () => {
       }
       console.log('RESPONSE', response);
       const assetsOfImage = response.assets[0];
+      console.log('IMAGE NAME GALLARY', assetsOfImage.fileName);
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: assetsOfImage.fileName,
+        name: 'farm-' + farmName.split(' ').join('') + '-' + imageNum + '.jpg',
       };
-
+      console.log('IMAGE URI!', imageURI);
+      setImageNum(imageNum + 1);
       console.log('86', response);
       if (!isCertificateImage) {
         setImageList([...imageList, imageURI!]);

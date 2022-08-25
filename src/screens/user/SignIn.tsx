@@ -67,6 +67,7 @@ const SignIn: FC = () => {
         setIsSignInError(true);
         setSignInError('Incorrect Email or Password');
       } else {
+        resetState();
         console.log('DATA', data);
         const profileCheck = await CallGetApi(profileURL, data.email);
         const profileData = profileCheck.data;
@@ -97,7 +98,7 @@ const SignIn: FC = () => {
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
         dispatch(storeIsVerified({ isVerified: data.is_verified }));
-        resetState();
+
         navigation.navigate(NEW_USER_LANDING.toString());
       }
     } catch (error) {
@@ -139,9 +140,11 @@ const SignIn: FC = () => {
             <Text style={Styles.errorText}>{signInError}</Text>
           </View>
         )}
-        <TouchableOpacity style={Styles.button} onPress={onSubmit}>
-          <Text style={Styles.buttonText}>Sign In</Text>
-        </TouchableOpacity>
+        {
+          <TouchableOpacity style={Styles.button} onPress={onSubmit}>
+            <Text style={Styles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
+        }
         <View style={Styles.googleContainer}>
           <Image style={Styles.glogo} source={require(glogo)} />
           <Text>Log In via Google</Text>

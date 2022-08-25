@@ -12,6 +12,7 @@ import {
   Modal,
   Pressable,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -27,7 +28,7 @@ import {
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
-import { CallPostApi, CallPostApiJson } from '../../utilites/Util';
+import { CallPostApi } from '../../utilites/Util';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 // const pondConstructTypesOptions = ["Soil", "Tarpaulin"]
@@ -43,6 +44,7 @@ type imageFrame = {
 };
 
 const AddPond: FC = () => {
+  const [isSaving, setIsSaving] = useState(false);
   const [visible, setVisible] = useState(false);
   const [pondName, setPondName] = useState('');
   const [pondLength, setPondLength] = useState('');
@@ -87,6 +89,7 @@ const AddPond: FC = () => {
     setPondLocation('');
     setPondDesc('');
     setImageList([]);
+    setIsSaving(false);
   };
 
   const removeimage = (name: string) => {
@@ -94,6 +97,7 @@ const AddPond: FC = () => {
     setImageList(newImageList);
   };
   const onSave = () => {
+    setIsSaving(true);
     const formData = new FormData();
 
     formData.append('farm', farmID);
@@ -119,6 +123,7 @@ const AddPond: FC = () => {
     console.log('FormData', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
+      initialState();
       navigation.goBack();
     });
   };
@@ -174,7 +179,7 @@ const AddPond: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: 'farm-' + pondName.split(' ').join('') + '-' + imageNum + '.jpg',
+          name: pondName.split(' ').join('') + '-' + imageNum + '.jpg',
         };
         setImageNum(imageNum + 1);
         console.log('IMAGE URL', imageURI);
@@ -218,7 +223,7 @@ const AddPond: FC = () => {
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: 'farm-' + pondName.split(' ').join('') + '-' + imageNum + '.jpg',
+        name: pondName.split(' ').join('') + '-' + imageNum + '.jpg',
       };
       setImageNum(imageNum + 1);
       console.log('IMAGE URL', imageURI);
@@ -501,30 +506,36 @@ const AddPond: FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: windowWidth * 0.6,
-              justifyContent: 'space-around',
-            }}
-          >
-            <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: discardColour }]}
-              onPress={() => {
-                initialState();
+          {isSaving ? (
+            <View style={{ marginTop: windowHeight * 0.1 }}>
+              <ActivityIndicator size="large" color="#00ff00" />
+            </View>
+          ) : (
+            <View
+              style={{
+                flexDirection: 'row',
+                width: windowWidth * 0.6,
+                justifyContent: 'space-around',
               }}
             >
-              <Text style={PageStyles.buttonText}>Discard</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: saveColour }]}
-              onPress={() => {
-                onSave();
-              }}
-            >
-              <Text style={PageStyles.buttonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                style={[PageStyles.endButton, { backgroundColor: discardColour }]}
+                onPress={() => {
+                  initialState();
+                }}
+              >
+                <Text style={PageStyles.buttonText}>Discard</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[PageStyles.endButton, { backgroundColor: saveColour }]}
+                onPress={() => {
+                  onSave();
+                }}
+              >
+                <Text style={PageStyles.buttonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

@@ -34,8 +34,8 @@ const FarmDetails: FC = () => {
                 <Text style={{ marginTop: 20, marginLeft: 6 }}>Avg FCR: 1.2</Text>
               </View>
               <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginRight: 10, marginBottom: 8 }}>
-                  <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#FarmID</Text>
-                  <Text style={{ fontSize: 12, fontWeight: '400', color: '#000000' }}>Location</Text>
+                <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#FarmID</Text>
+                <Text style={{ fontSize: 12, fontWeight: '400', color: '#000000' }}>Location</Text>
               </View>
             </View>
           </View>
@@ -71,8 +71,12 @@ const FarmDetails: FC = () => {
             dolore magna aliqua.
           </Text>
         </View>
-        <View style={[Styles.graph, Styles.shadowProp]}></View>
-        <View style={[Styles.graph, Styles.shadowProp]}></View>
+        <View style={[Styles.graph, Styles.shadowProp]}>
+          <Text>GRAPH</Text>
+        </View>
+        <View style={[Styles.graph, Styles.shadowProp]}>
+          <Text>GRAPH</Text>
+        </View>
         <View style={{ marginTop: 25 }}>
           <Text style={{ alignSelf: 'center', fontSize: 20, fontWeight: '800', color: '#000000' }}>All Ponds</Text>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>

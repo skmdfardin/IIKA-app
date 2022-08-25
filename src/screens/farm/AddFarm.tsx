@@ -13,10 +13,10 @@ import {
   Pressable,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import moment from 'moment';
 import {
   windowHeight,
   windowWidth,
@@ -54,6 +54,7 @@ type certificateFrame = {
 
 const AddFarm: FC = () => {
   const [visible, setVisible] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [isCertificateImage, setIsCertificateImage] = useState(false);
   const [farmName, setFarmName] = useState('');
   const [farmArea, setFarmArea] = useState('');
@@ -96,6 +97,7 @@ const AddFarm: FC = () => {
     setCertificateDetail('');
     setCertificateList([]);
     setImageList([]);
+    setIsSaving(false);
   };
 
   const certificateInitialState = () => {
@@ -130,6 +132,8 @@ const AddFarm: FC = () => {
     setImageList(newImageList);
   };
   const onSave = () => {
+    setIsSaving(true);
+
     const formData = new FormData();
 
     formData.append('farm_name', farmName);
@@ -634,30 +638,34 @@ const AddFarm: FC = () => {
                 );
               })}
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: windowWidth * 0.6,
-              justifyContent: 'space-around',
-            }}
-          >
-            <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: discardColour }]}
-              onPress={() => {
-                initialState();
+          {isSaving ? (
+            <ActivityIndicator size="large" color="#00ff00" />
+          ) : (
+            <View
+              style={{
+                flexDirection: 'row',
+                width: windowWidth * 0.6,
+                justifyContent: 'space-around',
               }}
             >
-              <Text style={PageStyles.buttonText}>Discard</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: saveColour }]}
-              onPress={() => {
-                onSave();
-              }}
-            >
-              <Text style={PageStyles.buttonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                style={[PageStyles.endButton, { backgroundColor: discardColour }]}
+                onPress={() => {
+                  initialState();
+                }}
+              >
+                <Text style={PageStyles.buttonText}>Discard</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[PageStyles.endButton, { backgroundColor: saveColour }]}
+                onPress={() => {
+                  onSave();
+                }}
+              >
+                <Text style={PageStyles.buttonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>

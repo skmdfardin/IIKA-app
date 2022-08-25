@@ -1,13 +1,59 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ImageCarousel1 from '../../components/ImageCarousel1';
 import PondCardArray from '../../components/pondComponenets/PondCardArray';
 import { windowHeight, windowWidth, whiteColor } from '../../media/css/common';
 
 const logo = '../../media/AquaLogo.gif';
 
+export interface ImageCarouselItem {
+  id: number;
+  uri: string;
+  title: string;
+}
+
+const data: ImageCarouselItem[] = [
+  {
+    id: 0,
+    uri: 'https://images.pexels.com/photos/97465/pexels-photo-97465.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    title: 'Dahlia',
+  }, // https://unsplash.com/photos/Jup6QMQdLnM
+  {
+    id: 1,
+    uri: 'https://media.gettyimages.com/photos/the-perfect-backyard-picture-id157329538?s=612x612',
+    title: 'Sunflower',
+  }, // https://unsplash.com/photos/oO62CP-g1EA
+  {
+    id: 2,
+    uri: 'https://images.pexels.com/photos/97465/pexels-photo-97465.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+    title: 'Zinnia',
+  }, // https://unsplash.com/photos/gKMmJEvcyA8
+  {
+    id: 3,
+    uri: 'https://wallpaperaccess.com/full/803470.jpg',
+    title: 'Tulip',
+  }, // https://unsplash.com/photos/N7zBDF1r7PM
+  {
+    id: 4,
+    uri: 'https://wallpaperaccess.com/full/803470.jpg',
+    title: 'Chrysanthemum',
+  }, // https://unsplash.com/photos/GsGZJMK0bJc
+  {
+    id: 5,
+    uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
+    title: 'Hydrangea',
+  }, // https://unsplash.com/photos/coIBOiWBPjk
+];
+
 const FarmDetails: FC = () => {
   const farmEdit = () => {
     console.log('Navigate to farm edit page');
+  };
+
+  const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
+
+  const callBackSliderIndex = (index: number) => {
+    setCurrentSliderIndex(index);
   };
 
   return (
@@ -84,7 +130,7 @@ const FarmDetails: FC = () => {
           </View>
         </View>
         <View style={{ marginTop: 10 }}>
-          <Image style={Styles.imageBottom} source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }} />
+          <ImageCarousel1 imageItem={data} callBackIndex={(index: number) => callBackSliderIndex(index)} />
         </View>
       </ScrollView>
     </SafeAreaView>

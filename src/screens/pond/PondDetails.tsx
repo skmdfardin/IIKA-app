@@ -45,9 +45,9 @@ const data: ImageCarouselItem[] = [
   }, // https://unsplash.com/photos/coIBOiWBPjk
 ];
 
-const FarmDetails: FC = () => {
-  const farmEdit = () => {
-    console.log('Navigate to farm edit page');
+const PondDetails: FC = () => {
+  const pondEdit = () => {
+    console.log('Navigate to pond edit page');
   };
 
   const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
@@ -63,24 +63,24 @@ const FarmDetails: FC = () => {
         <Image style={Styles.logo} source={require(logo)} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={[Styles.farmCard, Styles.shadowProp]}>
+        <View style={[Styles.pondCard, Styles.shadowProp]}>
           <Image style={Styles.image} source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }} />
           <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-            <Text style={Styles.farmName}>Farm Name</Text>
+            <Text style={Styles.pondName}>Pond Name</Text>
             <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
               <View style={{ flexDirection: 'column' }}>
                 <TouchableOpacity
-                  style={Styles.EditFarmDetails}
+                  style={Styles.EditPondDetails}
                   onPress={() => {
-                    farmEdit();
+                    pondEdit();
                   }}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: '900', color: '#479dfb' }}>Edit Farm Details</Text>
+                  <Text style={{ fontSize: 13, fontWeight: '900', color: '#479dfb' }}>Edit Pond Details</Text>
                 </TouchableOpacity>
                 <Text style={{ marginTop: 20, marginLeft: 6 }}>Avg FCR: 1.2</Text>
               </View>
               <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginRight: 10, marginBottom: 8 }}>
-                <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#FarmID</Text>
+                <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#PondID</Text>
                 <Text style={{ fontSize: 12, fontWeight: '400', color: '#000000' }}>Location</Text>
               </View>
             </View>
@@ -89,7 +89,7 @@ const FarmDetails: FC = () => {
         <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Total Harvest</Text>
+              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Total Cycles</Text>
               <View style={{ flexDirection: 'row', marginTop: 2 }}>
                 <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>235</Text>
                 <Text style={{ fontSize: 15, fontWeight: '300', color: 'white' }}>tn</Text>
@@ -98,21 +98,21 @@ const FarmDetails: FC = () => {
           </View>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Active Cycles</Text>
+              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Completed Cycles</Text>
               <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>10</Text>
             </View>
           </View>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Total Ponds</Text>
-              <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>235</Text>
+              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
+              <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>1.234</Text>
             </View>
           </View>
         </View>
         <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
           <Text style={{ fontSize: 18, fontWeight: '400', color: '#000000' }}>
-            This is where the description of the Farm goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed
-            do eiusmod tempor incididunt ut labore et dolore magna aliqua.This is where the description of the Farm
+            This is where the description of the Pond goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed
+            do eiusmod tempor incididunt ut labore et dolore magna aliqua.This is where the description of the Pond
             goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua.
           </Text>
@@ -136,13 +136,13 @@ const FarmDetails: FC = () => {
     </SafeAreaView>
   );
 };
-export default FarmDetails;
+export default PondDetails;
 
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  farmCard: {
+  pondCard: {
     borderRadius: 10,
     alignSelf: 'center',
     padding: 2.5,
@@ -176,14 +176,14 @@ const Styles = StyleSheet.create({
     height: windowHeight * 0.12,
     width: windowWidth * 0.27,
   },
-  farmName: {
+  pondName: {
     fontSize: 20,
     marginLeft: 6,
     marginTop: 5,
     fontWeight: '700',
     color: '#000000',
   },
-  EditFarmDetails: {
+  EditPondDetails: {
     marginTop: 5,
     marginLeft: 3,
     backgroundColor: '#f4f7f8',

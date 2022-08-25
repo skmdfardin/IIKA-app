@@ -12,13 +12,13 @@ import {
   Pressable,
   Platform,
   PermissionsAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
-import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
 import { CallPostApi } from '../../utilites/Util';
 
 interface EditProfileScreenProps {}
@@ -27,16 +27,20 @@ const logo = '../../media/AquaLogo.gif';
 const profile = '../../media/profile.png';
 
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
-  const [userName, setuserName] = useState('');
+  const store = useSelector((state: any) => state.userStore);
+  const [isSaving, setIsSaving] = useState(false);
+  const [userName, setuserName] = useState(store.userName);
   const [fileUri, setFileUri] = useState(undefined);
   const [fileResponse, setFileResponse] = useState(undefined);
   const [visible, setVisible] = useState(false);
+
   const navigation = useNavigation();
-  const store = useSelector((state: any) => state.userStore);
   const token = store.email;
+
   const alert = (text: string) => {
     console.log('29 from alert', text);
   };
+
   const pictureFromCamera = async (type: any) => {
     console.log('type', type);
     const options: CameraOptions = {
@@ -67,13 +71,6 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
           return;
         }
         const assetsOfImage = response.assets[0];
-        // console.log('base64 -> ', response.assets[0].base64);
-        // console.log('uri -> ', response.uri);
-        // console.log('width -> ', response.width);
-        // console.log('height -> ', response.height);
-        // console.log('fileSize -> ', response.fileSize);
-        // console.log('type -> ', response.type);
-        // console.log('fileName -> ', response.assets[0].fileName);
         console.log('86', response);
 
         setFileResponse(response);
@@ -109,12 +106,6 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
         return;
       }
       const assetsOfImage = response.assets[0] ? response.assets[0] : '';
-      // console.log("base64 -> ", response.base64);
-      // console.log("uri -> ", response.assets[0].uri);
-      // console.log("width -> ", response.width);
-      // console.log("height -> ", response.height);
-      // console.log("fileSize -> ", response.fileSize);
-      // console.log("type -> ", response.type);
       console.log('fileName -> ', assetsOfImage.uri);
       setFileResponse(response);
       setFileUri(assetsOfImage.uri);
@@ -158,6 +149,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     console.log('Token', token);
     CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
       console.log('RESPONSE', response);
+      setIsSaving(false);
       navigation.goBack();
     });
   };
@@ -308,15 +300,16 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
                 }}
                 marginTop={windowWidth * 0.018}
                 value={userName}
+                disabled={true}
               />
             </View>
           </View>
           <Formik
             initialValues={{
-              username: '',
-              fullname: '',
-              emailId: '',
-              mobileNo: '',
+              username: store.userName,
+              fullname: store.firstName,
+              emailId: store.email,
+              mobileNo: store.mobile,
               companyName: '',
               gstCode: '',
               panNo: '',
@@ -327,7 +320,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
             }}
             onSubmit={(values) => {
               console.log('values', values);
-              // navigation.navigate(NEW_USER_LANDING.toString());
+              setIsSaving(true);
               onSubmitPressed(values);
             }}
           >
@@ -403,17 +396,21 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
                   width={windowWidth * 0.89}
                   value={values.website}
                 />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly',
-                    marginVertical: windowHeight * 0.02,
-                  }}
-                >
-                  <Button color={commonBlueColor} onPress={(text) => console.log('button', text)} title="discard" />
-                  <Button onPress={handleSubmit} title="Submit" />
-                </View>
+                {isSaving ? (
+                  <ActivityIndicator size="large" color="#00ff00" style={{ marginVertical: windowHeight * 0.02 }} />
+                ) : (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                      marginVertical: windowHeight * 0.02,
+                    }}
+                  >
+                    <Button color={commonBlueColor} onPress={(text) => console.log('button', text)} title="discard" />
+                    <Button onPress={handleSubmit} title="Submit" />
+                  </View>
+                )}
               </View>
             )}
           </Formik>

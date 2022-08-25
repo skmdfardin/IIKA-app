@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import { Text, View } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { blackColor, commonBlueColor, windowWidth } from '../media/css/common';
+import { Text, View, TextInput } from 'react-native';
+import { blackColor, windowWidth } from '../media/css/common';
 
 interface LabelTextInputProps {
   nameOfField: string;
@@ -16,17 +15,24 @@ interface LabelTextInputProps {
 const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
   return (
     <View style={{ marginTop: props.marginTop }}>
-      <Text>{props.nameOfField}</Text>
-      <TextInput
-        mode="outlined"
-        style={{ width: props.width, borderRadius: 15 }}
-        outlineColor={blackColor}
-        disabled={props.disabled}
-        activeOutlineColor={commonBlueColor}
-        onChangeText={props.onChange}
-        value={props.value}
-        error={props.error}
-      />
+      <Text style={{ color: blackColor }}>{props.nameOfField}</Text>
+      <View
+        style={{
+          borderColor: blackColor,
+          borderWidth: 1,
+          borderRadius: 15,
+          borderStyle: props.disabled ? 'dashed' : 'solid',
+          width: props.width,
+          backgroundColor: '#F5F6F8',
+        }}
+      >
+        <TextInput
+          editable={!props.disabled}
+          onChangeText={props.onChange}
+          value={props.value}
+          style={{ color: blackColor }}
+        />
+      </View>
     </View>
   );
 };

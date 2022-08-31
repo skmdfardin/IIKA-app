@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -171,6 +171,7 @@ const AddFarm: FC = () => {
     console.log('Formdata', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
+
       navigation.goBack();
     });
   };
@@ -683,7 +684,6 @@ const PageStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
     height: windowHeight * 0.09,
     backgroundColor: '#000000',
     alignItems: 'center',

@@ -18,10 +18,6 @@ export const CallPostApi = async (urlString: string, formData: any, token: strin
     });
   } catch (error) {
     console.log('API CALL ERROR:', error);
-    console.log('error data', error.response.data);
-    console.log('error status', error.response.status);
-    console.log('error header', error.response.headers);
-    console.log('error message', error.message);
   }
   return returnResponse;
 };

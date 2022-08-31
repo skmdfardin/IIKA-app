@@ -402,7 +402,7 @@ const AddCycle: FC = () => {
           <View style={{ height: windowHeight * 0.02 }}></View>
 
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>Seed images*</Text>
+            <Text style={{ color: blackColor }}>Seed images*</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -439,7 +439,7 @@ const AddCycle: FC = () => {
           </View>
 
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>Prepared Pond Images*</Text>
+            <Text style={{ color: blackColor }}>Prepared Pond Images*</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -525,13 +525,13 @@ const PageStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
 
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
   scroll: {

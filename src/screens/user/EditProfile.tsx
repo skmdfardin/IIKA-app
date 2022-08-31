@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import React, { FunctionComponent, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -20,6 +20,7 @@ import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } 
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 import { CallPostApi } from '../../utilites/Util';
+import { storeIsProfileComplete } from '../../reduxstore/userSlice';
 
 interface EditProfileScreenProps {}
 
@@ -28,6 +29,7 @@ const profile = '../../media/profile.png';
 
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const store = useSelector((state: any) => state.userStore);
+  const dispatch = useDispatch();
   const [isSaving, setIsSaving] = useState(false);
   const [userName, setuserName] = useState(store.userName);
   const [fileUri, setFileUri] = useState(undefined);
@@ -150,7 +152,8 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
       console.log('RESPONSE', response);
       setIsSaving(false);
-      navigation.goBack();
+      dispatch(storeIsProfileComplete({ isProfileComplete: true }));
+      // navigation.goBack();
     });
   };
 
@@ -431,12 +434,12 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     width: windowWidth,
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     backgroundColor: '#000000',
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
 });

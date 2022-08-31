@@ -166,7 +166,7 @@ const Styles = StyleSheet.create({
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.06,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
   image: {

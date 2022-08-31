@@ -75,13 +75,15 @@ const PondDetails: FC = () => {
                     pondEdit();
                   }}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: '900', color: '#479dfb' }}>Edit Pond Details</Text>
+                  <Text style={{ fontSize: windowWidth * 0.03, fontWeight: '900', color: '#479dfb' }}>
+                    Edit Pond Details
+                  </Text>
                 </TouchableOpacity>
-                <Text style={{ marginTop: 20, marginLeft: 6 }}>Avg FCR: 1.2</Text>
+                <Text style={{ marginTop: windowHeight * 0.015, marginLeft: windowWidth * 0.02 }}>Avg FCR: 1.2</Text>
               </View>
               <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginRight: 10, marginBottom: 8 }}>
-                <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#PondID</Text>
-                <Text style={{ fontSize: 12, fontWeight: '400', color: '#000000' }}>Location</Text>
+                <Text style={{ fontSize: windowHeight * 0.012, fontWeight: '500', color: '#000000' }}>#PondID</Text>
+                <Text style={{ fontSize: windowHeight * 0.012, fontWeight: '400', color: '#000000' }}>Location</Text>
               </View>
             </View>
           </View>
@@ -89,28 +91,30 @@ const PondDetails: FC = () => {
         <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Total Cycles</Text>
+              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>Total Cycles</Text>
               <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>235</Text>
-                <Text style={{ fontSize: 15, fontWeight: '300', color: 'white' }}>tn</Text>
+                <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>235</Text>
+                <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
               </View>
             </View>
           </View>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Completed Cycles</Text>
-              <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>10</Text>
+              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
+                Completed Cycles
+              </Text>
+              <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>10</Text>
             </View>
           </View>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
-              <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>1.234</Text>
+              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
+              <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>1.234</Text>
             </View>
           </View>
         </View>
         <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
-          <Text style={{ fontSize: 18, fontWeight: '400', color: '#000000' }}>
+          <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
             This is where the description of the Pond goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed
             do eiusmod tempor incididunt ut labore et dolore magna aliqua.This is where the description of the Pond
             goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et
@@ -166,7 +170,7 @@ const Styles = StyleSheet.create({
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.06,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
   image: {
@@ -177,7 +181,7 @@ const Styles = StyleSheet.create({
     width: windowWidth * 0.27,
   },
   pondName: {
-    fontSize: 20,
+    fontSize: windowWidth * 0.045,
     marginLeft: 6,
     marginTop: 5,
     fontWeight: '700',

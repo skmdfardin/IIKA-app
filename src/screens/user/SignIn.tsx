@@ -63,7 +63,7 @@ const SignIn: FC = () => {
       const response = await fetch(signInURL, requestOptions);
       console.log('RESPONSE', response);
       data = await response.json();
-      if (data.message) {
+      if (data.message || data.detail === 'CSRF Failed: CSRF token missing or incorrect.') {
         setIsSignInError(true);
         setSignInError('Incorrect Email or Password');
       } else {

@@ -17,16 +17,16 @@ const StackNavigation: FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name={POND_DETAILS} component={PondDetails} />
+        <Stack.Screen name={ADD_CYCLE} component={AddCycle} />
         <Stack.Screen name={SPLASH_SCREEN} component={SplashScreen} />
         <Stack.Screen name={SLIDER_SCREEN} component={SliderScreen} />
         <Stack.Screen name={SIGN_IN} component={SignIn} />
         <Stack.Screen name={SIGN_UP} component={SignUp} />
         <Stack.Screen name={EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
         <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
-        <Stack.Screen name={ADD_CYCLE} component={AddCycle} />
         <Stack.Screen name={ADD_FARM} component={AddFarm} />
         <Stack.Screen name={ADD_POND} component={AddPond} />
-        <Stack.Screen name={POND_DETAILS} component={PondDetails}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

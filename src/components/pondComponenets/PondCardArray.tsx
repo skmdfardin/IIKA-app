@@ -56,8 +56,6 @@ const PondCardArray: FC = () => {
       {validPonds !== null
         ? validPonds.map((pond, index) => {
             const image = pond.pond_images[0].image.replace('localhost', '103.127.146.20');
-            console.log('IMAGE,', image);
-            console.log(typeof pond.pond_type);
             return (
               <View style={[Styles.container, styles.shadow]} key={index}>
                 <TouchableOpacity

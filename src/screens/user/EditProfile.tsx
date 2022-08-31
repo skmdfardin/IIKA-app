@@ -153,7 +153,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
       console.log('RESPONSE', response);
       setIsSaving(false);
       dispatch(storeIsProfileComplete({ isProfileComplete: true }));
-      // navigation.goBack();
+      navigation.goBack();
     });
   };
 

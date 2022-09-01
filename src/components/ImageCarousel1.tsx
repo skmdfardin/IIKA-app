@@ -48,7 +48,6 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = (props: ImageCarous
           renderItem={renderItems}
           keyExtractor={(_item, index) => index.toString()}
           style={styles.carousel}
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           onViewableItemsChanged={onViewRef.current}
         />
       </View>
@@ -75,7 +74,6 @@ const styles = StyleSheet.create({
     width: windowWidth,
     height: windowHeight * 0.25,
     resizeMode: 'contain',
-  
   },
   dotview: {
     flexDirection: 'row',

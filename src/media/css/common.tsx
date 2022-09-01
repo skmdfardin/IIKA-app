@@ -12,7 +12,7 @@ export const blackPressedColor = '#353a40';
 export const whiteColor = '#fff';
 export const whitePressedColor = '#f0f0f0';
 export const errorColor = '#B00020';
-export const successColor = '#42ba96';
+export const successColor = '#00B548';
 export const veryLightRed = '#EFE3E3';
 export const borderLightGrey = '#00000027';
 export const commonBlueColor = '#0085FF';
@@ -37,7 +37,8 @@ export const pearlGreyColour = '#F5F6F8';
 export const asphaltGreyColour = '#676879';
 export const discardColour = '#E44258';
 export const saveColour = '#2797FF';
-export const orangeColor2 = '#ff9b12'
+export const orangeColor2 = '#ff9b12';
+export const darkYellow = '#FF9A13';
 
 export const styles = StyleSheet.create({
   robotoLight13: {

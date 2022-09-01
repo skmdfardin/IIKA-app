@@ -399,8 +399,7 @@ const AddCycle: FC = () => {
             width={windowWidth * 0.9}
             value={CycleDescription}
           />
-          <View style={{ height: windowHeight * 0.02 }}></View>
-
+          <View style={{ height: windowHeight * 0.02 }} />
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
             <Text style={{ color: blackColor }}>Seed images*</Text>
             <View

@@ -294,8 +294,8 @@ const PondDetails: FC = () => {
               <View>
                 <Text>#CycleId</Text>
                 <Text>Cycle Start Date</Text>
-                <View>
-                  <Text>Harvest Cycle</Text>
+                <View style={[Styles.button]}>
+                  <Text style={[Styles.buttonText]}>Harvest Cycle</Text>
                 </View>
               </View>
             </View>
@@ -670,5 +670,18 @@ const Styles = StyleSheet.create({
     borderColor: '#BDBDBD',
     borderWidth: 2,
     borderStyle: 'solid',
+  },
+  button: {
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.4,
+    borderRadius: 10,
+    backgroundColor: successColor,
+    paddingHorizontal: windowWidth * 0.05,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
 });

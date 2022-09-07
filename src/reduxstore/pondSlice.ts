@@ -3,27 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 const pondSlice = createSlice({
   name: 'pondStore',
   initialState: {
-    pondName: '',
-    pondDescription: '',
-    pondID: '',
-    pondImages: [],
+    pondDataArray: <any>[],
   },
   reducers: {
-    storePondID: (storePondID, action) => {
-      storePondID.pondID = action.payload.pondID;
-    },
-    storePondName: (storePondName, action) => {
-      storePondName.pondName = action.payload.pondName;
-    },
-    storepondDescription: (storePondDescription, action) => {
-      storePondDescription.pondDescription = action.payload.pondDescription;
-    },
-    storePondImages: (storePondImages, action) => {
-      storePondImages.pondImages = action.payload.pondImages;
+    storePondArray: (storePondArray, action) => {
+      storePondArray.pondDataArray.push(...action.payload.pondDataArray);
+      console.log('Action', action.payload.pondDataArray);
+      console.log('STATE', storePondArray.pondDataArray);
     },
   },
 });
 
-export const { storePondID, storePondName, storepondDescription, storePondImages } = pondSlice.actions;
+export const { storePondArray } = pondSlice.actions;
 
 export default pondSlice.reducer;

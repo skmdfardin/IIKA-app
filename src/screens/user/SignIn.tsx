@@ -17,6 +17,7 @@ import {
 import { storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { CallGetApi } from '../../utilites/Util';
+import { storePondArray } from '../../reduxstore/pondSlice';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
@@ -80,14 +81,20 @@ const SignIn: FC = () => {
         }
         if (data.farm_id !== null) {
           const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
+          const pondURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-related-ponds/';
           const farmApicall = await CallGetApi(farmURL, data.email);
           const farmData = farmApicall.data.result;
           const temp = farmData.farm_images;
-          const farmImageArray = temp.map((item) => {
+          const farmImageArray = temp.map((item: any) => {
             return item.image.replace('localhost', '103.127.146.20');
           });
           console.log('FARM images:', farmImageArray);
-
+          const pondApiCall = await CallGetApi(pondURL, data.email);
+          if (pondApiCall.status === 200) {
+            const pondData = pondApiCall.data.result.ponds;
+            console.log(pondData[0].pond_images);
+            dispatch(storePondArray({ pondDataArray: pondData }));
+          }
           dispatch(storeFarmName({ farmName: farmData.farm_name }));
           dispatch(storeFarmImages({ farmImages: farmImageArray }));
           dispatch(storeFarmID({ farmID: data.farm_id }));

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
@@ -103,15 +103,17 @@ const NewUserLanding: FC = () => {
               <Text style={Styles.tabTextInactive}>Activity</Text>
             </View>
           </View>
-          <HorizontalBigCardFarmInfo />
-          <PondCardArray />
-          <ActivityCard
-            titleText="Your Farm has been successfully created"
-            messageText="Let's start by adding ponds to your farm"
-            buttonText="Add Pond"
-            callBack={goToAddPond}
-            buttonState={true}
-          />
+          <ScrollView style={{ marginBottom: windowHeight * 0.3 }} showsVerticalScrollIndicator={false}>
+            <HorizontalBigCardFarmInfo />
+            <PondCardArray />
+            <ActivityCard
+              titleText="Your Farm has been successfully created"
+              messageText="Let's start by adding ponds to your farm"
+              buttonText="Add Pond"
+              callBack={goToAddPond}
+              buttonState={true}
+            />
+          </ScrollView>
         </View>
       )}
     </View>

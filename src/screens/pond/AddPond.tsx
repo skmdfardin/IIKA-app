@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -30,6 +30,7 @@ import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
 import { CallPostApi } from '../../utilites/Util';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { storePondArray } from '../../reduxstore/pondSlice';
 
 // const pondConstructTypesOptions = ["Soil", "Tarpaulin"]
 
@@ -74,6 +75,7 @@ const AddPond: FC = () => {
     { label: 'Reservoir Pond', value: 3 },
   ]);
   const [imageNum, setImageNum] = useState(0);
+  const dispatch = useDispatch();
 
   const addImage = () => {
     setVisible(true);
@@ -123,6 +125,15 @@ const AddPond: FC = () => {
     console.log('FormData', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
+      const newPond = {
+        description: response?.data.description,
+        id: response?.data.id,
+        pond_images: response?.data.pond_images,
+        pond_name: response?.data.pond_name,
+        pond_type: response?.data.pond_type,
+      };
+      const tempArray = [newPond];
+      dispatch(storePondArray({ pondDataArray: tempArray }));
       initialState();
       navigation.goBack();
     });

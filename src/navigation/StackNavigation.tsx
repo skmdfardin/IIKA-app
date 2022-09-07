@@ -25,8 +25,8 @@ const StackNavigation: FC = () => {
         <Stack.Screen name={EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
         <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
         <Stack.Screen name={ADD_FARM} component={AddFarm} />
-        <Stack.Screen name={FARM_DETAILS} component={FarmDetails} />
         <Stack.Screen name={ADD_POND} component={AddPond} />
+        <Stack.Screen name={FARM_DETAILS} component={FarmDetails} />
         <Stack.Screen name={POND_DETAILS} component={PondDetails} />
         <Stack.Screen name={ADD_CYCLE} component={AddCycle} />
       </Stack.Navigator>

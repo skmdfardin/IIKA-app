@@ -1,42 +1,19 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { CallGetApi } from '../../utilites/Util';
 import { whiteColor, windowHeight, windowWidth, styles } from '../../media/css/common';
 
 //    { label: 'Nursery', value: 1 },
 // { label: 'Effluent Treatment Pond (ETS)', value: 2 },
-// { label: 'Reservoir Pond', value: 3 },
+// { label: 'Reservoir Pond', value: 3 }, dispatch(storePondArray({ pondDataArray: pondData }));
 
 const PondCardArray: FC = () => {
-  const store = useSelector((state: any) => state.userStore);
-  const farmStore = useSelector((state: any) => state.farmStore);
-  const pondURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + farmStore.farmID + '/get-related-ponds/';
-  const [validPonds, setValidPonds] = useState([]);
-  const token = store.email;
+  const pondStore = useSelector((state: any) => state.pondStore);
+  const validPonds = pondStore.pondDataArray;
 
-  useEffect(() => {
-    console.log('executed only once!');
-
-    const fetchData = async () => {
-      try {
-        const pondApiCall = await CallGetApi(pondURL, token);
-        if (pondApiCall.status === 200) {
-          const pondData = pondApiCall.data.result.ponds;
-          console.log('POND DATA', pondData);
-          setValidPonds(pondData);
-        } else {
-          throw new Error(pondApiCall);
-        }
-      } catch (err) {
-        console.log('ERROR IN POND ARRAY', err);
-      }
-    };
-    fetchData();
-  }, [pondURL, token]);
-
-  const onSelect = (pondID: string) => {
-    console.log('pondID', pondID);
+  const onSelect = (pondID: number) => {
+    console.log('Pond clicked', pondID);
+    console.log('STORE', pondStore.pondDataArray);
   };
 
   const pondType = (pondTypeNo: number) => {
@@ -54,7 +31,7 @@ const PondCardArray: FC = () => {
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
       {validPonds !== null
-        ? validPonds.map((pond, index) => {
+        ? validPonds.map((pond: any, index: number) => {
             const image = pond.pond_images[0].image.replace('localhost', '103.127.146.20');
             return (
               <View style={[Styles.container, styles.shadow]} key={index}>

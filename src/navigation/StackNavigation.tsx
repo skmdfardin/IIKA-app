@@ -11,6 +11,8 @@ import AddFarm from '../screens/farm/AddFarm';
 import AddCycle from '../screens/cycle/AddCycle';
 import AddPond from '../screens/pond/AddPond';
 import PondDetails from '../screens/pond/PondDetails';
+import CycleHistory from '../screens/cycle/CycleHistory';
+import CycleSummaryCard from '../components/cycleComponents/CycleSummaryCard';
 
 const StackNavigation: FC = () => {
   const Stack = createNativeStackNavigator();
@@ -26,7 +28,9 @@ const StackNavigation: FC = () => {
         <Stack.Screen name={ADD_CYCLE} component={AddCycle} />
         <Stack.Screen name={ADD_FARM} component={AddFarm} />
         <Stack.Screen name={ADD_POND} component={AddPond} />
-        <Stack.Screen name={POND_DETAILS} component={PondDetails}/>
+        <Stack.Screen name={POND_DETAILS} component={PondDetails} />
+        <Stack.Screen name={CYCLE_HISTORY} component={CycleHistory} />
+        <Stack.Screen name={CYCLE_SUMMARY_CARD} component={CycleSummaryCard} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -41,4 +45,6 @@ export const ADD_FARM = 'add_farm';
 export const ADD_POND = 'add_pond';
 export const ADD_CYCLE = 'add_cycle';
 export const POND_DETAILS = 'pond_details';
+export const CYCLE_HISTORY = 'cycle_history';
+export const CYCLE_SUMMARY_CARD = 'cycle_summary_card';
 export default StackNavigation;

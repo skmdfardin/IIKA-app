@@ -160,7 +160,8 @@ const Styles = StyleSheet.create({
     width: windowWidth * 0.6,
     resizeMode: 'contain',
   },
-  farmName: { //HEADING TEXT
+  farmName: {
+    //HEADING TEXT
     fontSize: 20,
     marginLeft: 1,
     // marginTop: 5,
@@ -191,25 +192,6 @@ const Styles = StyleSheet.create({
     width: windowWidth * 0.32,
     borderRadius: 25,
     padding: 2,
-  },
-  infoCard: {
-    height: windowHeight * 0.09,
-    width: windowWidth * 0.28,
-    backgroundColor: '#0059ab',
-    marginTop: 10,
-    marginRight: 10,
-    borderRadius: 10,
-  },
-  graph: {
-    borderRadius: 10,
-    padding: 2.5,
-    height: windowHeight * 0.3,
-    width: windowWidth * 0.93,
-    backgroundColor: whiteColor,
-    marginTop: 15,
-    marginBottom: 15,
-    marginRight: 5,
-    alignSelf: 'center',
   },
   imageBottom: {
     // marginTop:windowHeight*0.015,
@@ -275,12 +257,11 @@ const Styles = StyleSheet.create({
     shadowRadius: 6.68,
     elevation: 5,
   },
-  addNewCycleButtonText:{
-    alignSelf:'center',
+  addNewCycleButtonText: {
+    alignSelf: 'center',
     fontWeight: '900',
-    color:'#ffffff',
-    marginTop:windowHeight*0.002,
-    fontSize:15,
-
+    color: '#ffffff',
+    marginTop: windowHeight * 0.002,
+    fontSize: 15,
   },
 });

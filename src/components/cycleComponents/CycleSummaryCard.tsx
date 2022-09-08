@@ -30,7 +30,7 @@ import {
 import LabelTextInput from '../../components/LabelTextInput';
 import { Button } from 'react-native-paper';
 import { Circle } from 'react-native-maps';
-import Icon from 'react-native-vector-icons/AntDesign';
+// import Icon from 'react-native-vector-icons/AntDesign';
 // import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 // import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons, parseIconFromClassName } from 'react-native-fontawesome';
@@ -47,6 +47,9 @@ import {
   faScroll,
   faTable,
 } from '@fortawesome/free-solid-svg-icons';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const logo = '../../media/AquaLogo.gif';
 const fishlogo = '../../media/transparentFishLogo.gif';
@@ -96,35 +99,25 @@ const CycleSummaryCard = (props: Props) => {
           </View>
         </View>
         <View style={Styles.iconPack}>
-          <FontAwesomeIcon
-            icon={faEye}
-            size={20}
-            style={{ color: '#401694', alignSelf: 'flex-start', margin: windowWidth * 0.01 }}
-          />
-          <FontAwesomeIcon
-            icon={faSearch}
-            size={20}
-            style={{ color: 'mediumturquoise', alignSelf: 'flex-start', margin: windowWidth * 0.01 }}
-          />
-          <FontAwesomeIcon
-            icon={faBars}
-            size={20}
-            style={{ color: 'seagreen', alignSelf: 'flex-start', margin: windowWidth * 0.01 }}
-          />
-          <FontAwesomeIcon
-            icon={faScroll}
-            size={20}
-            style={{ color: 'gold', alignSelf: 'flex-start', margin: windowWidth * 0.01 }}
-          />
-          <FontAwesomeIcon
-            icon={faTable}
-            size={20}
-            style={{ color: 'sienna', alignSelf: 'flex-start', margin: windowWidth * 0.01 }}
-          />
+          <View style={Styles.iconBox1}>
+            <Text style={Styles.iconText1}>N</Text>
+          </View>
+          <View style={Styles.iconBox2}>
+            <Text style={Styles.iconText1}>Ph</Text>
+          </View>
+          <View style={Styles.iconBox3}>
+            <Text style={Styles.iconText1}>DO</Text>
+          </View>
+          <View style={Styles.iconBox4}>
+            <Text style={Styles.iconText2}>S</Text>
+          </View>
+          <View style={Styles.iconBox5}>
+            <Text style={Styles.iconText1}>T</Text>
+          </View>
 
-          <FontAwesomeIcon
-            icon={faCircleArrowRight}
-            size={20}
+          <Icon
+            name='arrow-circle-right'
+            size={25}
             style={{ color: 'darkslategray', margin: windowWidth * 0.01, marginLeft: windowWidth * 0.52 }}
           />
         </View>
@@ -307,5 +300,60 @@ const Styles = StyleSheet.create({
     resizeMode: 'contain',
     width: windowWidth * 0.1,
     height: windowHeight * 0.1,
+  },
+  iconBox1: {
+    backgroundColor: 'indigo',
+    alignSelf: 'flex-start',
+    marginTop: windowHeight * 0.007,
+    marginLeft: windowWidth * 0.01,
+    borderRadius: 3,
+    width: windowWidth * 0.06,
+    height: windowHeight * 0.02,
+  },
+  iconBox2: {
+    backgroundColor: 'mediumturquoise',
+    alignSelf: 'flex-start',
+    marginTop: windowHeight * 0.007,
+    marginLeft: windowWidth * 0.01,
+    borderRadius: 3,
+    width: windowWidth * 0.06,
+    height: windowHeight * 0.02,
+  },
+  iconBox3: {
+    backgroundColor: 'seagreen',
+    alignSelf: 'flex-start',
+    marginTop: windowHeight * 0.007,
+    marginLeft: windowWidth * 0.01,
+    borderRadius: 3,
+    width: windowWidth * 0.06,
+    height: windowHeight * 0.02,
+  },
+  iconBox4: {
+    backgroundColor: 'gold',
+    alignSelf: 'flex-start',
+    marginTop: windowHeight * 0.007,
+    marginLeft: windowWidth * 0.01,
+    borderRadius: 3,
+    width: windowWidth * 0.06,
+    height: windowHeight * 0.02,
+  },
+  iconBox5: {
+    backgroundColor: 'sienna',
+    alignSelf: 'flex-start',
+    marginTop: windowHeight * 0.007,
+    marginLeft: windowWidth * 0.01,
+    borderRadius: 3,
+    width: windowWidth * 0.06,
+    height: windowHeight * 0.02,
+  },
+  iconText1: {
+    fontWeight: '800',
+    color: 'white',
+    marginLeft: windowWidth * 0.01,
+  },
+  iconText2: {
+    fontWeight: '800',
+    color: 'black',
+    marginLeft: windowWidth * 0.019,
   },
 });

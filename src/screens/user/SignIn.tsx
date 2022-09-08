@@ -14,7 +14,7 @@ import {
   storeIsProfileComplete,
   storeProfileImage,
 } from '../../reduxstore/userSlice';
-import { storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
+import { storeFarmDescription, storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { CallGetApi } from '../../utilites/Util';
 import { storePondArray } from '../../reduxstore/pondSlice';
@@ -98,6 +98,7 @@ const SignIn: FC = () => {
           dispatch(storeFarmName({ farmName: farmData.farm_name }));
           dispatch(storeFarmImages({ farmImages: farmImageArray }));
           dispatch(storeFarmID({ farmID: data.farm_id }));
+          dispatch(storeFarmDescription({ farmDescription: farmData.description }));
         }
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));

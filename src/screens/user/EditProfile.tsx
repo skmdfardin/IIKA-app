@@ -16,27 +16,31 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 import { CallPostApi } from '../../utilites/Util';
 import { storeIsProfileComplete } from '../../reduxstore/userSlice';
+import { NavigationParamList } from '../../types/navigation';
 
 interface EditProfileScreenProps {}
 
 const logo = '../../media/AquaLogo.gif';
 const profile = '../../media/profile.png';
 
+type naviType = NativeStackNavigationProp<NavigationParamList, 'edit_profile_screen'>;
+
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const store = useSelector((state: any) => state.userStore);
   const dispatch = useDispatch();
   const [isSaving, setIsSaving] = useState(false);
   const [userName, setuserName] = useState(store.userName);
-  const [fileUri, setFileUri] = useState(undefined);
+  const [fileUri, setFileUri] = useState('');
   const [fileResponse, setFileResponse] = useState(undefined);
   const [visible, setVisible] = useState(false);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const token = store.email;
 
   const alert = (text: string) => {

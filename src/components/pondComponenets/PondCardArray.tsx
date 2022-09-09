@@ -1,19 +1,24 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NavigationParamList } from '../../types/navigation';
 import { whiteColor, windowHeight, windowWidth, styles } from '../../media/css/common';
 
+type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
 //    { label: 'Nursery', value: 1 },
 // { label: 'Effluent Treatment Pond (ETS)', value: 2 },
 // { label: 'Reservoir Pond', value: 3 }, dispatch(storePondArray({ pondDataArray: pondData }));
 
 const PondCardArray: FC = () => {
+  const navigation = useNavigation<naviType>();
   const pondStore = useSelector((state: any) => state.pondStore);
   const validPonds = pondStore.pondDataArray;
 
   const onSelect = (pondID: number) => {
+    navigation.navigate('pond_details', { pondID });
     console.log('Pond clicked', pondID);
-    console.log('STORE', pondStore.pondDataArray);
   };
 
   const pondType = (pondTypeNo: number) => {

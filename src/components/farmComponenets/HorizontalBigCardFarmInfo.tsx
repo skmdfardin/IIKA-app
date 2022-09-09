@@ -2,19 +2,22 @@ import React, { FC } from 'react';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NavigationParamList } from '../../types/navigation';
 import { whiteColor, windowHeight, windowWidth, styles, blackColor } from '../../media/css/common';
-import { FARM_DETAILS } from '../../navigation/StackNavigation';
 
 const { robotoRegular12, robotoRegular18, robotoBold20, shadow } = styles;
 
+type naviType = NativeStackNavigationProp<NavigationParamList>;
+
 const HorizontalBigCardFarmInfo: FC = () => {
   const farmStore = useSelector((state: any) => state.farmStore);
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const farmImage = farmStore.farmImages[0];
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate(FARM_DETAILS.toString());
+        navigation.navigate('farm_details');
       }}
     >
       <View style={[Styles.container, shadow]}>

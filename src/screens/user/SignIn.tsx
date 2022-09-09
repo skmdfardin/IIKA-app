@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
-import { SIGN_UP, NEW_USER_LANDING } from '../../navigation/StackNavigation';
 import {
   storeEmailId,
   storeFirstName,
@@ -18,6 +18,7 @@ import { storeFarmDescription, storeFarmID, storeFarmImages, storeFarmName } fro
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { CallGetApi } from '../../utilites/Util';
 import { storePondArray } from '../../reduxstore/pondSlice';
+import { NavigationParamList } from '../../types/navigation';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
@@ -25,6 +26,7 @@ const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
 const glogo = '../../media/googleLogo.png';
+type naviType = NativeStackNavigationProp<NavigationParamList, 'sign_in'>;
 
 const SignIn: FC = () => {
   const [emailId, setEmailId] = useState('');
@@ -32,11 +34,11 @@ const SignIn: FC = () => {
   const [signInError, setSignInError] = useState('');
   const [isSignInError, setIsSignInError] = useState(false);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const dispatch = useDispatch();
 
   const goToSignUp = () => {
-    navigation.navigate(SIGN_UP.toString());
+    navigation.navigate('sign_up');
   };
 
   const toggle = () => {
@@ -107,7 +109,7 @@ const SignIn: FC = () => {
         dispatch(storeUserName({ userName: data.username }));
         dispatch(storeIsVerified({ isVerified: data.is_verified }));
 
-        navigation.navigate(NEW_USER_LANDING.toString());
+        navigation.navigate('new_user_landing');
       }
     } catch (error) {
       console.log('Error', error);

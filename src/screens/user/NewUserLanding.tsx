@@ -2,12 +2,15 @@ import React, { FC } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import HorizontalBigCardFarmInfo from '../../components/farmComponenets/HorizontalBigCardFarmInfo';
 import PondCardArray from '../../components/pondComponenets/PondCardArray';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
-import { EDIT_PROFILE_SCREEN, ADD_FARM, ADD_POND } from '../../navigation/StackNavigation';
+import { NavigationParamList } from '../../types/navigation';
+
+type naviType = NativeStackNavigationProp<NavigationParamList, 'new_user_landing'>;
 
 const { robotoRegular16, robotoBold20 } = styles;
 
@@ -16,21 +19,21 @@ const logo = '../../media/AquaLogo.gif';
 const menu = '../../media/menu.png';
 
 const NewUserLanding: FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const store = useSelector((state: any) => state.userStore);
   const farmStore = useSelector((state: any) => state.farmStore);
   const farmID = farmStore.farmID;
 
   const updateStatus = (): void => {
-    navigation.navigate(EDIT_PROFILE_SCREEN.toString());
+    navigation.navigate('edit_profile_screen');
   };
 
   const updateDummy = (): void => {
-    navigation.navigate(ADD_FARM.toString());
+    navigation.navigate('add_farm');
   };
 
   const goToAddPond = (): void => {
-    navigation.navigate(ADD_POND.toString());
+    navigation.navigate('add_pond');
   };
 
   return (

@@ -1,6 +1,9 @@
-import React, { FC, useState } from 'react';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import React, { FC, useEffect, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AIcons from 'react-native-vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ImageCarousel1 from '../../components/ImageCarousel1';
 import {
   windowHeight,
@@ -11,8 +14,16 @@ import {
   darkYellow,
   successColor,
 } from '../../media/css/common';
+import { NavigationParamList } from '../../types/navigation';
+import { CallGetApi } from '../../utilites/Util';
+import { useSelector } from 'react-redux';
 
 const logo = '../../media/AquaLogo.gif';
+
+type pondDetailsRouteType = RouteProp<NavigationParamList, 'pond_details'>;
+type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
+
+//{"description": "description", "id": 12, "pond_images": [{"id": 19, "image": "http://localhost:9000/aqua/pond_images/Screenshot_1.png", "image_name": "Screenshot (1).png", "images": 12}, {"id": 20, "image": "http://localhost:9000/aqua/pond_images/Screenshot_6.png", "image_name": "Screenshot (6).png", "images": 12}], "pond_name": "pond2Dev2", "pond_type": 1}
 
 export interface ImageCarouselItem {
   id: number;
@@ -20,46 +31,76 @@ export interface ImageCarouselItem {
   title: string;
 }
 
-const data: ImageCarouselItem[] = [
-  {
-    id: 0,
-    uri: 'https://images.pexels.com/photos/97465/pexels-photo-97465.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    title: 'Dahlia',
-  }, // https://unsplash.com/photos/Jup6QMQdLnM
-  {
-    id: 1,
-    uri: 'https://media.gettyimages.com/photos/the-perfect-backyard-picture-id157329538?s=612x612',
-    title: 'Sunflower',
-  }, // https://unsplash.com/photos/oO62CP-g1EA
-  {
-    id: 2,
-    uri: 'https://images.pexels.com/photos/97465/pexels-photo-97465.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    title: 'Zinnia',
-  }, // https://unsplash.com/photos/gKMmJEvcyA8
-  {
-    id: 3,
-    uri: 'https://wallpaperaccess.com/full/803470.jpg',
-    title: 'Tulip',
-  }, // https://unsplash.com/photos/N7zBDF1r7PM
-  {
-    id: 4,
-    uri: 'https://wallpaperaccess.com/full/803470.jpg',
-    title: 'Chrysanthemum',
-  }, // https://unsplash.com/photos/GsGZJMK0bJc
-  {
-    id: 5,
-    uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
-    title: 'Hydrangea',
-  }, // https://unsplash.com/photos/coIBOiWBPjk
-];
+export type responseItem = {
+  id: number;
+  image: string;
+  image_name: string;
+};
 
 const PondDetails: FC = () => {
-  const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
+  const navigation = useNavigation<naviType>();
+
+  const {
+    params: { pondID },
+  } = useRoute<pondDetailsRouteType>();
+
+  const store = useSelector((state: any) => state.userStore);
+  const farmStore = useSelector((state: any) => state.farmStore);
+  const token = store.email;
+  const farmName = farmStore.farmName;
+
   const [pondStatus, setPondStatus] = useState('inactive');
   const [currentTab, setCurrentTab] = useState('Details');
   const [pondDetailsDropStatus, setPondDetailsDropStatus] = useState(false);
+  const [pondDescrition, setPondDescription] = useState<string>('');
+  const [pondName, setPondName] = useState<string>('');
+  const [pondType, setPondType] = useState<string>('');
+  const [pondImages, setPondImages] = useState<ImageCarouselItem[]>([]);
+  const [pondIdImage, setPondIdImage] = useState<string>('');
+
+  const pondTypeString = (pondTypeNo: number) => {
+    if (pondTypeNo === 1) {
+      return 'Nursery';
+    }
+    if (pondTypeNo === 2) {
+      return 'ETS';
+    }
+    if (pondTypeNo === 3) {
+      return 'Reservoir Pond';
+    }
+    return 'unknown';
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const pondUrl = 'http://103.127.146.20:4000/api/v1/ponds/pondregist/' + pondID.toString() + '/get-pond-summary/';
+      try {
+        const pondData: any = await CallGetApi(pondUrl, token);
+        if (pondData !== null) {
+          const detail = pondData.data.result;
+          const tempData: ImageCarouselItem[] = detail.pond_images.map((item: responseItem) => {
+            return {
+              id: item.id,
+              uri: item.image.replace('localhost', '103.127.146.20'),
+              title: item.image_name,
+            };
+          });
+          const temp: string = pondTypeString(detail.pond_type);
+          setPondImages(tempData);
+          setPondDescription(detail.description);
+          setPondName(detail.pond_name);
+          setPondType(temp);
+          setPondIdImage(tempData[0].uri);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [token, pondID]);
 
   const toggleTab = (selectedTab: string) => {
+    console.log('POND ID in pond details', pondID);
     setCurrentTab(selectedTab);
   };
   const pondEdit = () => {
@@ -67,88 +108,105 @@ const PondDetails: FC = () => {
     setPondStatus('active');
   };
 
-  const callBackSliderIndex = (index: number) => {
-    setCurrentSliderIndex(index);
-  };
-
   return (
     <SafeAreaView style={Styles.container}>
       <View style={Styles.header}>
-        <Text style={Styles.backButton}>BACK</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={Styles.backButton}>BACK</Text>
+        </TouchableOpacity>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         {pondStatus === 'inactive' ? (
-          <View style={[Styles.pondCard, Styles.shadowProp, { paddingBottom: windowHeight * 0.02 }]}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: windowWidth * 0.95,
-                height: windowHeight * 0.05,
-                backgroundColor: '#0059AB',
-                alignItems: 'center',
-                paddingHorizontal: windowWidth * 0.02,
-                borderTopEndRadius: 10,
-                borderTopLeftRadius: 10,
-              }}
-            >
-              <Text style={{ color: whiteColor }}>#pondId</Text>
+          <>
+            <View style={[Styles.pondCard, Styles.shadowProp, { paddingBottom: windowHeight * 0.02 }]}>
               <View
                 style={{
-                  backgroundColor: whiteColor,
-                  borderRadius: 20,
-                  width: windowWidth * 0.25,
                   flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: windowWidth * 0.95,
+                  height: windowHeight * 0.05,
+                  backgroundColor: '#0059AB',
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  paddingHorizontal: windowWidth * 0.02,
+                  borderTopEndRadius: 10,
+                  borderTopLeftRadius: 10,
                 }}
               >
-                <Text>Inactive</Text>
+                <Text style={{ color: whiteColor }}>#{pondID.toString()}</Text>
                 <View
                   style={{
-                    height: windowHeight * 0.0175,
-                    width: windowWidth * 0.035,
-                    backgroundColor: blackColor,
-                    marginLeft: windowWidth * 0.01,
+                    backgroundColor: whiteColor,
+                    borderRadius: 20,
+                    width: windowWidth * 0.25,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text>Inactive</Text>
+                  <View
+                    style={{
+                      height: windowHeight * 0.0175,
+                      width: windowWidth * 0.035,
+                      backgroundColor: blackColor,
+                      marginLeft: windowWidth * 0.01,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  padding: windowHeight * 0.01,
+                }}
+              >
+                <Image
+                  source={{
+                    uri:
+                      pondIdImage !== '' ? pondIdImage : 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
+                  }}
+                  style={{
+                    height: windowHeight * 0.09,
+                    width: windowWidth * 0.18,
                     borderRadius: 10,
                   }}
                 />
+                <View style={{ marginLeft: windowWidth * 0.02 }}>
+                  <Text>{farmName}</Text>
+                  <Text>{pondName}</Text>
+                  <Text>{pondType}</Text>
+                </View>
               </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                padding: windowHeight * 0.01,
-              }}
-            >
-              <Image
-                source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }}
+              <View
                 style={{
-                  height: windowHeight * 0.09,
-                  width: windowWidth * 0.18,
-                  borderRadius: 10,
-                }}
-              />
-              <View style={{ marginLeft: windowWidth * 0.02 }}>
-                <Text>Farm Name</Text>
-                <Text>Pond Name</Text>
-                <Text>Pond Type</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                marginHorizontal: windowWidth * 0.02,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  pondEdit();
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  marginHorizontal: windowWidth * 0.02,
                 }}
               >
+                <TouchableOpacity
+                  onPress={() => {
+                    pondEdit();
+                  }}
+                >
+                  <View
+                    style={{
+                      backgroundColor: pearlGreyColour,
+                      borderRadius: 10,
+                      marginVertical: windowHeight * 0.005,
+                      height: windowHeight * 0.05,
+                    }}
+                  >
+                    <Text style={Styles.blueText}>Edit Pond details</Text>
+                  </View>
+                </TouchableOpacity>
                 <View
                   style={{
                     backgroundColor: pearlGreyColour,
@@ -157,31 +215,69 @@ const PondDetails: FC = () => {
                     height: windowHeight * 0.05,
                   }}
                 >
-                  <Text style={Styles.blueText}>Edit Pond details</Text>
+                  <Text style={Styles.blueText}>View Cycle History</Text>
                 </View>
-              </TouchableOpacity>
-              <View
-                style={{
-                  backgroundColor: pearlGreyColour,
-                  borderRadius: 10,
-                  marginVertical: windowHeight * 0.005,
-                  height: windowHeight * 0.05,
-                }}
-              >
-                <Text style={Styles.blueText}>View Cycle History</Text>
-              </View>
-              <View
-                style={{
-                  backgroundColor: pearlGreyColour,
-                  borderRadius: 10,
-                  marginVertical: windowHeight * 0.005,
-                  height: windowHeight * 0.05,
-                }}
-              >
-                <Text style={Styles.blueText}>Create New Cycle</Text>
+                <View
+                  style={{
+                    backgroundColor: pearlGreyColour,
+                    borderRadius: 10,
+                    marginVertical: windowHeight * 0.005,
+                    height: windowHeight * 0.05,
+                  }}
+                >
+                  <Text style={Styles.blueText}>Create New Cycle</Text>
+                </View>
               </View>
             </View>
-          </View>
+            <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
+              <View style={Styles.infoCard}>
+                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
+                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
+                    Total Cycles
+                  </Text>
+                  <View style={{ alignContent: 'flex-end' }}>
+                    <View style={{ flexDirection: 'row', marginTop: 2 }}>
+                      <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>235</Text>
+                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={Styles.infoCard}>
+                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
+                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
+                    Completed Cycles
+                  </Text>
+                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>10</Text>
+                </View>
+              </View>
+              <View style={Styles.infoCard}>
+                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
+                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
+                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>1.234</Text>
+                </View>
+              </View>
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <ImageCarousel1
+                imageItem={pondImages}
+                callBackIndex={(index: number) => {
+                  console.log(index);
+                }}
+              />
+            </View>
+            <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
+              <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
+                {pondDescrition}
+              </Text>
+            </View>
+            <View style={[Styles.graph, Styles.shadowProp]}>
+              <Text>GRAPH</Text>
+            </View>
+            <View style={[Styles.graph, Styles.shadowProp]}>
+              <Text>GRAPH</Text>
+            </View>
+          </>
         ) : (
           <View style={[Styles.pondCard, Styles.shadowProp]}>
             <View
@@ -197,7 +293,7 @@ const PondDetails: FC = () => {
                 borderTopLeftRadius: 10,
               }}
             >
-              <Text style={{ color: whiteColor }}>#pondId</Text>
+              <Text style={{ color: whiteColor }}>#{pondID.toString()}</Text>
               <View
                 style={{
                   backgroundColor: whiteColor,
@@ -227,7 +323,10 @@ const PondDetails: FC = () => {
               }}
             >
               <Image
-                source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }}
+                source={{
+                  uri:
+                    pondIdImage !== '' ? pondIdImage : 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
+                }}
                 style={{
                   height: windowHeight * 0.09,
                   width: windowWidth * 0.18,
@@ -235,9 +334,9 @@ const PondDetails: FC = () => {
                 }}
               />
               <View style={{ marginLeft: windowWidth * 0.02 }}>
-                <Text>Farm Name</Text>
-                <Text>Pond Name</Text>
-                <Text>Pond Type</Text>
+                <Text>{farmName}</Text>
+                <Text>{pondName}</Text>
+                <Text>{pondType}</Text>
               </View>
             </View>
             <View
@@ -322,207 +421,210 @@ const PondDetails: FC = () => {
           </View>
         )}
         {currentTab === 'Details' && pondStatus === 'active' ? (
-          <View style={{ marginHorizontal: windowWidth * 0.03 }}>
-            <TouchableOpacity
-              onPress={() => {
-                setPondDetailsDropStatus(!pondDetailsDropStatus);
-              }}
-            >
-              <View
-                style={[
-                  Styles.shadowProp,
-                  {
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    backgroundColor: darkYellow,
-                    height: windowHeight * 0.07,
-                    alignItems: 'center',
-                    borderRadius: 10,
-                    paddingHorizontal: windowWidth * 0.04,
-                  },
-                ]}
-              >
-                <Text style={{ color: whiteColor, fontWeight: '900', fontSize: windowWidth * 0.045 }}>
-                  Active Pond Details
-                </Text>
-                {pondDetailsDropStatus ? (
-                  <AIcons name="caretdown" size={25} color={whiteColor} />
-                ) : (
-                  <AIcons name="caretright" size={25} color={whiteColor} />
-                )}
-              </View>
-            </TouchableOpacity>
-            {pondDetailsDropStatus && (
-              <View
-                style={[
-                  Styles.shadowProp,
-                  { backgroundColor: whiteColor, borderRadius: 10, paddingBottom: windowHeight * 0.01 },
-                ]}
+          <>
+            <View style={{ marginHorizontal: windowWidth * 0.03 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setPondDetailsDropStatus(!pondDetailsDropStatus);
+                }}
               >
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    marginHorizontal: windowWidth * 0.05,
-                    justifyContent: 'space-between',
-                  }}
+                  style={[
+                    Styles.shadowProp,
+                    {
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      backgroundColor: darkYellow,
+                      height: windowHeight * 0.07,
+                      alignItems: 'center',
+                      borderRadius: 10,
+                      paddingHorizontal: windowWidth * 0.04,
+                    },
+                  ]}
                 >
-                  <View style={Styles.infoCard2}>
-                    <View style={{ flexDirection: 'column' }}>
-                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
-                        Seed(kg)
-                      </Text>
-                      <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
-                        2546Kg
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={Styles.infoCard2}>
-                    <View style={{ flexDirection: 'column' }}>
-                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
-                        Seeding Date
-                      </Text>
-                      <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
-                        02.02.22
-                      </Text>
-                    </View>
-                  </View>
+                  <Text style={{ color: whiteColor, fontWeight: '900', fontSize: windowWidth * 0.045 }}>
+                    Active Pond Details
+                  </Text>
+                  {pondDetailsDropStatus ? (
+                    <AIcons name="caretdown" size={25} color={whiteColor} />
+                  ) : (
+                    <AIcons name="caretright" size={25} color={whiteColor} />
+                  )}
                 </View>
+              </TouchableOpacity>
+              {pondDetailsDropStatus && (
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    marginHorizontal: windowWidth * 0.08,
-                    justifyContent: 'space-between',
-                  }}
+                  style={[
+                    Styles.shadowProp,
+                    { backgroundColor: whiteColor, borderRadius: 10, paddingBottom: windowHeight * 0.01 },
+                  ]}
                 >
-                  <View style={{ width: windowWidth * 0.5 }}>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Species:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Species PL stage:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Total Number Of Larvey:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation cost:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Company:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Cost:</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginHorizontal: windowWidth * 0.05,
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <View style={Styles.infoCard2}>
+                      <View style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
+                          Seed(kg)
+                        </Text>
+                        <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                          2546Kg
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={Styles.infoCard2}>
+                      <View style={{ flexDirection: 'column' }}>
+                        <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
+                          Seeding Date
+                        </Text>
+                        <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                          02.02.22
+                        </Text>
+                      </View>
+                    </View>
                   </View>
                   <View
                     style={{
-                      alignItems: 'flex-start',
-                      width: windowWidth * 0.35,
-                      marginLeft: windowWidth * 0.01,
+                      flexDirection: 'row',
+                      marginHorizontal: windowWidth * 0.08,
+                      justifyContent: 'space-between',
                     }}
                   >
-                    <Text style={{ color: blackColor }}>Vennami</Text>
-                    <Text style={{ color: blackColor }}>18 days</Text>
-                    <Text style={{ color: blackColor }}>2500</Text>
-                    <Text style={{ color: blackColor }}>₹ 45,222</Text>
-                    <Text style={{ color: blackColor }}>Seed Company</Text>
-                    <Text style={{ color: blackColor }}>₹ 56568</Text>
+                    <View style={{ width: windowWidth * 0.5 }}>
+                      <Text style={{ color: blackColor, fontWeight: '600' }}>Species:</Text>
+                      <Text style={{ color: blackColor, fontWeight: '600' }}>Species PL stage:</Text>
+                      <Text style={{ color: blackColor, fontWeight: '600' }}>Total Number Of Larvey:</Text>
+                      <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation cost:</Text>
+                      <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Company:</Text>
+                      <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Cost:</Text>
+                    </View>
+                    <View
+                      style={{
+                        alignItems: 'flex-start',
+                        width: windowWidth * 0.35,
+                        marginLeft: windowWidth * 0.01,
+                      }}
+                    >
+                      <Text style={{ color: blackColor }}>Vennami</Text>
+                      <Text style={{ color: blackColor }}>18 days</Text>
+                      <Text style={{ color: blackColor }}>2500</Text>
+                      <Text style={{ color: blackColor }}>₹ 45,222</Text>
+                      <Text style={{ color: blackColor }}>Seed Company</Text>
+                      <Text style={{ color: blackColor }}>₹ 56568</Text>
+                    </View>
+                  </View>
+                  <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
+                    <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
+                      {pondDescrition}
+                    </Text>
+                  </View>
+                  <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
+                    <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
+                      <View style={Styles.pondDetailsimage}>
+                        <Image
+                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                          style={{ flex: 1 }}
+                        />
+                      </View>
+                      <View style={Styles.pondDetailsimage}>
+                        <Image
+                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                          style={{ flex: 1 }}
+                        />
+                      </View>
+                      <View style={Styles.pondDetailsimage}>
+                        <Image
+                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                          style={{ flex: 1 }}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
+                    <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation images</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
+                      <View style={Styles.pondDetailsimage}>
+                        <Image
+                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                          style={{ flex: 1 }}
+                        />
+                      </View>
+                      <View style={Styles.pondDetailsimage}>
+                        <Image
+                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                          style={{ flex: 1 }}
+                        />
+                      </View>
+                      <View style={Styles.pondDetailsimage}>
+                        <Image
+                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                          style={{ flex: 1 }}
+                        />
+                      </View>
+                    </View>
                   </View>
                 </View>
-                <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
-                  <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
-                    This is where the description of the Cycle goes.Lorem ipsum dolor sit amet, consectetur adipiscing
-                    elit,sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.This is where the description
-                    of the Pond goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor
-                    incididunt ut labore et dolore magna aliqua.
+              )}
+            </View>
+            <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
+              <View style={Styles.infoCard}>
+                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
+                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
+                    Total Cycles
                   </Text>
-                </View>
-                <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
-                  <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
-                  <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation images</Text>
-                  <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
+                  <View style={{ alignContent: 'flex-end' }}>
+                    <View style={{ flexDirection: 'row', marginTop: 2 }}>
+                      <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>235</Text>
+                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
                     </View>
                   </View>
                 </View>
               </View>
-            )}
-          </View>
+              <View style={Styles.infoCard}>
+                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
+                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
+                    Completed Cycles
+                  </Text>
+                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>10</Text>
+                </View>
+              </View>
+              <View style={Styles.infoCard}>
+                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
+                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
+                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>1.234</Text>
+                </View>
+              </View>
+            </View>
+            <View style={{ marginTop: 10 }}>
+              <ImageCarousel1
+                imageItem={pondImages}
+                callBackIndex={(index: number) => {
+                  console.log(index);
+                }}
+              />
+            </View>
+            <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
+              <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
+                {pondDescrition}
+              </Text>
+            </View>
+            <View style={[Styles.graph, Styles.shadowProp]}>
+              <Text>GRAPH</Text>
+            </View>
+            <View style={[Styles.graph, Styles.shadowProp]}>
+              <Text>GRAPH</Text>
+            </View>
+          </>
         ) : currentTab === 'Records' && pondStatus === 'active' ? (
           <View>
             <Text>Records Place Holder</Text>
           </View>
         ) : null}
-        <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>Total Cycles</Text>
-              <View style={{ alignContent: 'flex-end' }}>
-                <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>235</Text>
-                  <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
-                Completed Cycles
-              </Text>
-              <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>10</Text>
-            </View>
-          </View>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
-              <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>1.234</Text>
-            </View>
-          </View>
-        </View>
-        <View style={{ marginTop: 10 }}>
-          <ImageCarousel1 imageItem={data} callBackIndex={(index: number) => callBackSliderIndex(index)} />
-        </View>
-        <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
-          <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
-            This is where the description of the Pond goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed
-            do eiusmod tempor incididunt ut labore et dolore magna aliqua.This is where the description of the Pond
-            goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.
-          </Text>
-        </View>
-        <View style={[Styles.graph, Styles.shadowProp]}>
-          <Text>GRAPH</Text>
-        </View>
-        <View style={[Styles.graph, Styles.shadowProp]}>
-          <Text>GRAPH</Text>
-        </View>
       </ScrollView>
     </SafeAreaView>
   );

@@ -2,14 +2,17 @@ import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
-import { NEW_USER_LANDING } from '../../navigation/StackNavigation';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
+import { NavigationParamList } from '../../types/navigation';
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/register';
+
+type naviType = NativeStackNavigationProp<NavigationParamList, 'sign_up'>;
 
 const SignUp: FC = () => {
   const [firstName, setFirstName] = useState('');
@@ -24,7 +27,7 @@ const SignUp: FC = () => {
   const [mobileNumError, setMobileNumError] = useState(false);
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
 
   const resetState = () => {
     setFirstName('');
@@ -66,7 +69,7 @@ const SignUp: FC = () => {
         console.log('responce', data.responce);
         console.log('Data', data);
         resetState();
-        navigation.navigate(NEW_USER_LANDING.toString());
+        navigation.navigate('new_user_landing');
       } else {
         console.log('Response', data);
       }

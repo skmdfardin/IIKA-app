@@ -100,7 +100,6 @@ const PondDetails: FC = () => {
   }, [token, pondID]);
 
   const toggleTab = (selectedTab: string) => {
-    console.log('POND ID in pond details', pondID);
     setCurrentTab(selectedTab);
   };
   const pondEdit = () => {

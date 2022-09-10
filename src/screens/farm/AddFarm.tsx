@@ -165,10 +165,6 @@ const AddFarm: FC = () => {
         });
       }
     }
-    console.log('called');
-    console.log('URL', url);
-    console.log('token', token);
-    console.log('Formdata', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
 

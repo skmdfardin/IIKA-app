@@ -71,7 +71,7 @@ const SignIn: FC = () => {
         setSignInError('Incorrect Email or Password');
       } else {
         resetState();
-        console.log('DATA', data);
+        console.log('SIGN IN DATA', data);
         const profileCheck = await CallGetApi(profileURL, data.email);
         const profileData = profileCheck.data;
         console.log('profileData', profileData);

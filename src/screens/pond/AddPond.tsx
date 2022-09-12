@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
   windowHeight,
   windowWidth,
@@ -29,7 +30,6 @@ import {
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
 import { CallPostApi } from '../../utilites/Util';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { storePondArray } from '../../reduxstore/pondSlice';
 
 // const pondConstructTypesOptions = ["Soil", "Tarpaulin"]
@@ -585,6 +585,7 @@ const PageStyles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
+    paddingLeft: windowWidth * 0.025,
   },
   certificateButton: {
     height: windowHeight * 0.05,

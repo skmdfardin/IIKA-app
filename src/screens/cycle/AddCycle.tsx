@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -13,7 +13,12 @@ import {
   SafeAreaView,
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
+import { Calendar } from 'react-native-calendars';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NavigationParamList } from '../../types/navigation';
 import {
   windowHeight,
   windowWidth,
@@ -21,16 +26,17 @@ import {
   asphaltGreyColour,
   blackColor,
   commonBlueColor,
-  styles,
   discardColour,
   saveColour,
   orangeColor2,
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 const logo = '../../media/AquaLogo.gif';
 
-const shadow = styles.shadow;
+type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
 
 type imageFrame = {
   uri: string | undefined;
@@ -38,21 +44,68 @@ type imageFrame = {
   name: string | undefined;
 };
 
-const AddCycle: FC = () => {
-  const [visible, setVisible] = useState(false);
-  const [isPondImage, setisPondImage] = useState(false);
-  const [SelectPond, setSelectPond] = useState('');
-  const [SelectSpecies, setSelectSpecies] = useState('');
-  const [SpeciesPLStage, setSpeciesPLStage] = useState('');
-  const [TotalNumberofLarvae, setTotalNumberofLarvae] = useState('');
-  const [SelectSeedCompany, setSelectSeedCompany] = useState('');
-  const [SeedInvestmentAmount, setSeedInvestmentAmount] = useState('');
-  const [SeedingDate, setSeedingDate] = useState('');
-  const [PondPreparationCost, setPondPreparationCost] = useState('');
-  const [CycleDescription, setCycleDescription] = useState('');
-  const [SeedImages, setSeedImages] = useState<imageFrame[]>([]);
-  const [PondImages, setPondImages] = useState<imageFrame[]>([]);
+type dropdownValue = {
+  label: string;
+  value: number;
+};
 
+const AddCycle: FC = () => {
+  const navigation = useNavigation<naviType>();
+  const pondStore = useSelector((state: any) => state.pondStore);
+  const validPonds = pondStore.pondDataArray;
+
+  const [visible, setVisible] = useState(false);
+  const [calenderVisible, setCalenderVisible] = useState(true);
+  const [isPondImage, setisPondImage] = useState(false);
+  const [totalNumberofLarvae, setTotalNumberofLarvae] = useState('');
+  const [selectSeedCompany, setSelectSeedCompany] = useState('');
+  const [seedInvestmentAmount, setSeedInvestmentAmount] = useState('');
+  const [seedingDate, setSeedingDate] = useState('');
+  const [pondPreparationCost, setPondPreparationCost] = useState('');
+  const [cycleDescription, setCycleDescription] = useState('');
+  const [seedImages, setSeedImages] = useState<imageFrame[]>([]);
+  const [pondImages, setPondImages] = useState<imageFrame[]>([]);
+  const [selectSpeciesValue, setselectSpeciesValue] = useState(0);
+  const [speciesPLStageValue, setSpeciesPLStageValue] = useState(0);
+  const [selectSpeciesOpen, setSelectSpeciesOpen] = useState(false);
+  const [speciesPLStageOpen, setSpeciesPLStageOpen] = useState(false);
+  const [initialRender, setInitialRender] = useState(true);
+  const [selectSpeciesItems, setSelectSpeciesItems] = useState<dropdownValue[]>([{ label: 'Vennamai', value: 1 }]);
+  const [speciesPLStageItems, setSpeciesPLStageItems] = useState<dropdownValue[]>([
+    { label: 'PL-5', value: 1 },
+    { label: 'PL-10', value: 2 },
+    { label: 'PL-15', value: 3 },
+  ]);
+  const [selectPondItems, setSelectPondItems] = useState<dropdownValue[]>([]);
+  const [selectPondValue, setSelectPondValue] = useState(0);
+  const [selectPondOpen, setSelectPondOpen] = useState(false);
+
+  useEffect(() => {
+    getPondItems();
+    if (initialRender) {
+      setInitialRender(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialRender]);
+
+  const getPondItems = async () => {
+    let temp: dropdownValue[] = [];
+    try {
+      temp = await validPonds.map((pond: any) => {
+        return {
+          label: pond.id.toString() + '-' + pond.pond_name,
+          value: pond.id,
+        };
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    pondItems(temp);
+  };
+
+  const pondItems = (items: dropdownValue[]) => {
+    setSelectPondItems(items);
+  };
   const addImage = () => {
     setVisible(true);
   };
@@ -62,9 +115,6 @@ const AddCycle: FC = () => {
   };
 
   const initialState = () => {
-    setSelectPond('');
-    setSelectSpecies('');
-    setSpeciesPLStage('');
     setTotalNumberofLarvae('');
     setSelectSeedCompany('');
     setSeedInvestmentAmount('');
@@ -72,6 +122,7 @@ const AddCycle: FC = () => {
     setPondPreparationCost('');
     setCycleDescription('');
     setSeedImages([]);
+    setSelectPondItems([]);
     setPondImages([]);
   };
 
@@ -80,16 +131,45 @@ const AddCycle: FC = () => {
   };
 
   const removeimageSeed = (name: string) => {
-    const newSeedImages = SeedImages.filter((item) => item.name !== name);
+    const newSeedImages = seedImages.filter((item) => item.name !== name);
     setSeedImages(newSeedImages);
   };
   const removeimagePond = (name: string) => {
-    const newPondImages = PondImages.filter((item) => item.name !== name);
+    const newPondImages = pondImages.filter((item) => item.name !== name);
     setPondImages(newPondImages);
   };
 
   const onSave = () => {
-    console.log('data saved successfully');
+    const formData = new FormData();
+    formData.append('Pond', selectPondValue);
+    formData.append('species', selectSpeciesValue.toString());
+    formData.append('speciesPlStage', speciesPLStageValue.toString());
+    formData.append('seed_company', selectSeedCompany);
+    formData.append('invest_amount', parseInt(seedInvestmentAmount, 10));
+    formData.append('pondPrep_cost', parseInt(pondPreparationCost, 10));
+    formData.append('seeding_date', seedingDate);
+    formData.append('description', cycleDescription);
+    if (seedImages.length > 0) {
+      for (let i = 0; i < seedImages.length; i++) {
+        const photo = seedImages[i];
+        formData.append('seed_images', {
+          name: photo.name,
+          type: photo.type,
+          uri: photo.uri,
+        });
+      }
+    }
+    if (pondImages.length > 0) {
+      for (let i = 0; i < pondImages.length; i++) {
+        const photo = pondImages[i];
+        formData.append('pond_images', {
+          name: photo.name,
+          type: photo.type,
+          uri: photo.uri,
+        });
+      }
+    }
+    console.log('FORM DATA', formData);
   };
 
   const requestExternalWritePermission = async () => {
@@ -136,17 +216,22 @@ const AddCycle: FC = () => {
           return;
         }
         const assetsOfImage = response.assets[0];
+        let temp = '';
+        if (!isPondImage) {
+          temp = 'seed' + selectPondValue.toString + seedImages.length.toString + 'image';
+        } else {
+          temp = 'cycle' + selectPondValue.toString + pondImages.length.toString + 'image';
+        }
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: assetsOfImage.fileName,
+          name: temp,
         };
         if (!isPondImage) {
-          console;
           console.log('successful');
-          setSeedImages([...SeedImages, imageURI]);
+          setSeedImages([...seedImages, imageURI]);
         } else {
-          setPondImages([...PondImages, imageURI]);
+          setPondImages([...pondImages, imageURI]);
           setisPondImage(false);
         }
         console.log('86', response);
@@ -182,18 +267,24 @@ const AddCycle: FC = () => {
       }
       console.log('RESPONSE', response);
       const assetsOfImage = response.assets[0];
+      let temp = '';
+      if (!isPondImage) {
+        temp = 'seed' + selectPondValue.toString + seedImages.length.toString + 'image';
+      } else {
+        temp = 'cycle' + selectPondValue.toString + pondImages.length.toString + 'image';
+      }
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: assetsOfImage.fileName,
+        name: temp,
       };
       console.log(isPondImage);
       if (!isPondImage) {
         console;
         console.log('successful');
-        setSeedImages([...SeedImages, imageURI]);
+        setSeedImages([...seedImages, imageURI]);
       } else {
-        setPondImages([...PondImages, imageURI]);
+        setPondImages([...pondImages, imageURI]);
         setisPondImage(false);
       }
       console.log('86', response);
@@ -314,8 +405,23 @@ const AddCycle: FC = () => {
           </View>
         </View>
       </Modal>
+      <Modal visible={calenderVisible} transparent>
+        <Calendar
+          initialDate={moment().format('YYYY-MM-DD')}
+          onDayPress={(day) => {
+            console.log('selected day', day.dateString);
+            setCalenderVisible(false);
+          }}
+        />
+      </Modal>
       <View style={PageStyles.header}>
-        <Text style={PageStyles.backButton}>BACK</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={PageStyles.backButton}>BACK</Text>
+        </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
       <View style={{ backgroundColor: orangeColor2, height: windowHeight * 0.04 }}>
@@ -326,37 +432,70 @@ const AddCycle: FC = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={PageStyles.scroll}>
-          <LabelTextInput
-            nameOfField="Select Pond*"
-            onChange={(text) => {
-              setSelectPond(text);
+          <View
+            style={{
+              width: windowWidth * 0.9,
+              marginBottom: selectPondOpen ? windowHeight * 0.27 : windowHeight * 0.01,
+              marginTop: windowHeight * 0.02,
             }}
-            width={windowWidth * 0.9}
-            value={SelectPond}
-          />
-          <LabelTextInput
-            nameOfField="Select Species*"
-            onChange={(text) => {
-              setSelectSpecies(text);
+          >
+            <Text> Select Pond*:</Text>
+            <DropDownPicker
+              open={selectPondOpen}
+              value={selectPondValue}
+              items={selectPondItems}
+              setOpen={setSelectPondOpen}
+              setValue={setSelectPondValue}
+              setItems={setSelectPondItems}
+              placeholder={''}
+              listMode="SCROLLVIEW"
+            />
+          </View>
+          <View
+            style={{
+              width: windowWidth * 0.9,
+              marginBottom: selectSpeciesOpen ? windowHeight * 0.05 * selectSpeciesItems.length : windowHeight * 0.01,
+              marginTop: windowHeight * 0.02,
             }}
-            width={windowWidth * 0.9}
-            value={SelectSpecies}
-          />
-          <LabelTextInput
-            nameOfField="Species PL Stage*"
-            onChange={(text) => {
-              setSpeciesPLStage(text);
+          >
+            <Text> Select Species*:</Text>
+            <DropDownPicker
+              open={selectSpeciesOpen}
+              value={selectSpeciesValue}
+              items={selectSpeciesItems}
+              setOpen={setSelectSpeciesOpen}
+              setValue={setselectSpeciesValue}
+              setItems={setSelectSpeciesItems}
+              placeholder={''}
+              listMode="SCROLLVIEW"
+            />
+          </View>
+          <View
+            style={{
+              width: windowWidth * 0.9,
+              marginBottom: speciesPLStageOpen ? windowHeight * 0.05 * speciesPLStageItems.length : windowHeight * 0.01,
+              marginTop: windowHeight * 0.02,
             }}
-            width={windowWidth * 0.9}
-            value={SpeciesPLStage}
-          />
+          >
+            <Text>Species PL-Stage*:</Text>
+            <DropDownPicker
+              open={speciesPLStageOpen}
+              value={speciesPLStageValue}
+              items={speciesPLStageItems}
+              setOpen={setSpeciesPLStageOpen}
+              setValue={setSpeciesPLStageValue}
+              setItems={setSpeciesPLStageItems}
+              placeholder={''}
+              listMode="SCROLLVIEW"
+            />
+          </View>
           <LabelTextInput
             nameOfField="Total Number of Larvae*"
             onChange={(text) => {
               setTotalNumberofLarvae(text);
             }}
             width={windowWidth * 0.9}
-            value={TotalNumberofLarvae}
+            value={totalNumberofLarvae}
           />
           <LabelTextInput
             nameOfField="Select Seed Company*"
@@ -364,7 +503,7 @@ const AddCycle: FC = () => {
               setSelectSeedCompany(text);
             }}
             width={windowWidth * 0.9}
-            value={SelectSeedCompany}
+            value={selectSeedCompany}
           />
           <LabelTextInput
             nameOfField="Seed Investment Amount*"
@@ -372,7 +511,7 @@ const AddCycle: FC = () => {
               setSeedInvestmentAmount(text);
             }}
             width={windowWidth * 0.9}
-            value={SeedInvestmentAmount}
+            value={seedInvestmentAmount}
           />
           <LabelTextInput
             nameOfField="Seeding Date*"
@@ -381,7 +520,7 @@ const AddCycle: FC = () => {
               setSeedingDate(text);
             }}
             width={windowWidth * 0.9}
-            value={SeedingDate}
+            value={seedingDate}
           />
           <LabelTextInput
             nameOfField="Pond Preparation Cost*:"
@@ -389,7 +528,7 @@ const AddCycle: FC = () => {
               setPondPreparationCost(text);
             }}
             width={windowWidth * 0.9}
-            value={PondPreparationCost}
+            value={pondPreparationCost}
           />
           <LabelTextInput
             nameOfField="Cycle Description(Optional)"
@@ -397,7 +536,7 @@ const AddCycle: FC = () => {
               setCycleDescription(text);
             }}
             width={windowWidth * 0.9}
-            value={CycleDescription}
+            value={cycleDescription}
           />
           <View style={{ height: windowHeight * 0.02 }} />
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
@@ -411,8 +550,8 @@ const AddCycle: FC = () => {
                 padding: 10,
               }}
             >
-              {SeedImages &&
-                SeedImages.map((image, id) => {
+              {seedImages &&
+                seedImages.map((image, id) => {
                   return (
                     <View style={PageStyles.imageContainer} key={id}>
                       <View style={PageStyles.image}>
@@ -448,8 +587,8 @@ const AddCycle: FC = () => {
                 padding: 10,
               }}
             >
-              {PondImages &&
-                PondImages.map((image, id) => {
+              {pondImages &&
+                pondImages.map((image, id) => {
                   return (
                     <View style={PageStyles.imageContainer} key={id}>
                       <View style={PageStyles.image}>

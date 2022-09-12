@@ -34,15 +34,4 @@ const StackNavigation: FC = () => {
     </NavigationContainer>
   );
 };
-export const SLIDER_SCREEN: string = 'slider_screen';
-export const SPLASH_SCREEN: string = 'splash_screen';
-export const SIGN_IN: string = 'sign_in';
-export const SIGN_UP: string = 'sign_up';
-export const NEW_USER_LANDING: string = 'new_user_landing';
-export const EDIT_PROFILE_SCREEN = 'edit_profile_screen';
-export const ADD_FARM = 'add_farm';
-export const FARM_DETAILS = 'farm_details';
-export const ADD_POND = 'add_pond';
-export const ADD_CYCLE = 'add_cycle';
-export const POND_DETAILS = 'pond_details';
 export default StackNavigation;

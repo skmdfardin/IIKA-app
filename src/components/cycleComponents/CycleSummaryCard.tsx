@@ -28,8 +28,6 @@ import {
   orangeColor2,
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
-import { Button } from 'react-native-paper';
-import { Circle } from 'react-native-maps';
 // import Icon from 'react-native-vector-icons/AntDesign';
 // import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 // import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';

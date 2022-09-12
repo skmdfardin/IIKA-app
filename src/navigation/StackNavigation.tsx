@@ -13,7 +13,7 @@ import AddPond from '../screens/pond/AddPond';
 import PondDetails from '../screens/pond/PondDetails';
 import CycleHistory from '../screens/cycle/CycleHistory';
 import CycleSummaryCard from '../components/cycleComponents/CycleSummaryCard';
-
+import HarvestCycleScreen from '../components/cycleComponents/HarvestCycleScreen';
 const StackNavigation: FC = () => {
   const Stack = createNativeStackNavigator();
   return (
@@ -30,7 +30,7 @@ const StackNavigation: FC = () => {
         <Stack.Screen name={ADD_POND} component={AddPond} />
         <Stack.Screen name={POND_DETAILS} component={PondDetails} />
         <Stack.Screen name={CYCLE_HISTORY} component={CycleHistory} />
-        <Stack.Screen name={CYCLE_SUMMARY_CARD} component={CycleSummaryCard} />
+        <Stack.Screen name={HARVEST_CYCLE_SCREEN} component={HarvestCycleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -47,4 +47,5 @@ export const ADD_CYCLE = 'add_cycle';
 export const POND_DETAILS = 'pond_details';
 export const CYCLE_HISTORY = 'cycle_history';
 export const CYCLE_SUMMARY_CARD = 'cycle_summary_card';
+export const HARVEST_CYCLE_SCREEN = 'harvest_cycle_screen';
 export default StackNavigation;

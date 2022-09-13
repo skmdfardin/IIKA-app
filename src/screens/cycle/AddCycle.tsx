@@ -55,7 +55,7 @@ const AddCycle: FC = () => {
   const validPonds = pondStore.pondDataArray;
 
   const [visible, setVisible] = useState(false);
-  const [calenderVisible, setCalenderVisible] = useState(true);
+  const [calenderVisible, setCalenderVisible] = useState(false);
   const [isPondImage, setisPondImage] = useState(false);
   const [totalNumberofLarvae, setTotalNumberofLarvae] = useState('');
   const [selectSeedCompany, setSelectSeedCompany] = useState('');
@@ -405,14 +405,22 @@ const AddCycle: FC = () => {
           </View>
         </View>
       </Modal>
-      <Modal visible={calenderVisible} transparent>
-        <Calendar
-          initialDate={moment().format('YYYY-MM-DD')}
-          onDayPress={(day) => {
-            console.log('selected day', day.dateString);
-            setCalenderVisible(false);
+      <Modal visible={calenderVisible} transparent={true}>
+        <TouchableOpacity
+          style={{ backgroundColor: '#000000aa', flex: 1, justifyContent: 'center' }}
+          onPress={() => {
+            setCalenderVisible(!calenderVisible);
           }}
-        />
+        >
+          <Calendar
+            initialDate={moment().format('YYYY-MM-DD')}
+            onDayPress={(day) => {
+              console.log('selected day', day.dateString);
+              setSeedingDate(day.dateString);
+              setCalenderVisible(false);
+            }}
+          />
+        </TouchableOpacity>
       </Modal>
       <View style={PageStyles.header}>
         <TouchableOpacity
@@ -515,9 +523,12 @@ const AddCycle: FC = () => {
           />
           <LabelTextInput
             nameOfField="Seeding Date*"
-            //there is a calender
+            isCalender={true}
             onChange={(text) => {
               setSeedingDate(text);
+            }}
+            onCalenderPress={() => {
+              setCalenderVisible(true);
             }}
             width={windowWidth * 0.9}
             value={seedingDate}

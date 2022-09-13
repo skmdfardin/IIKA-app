@@ -8,8 +8,6 @@ const pondSlice = createSlice({
   reducers: {
     storePondArray: (storePondArray, action) => {
       storePondArray.pondDataArray.push(...action.payload.pondDataArray);
-      console.log('Action', action.payload.pondDataArray);
-      console.log('STATE', storePondArray.pondDataArray);
     },
   },
 });

@@ -64,20 +64,16 @@ const SignIn: FC = () => {
         body: JSON.stringify({ email: emailId, password: password }),
       };
       const response = await fetch(signInURL, requestOptions);
-      console.log('RESPONSE', response);
       data = await response.json();
       if (data.message || data.detail === 'CSRF Failed: CSRF token missing or incorrect.') {
         setIsSignInError(true);
         setSignInError('Incorrect Email or Password');
       } else {
         resetState();
-        console.log('SIGN IN DATA', data);
         const profileCheck = await CallGetApi(profileURL, data.email);
         const profileData = profileCheck.data;
-        console.log('profileData', profileData);
         if (profileData.company_name !== '') {
           profileImageUrl = profileData.image.replace('localhost', '103.127.146.20');
-          console.log(profileImageUrl);
           dispatch(storeIsProfileComplete({ isProfileComplete: true }));
           dispatch(storeProfileImage({ profileImage: profileImageUrl }));
         }
@@ -90,11 +86,9 @@ const SignIn: FC = () => {
           const farmImageArray = temp.map((item: any) => {
             return item.image.replace('localhost', '103.127.146.20');
           });
-          console.log('FARM images:', farmImageArray);
           const pondApiCall: any = await CallGetApi(pondURL, data.email);
           if (pondApiCall.data.result.ponds !== null) {
             const pondData = pondApiCall.data.result.ponds;
-            console.log(pondData);
             dispatch(storePondArray({ pondDataArray: pondData }));
           }
           dispatch(storeFarmName({ farmName: farmData.farm_name }));

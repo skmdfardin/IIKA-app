@@ -91,10 +91,10 @@ const SignIn: FC = () => {
             return item.image.replace('localhost', '103.127.146.20');
           });
           console.log('FARM images:', farmImageArray);
-          const pondApiCall = await CallGetApi(pondURL, data.email);
-          if (pondApiCall.status === 200) {
+          const pondApiCall: any = await CallGetApi(pondURL, data.email);
+          if (pondApiCall.data.result.ponds !== null) {
             const pondData = pondApiCall.data.result.ponds;
-            console.log(pondData[0].pond_images);
+            console.log(pondData);
             dispatch(storePondArray({ pondDataArray: pondData }));
           }
           dispatch(storeFarmName({ farmName: farmData.farm_name }));

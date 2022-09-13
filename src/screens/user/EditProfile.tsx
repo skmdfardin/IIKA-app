@@ -39,6 +39,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const [fileUri, setFileUri] = useState('');
   const [fileResponse, setFileResponse] = useState(undefined);
   const [visible, setVisible] = useState(false);
+  const profileImage: string = store.profileImage;
 
   const navigation = useNavigation<naviType>();
   const token = store.email;
@@ -291,7 +292,9 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
             >
               <Image
                 style={{ width: 100, height: 100, borderRadius: 100 / 2, marginTop: 5 }}
-                source={fileUri !== undefined ? { uri: fileUri } : require(profile)}
+                source={
+                  fileUri !== '' ? { uri: fileUri } : profileImage !== '' ? { uri: profileImage } : require(profile)
+                }
               />
             </TouchableOpacity>
             <View style={{ marginStart: windowWidth * 0.1 }} />

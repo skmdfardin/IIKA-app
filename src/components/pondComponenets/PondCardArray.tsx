@@ -13,9 +13,12 @@ const PondCardArray: FC = () => {
   const pondStore = useSelector((state: any) => state.pondStore);
   const validPonds = pondStore.pondDataArray;
 
-  const onSelect = (pondID: number) => {
-    navigation.navigate('pond_details_active', { pondID });
-    console.log('Pond clicked', pondID);
+  const onSelect = (pondID: number, status: boolean) => {
+    if (status) {
+      navigation.navigate('pond_details_active', { pondID });
+    } else {
+      navigation.navigate('pond_details_inactive', { pondID });
+    }
   };
 
   const pondType = (pondTypeNo: number) => {
@@ -39,7 +42,7 @@ const PondCardArray: FC = () => {
               <View style={[Styles.container, styles.shadow]} key={index}>
                 <TouchableOpacity
                   onPress={() => {
-                    onSelect(pond.id);
+                    onSelect(pond.id, pond.is_active_pond);
                   }}
                 >
                   <Image

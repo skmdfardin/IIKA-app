@@ -25,9 +25,12 @@ import {
     discardColour,
     saveColour,
     orangeColor2,
+    successColor,
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import { text } from '@fortawesome/fontawesome-svg-core';
+import AIcons from 'react-native-vector-icons/AntDesign'
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -38,6 +41,14 @@ type imageFrame = {
     type: string | undefined;
     name: string | undefined;
 };
+const harvestType = [
+    { label: 'Partial Harvest', value: 0 },
+    { label: 'Full Harvest', value: 1 }
+];
+const chillKill = [
+    { label: 'Yes', value: 'Chill Kill Used' },
+    { label: 'No', value: 'No chill kill' }
+];
 
 const HarvestCycleScreen: FC = () => {
     const [visible, setVisible] = useState(false);
@@ -53,6 +64,9 @@ const HarvestCycleScreen: FC = () => {
     const [harvestNotes, setharvestNotes] = useState('');
     const [animalImages, setAnimalImages] = useState<imageFrame[]>([]);
     const [PondImages, setPondImages] = useState<imageFrame[]>([]);
+    const [cycleDetailsDropStatus, setCycleDetailsDropStatus] = useState(false);
+    const [pondDescrition, setPondDescription] = useState<string>('');
+    const [radioState, setRadioState] = useState(0);
 
     const addImage = () => {
         setVisible(true);
@@ -74,6 +88,7 @@ const HarvestCycleScreen: FC = () => {
         setharvestNotes('');
         setAnimalImages([]);
         setPondImages([]);
+        setRadioState(0);
     };
 
     const alert = (text: string) => {
@@ -329,12 +344,12 @@ const HarvestCycleScreen: FC = () => {
                 <View style={PageStyles.scroll}>
                     <View style={{ flexDirection: 'column' }}>
                         <View style={{ width: windowWidth * 0.87, flexDirection: 'row' }}>
-                            <Text style={Styles.customText}>Pond Name</Text>
+                            <Text style={Stylings.customText}>Pond Name</Text>
                             <Text style={{ marginLeft: windowWidth * 0.5, marginTop: windowWidth * 0.03 }}>#pondID</Text>
                         </View>
                         <View style={{ width: windowWidth * 0.87, flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={{ marginTop: windowWidth * 0.03, color: 'midnightblue', fontWeight: '800' }}>Poseidon Seafood Farms</Text>
-                            <Text style={{ alignSelf: 'flex-end', marginTop: windowWidth * 0.03, }}>Nellore</Text>
+                            <Text style={{ marginTop: windowWidth * 0.01, color: 'midnightblue', fontWeight: '800' }}>Poseidon Seafood Farms</Text>
+                            <Text style={{ alignSelf: 'flex-end', marginTop: windowWidth * 0.01, }}>Nellore</Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: windowHeight * 0.04 }}>
                             <Text style={{ fontSize: 20, fontWeight: '400', color: 'black', marginLeft: windowWidth * 0.02 }}>
@@ -347,10 +362,163 @@ const HarvestCycleScreen: FC = () => {
                             </View>
                         </View>
                     </View>
-                    <View>
-                        <TouchableOpacity style={Styles.roundedTextBox} onPress={() => { console.log('Cycle Initiation Info') }}>
-                            <Text style={Styles.addNewCycleButtonText}>Cycle Initation Info</Text>
+                    {/* <View>
+                        <TouchableOpacity style={Stylings.roundedTextBox} onPress={() => { console.log('Cycle Initiation Info') }}>
+                            <Text style={Stylings.addNewCycleButtonText}>Cycle Initation Info</Text>
                         </TouchableOpacity>
+                    </View> */}
+                    <View style={{ width: windowWidth * 0.9 }}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setCycleDetailsDropStatus(!cycleDetailsDropStatus);
+                            }}
+                        >
+                            <View
+                                style={[
+                                    Styles.shadowProp,
+                                    {
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        backgroundColor: '#FF9A13',
+                                        height: windowHeight * 0.07,
+                                        alignItems: 'center',
+                                        borderRadius: 10,
+                                        paddingHorizontal: windowWidth * 0.04,
+                                    },
+                                ]}
+                            >
+                                <Text style={{ color: whiteColor, fontWeight: '900', fontSize: windowWidth * 0.045 }}>
+                                    Cycle Initiation Info
+                                </Text>
+                                {cycleDetailsDropStatus ? (
+                                    <AIcons name="caretdown" size={25} color={whiteColor} />
+                                ) : (
+                                    <AIcons name="caretright" size={25} color={whiteColor} />
+                                )}
+                            </View>
+                        </TouchableOpacity>
+                        {cycleDetailsDropStatus && (
+                            <View
+                                style={[
+                                    Styles.shadowProp,
+                                    { backgroundColor: whiteColor, borderRadius: 10, paddingBottom: windowHeight * 0.01 },
+                                ]}
+                            >
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        marginHorizontal: windowWidth * 0.05,
+                                        justifyContent: 'space-between',
+                                    }}
+                                >
+                                    <View style={Styles.infoCard2}>
+                                        <View style={{ flexDirection: 'column' }}>
+                                            <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
+                                                Seed(kg)
+                                            </Text>
+                                            <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                                                2546Kg
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    <View style={Styles.infoCard2}>
+                                        <View style={{ flexDirection: 'column' }}>
+                                            <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
+                                                Seeding Date
+                                            </Text>
+                                            <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                                                02.02.22
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        marginHorizontal: windowWidth * 0.08,
+                                        justifyContent: 'space-between',
+                                    }}
+                                >
+                                    <View style={{ width: windowWidth * 0.5 }}>
+                                        <Text style={{ color: blackColor, fontWeight: '600' }}>Species:</Text>
+                                        <Text style={{ color: blackColor, fontWeight: '600' }}>Species PL stage:</Text>
+                                        <Text style={{ color: blackColor, fontWeight: '600' }}>Total Number Of Larvey:</Text>
+                                        <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation cost:</Text>
+                                        <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Company:</Text>
+                                        <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Cost:</Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                            alignItems: 'flex-start',
+                                            width: windowWidth * 0.35,
+                                            marginLeft: windowWidth * 0.01,
+                                        }}
+                                    >
+                                        <Text style={{ color: blackColor }}>Vennami</Text>
+                                        <Text style={{ color: blackColor }}>18 days</Text>
+                                        <Text style={{ color: blackColor }}>2500</Text>
+                                        <Text style={{ color: blackColor }}>₹ 45,222</Text>
+                                        <Text style={{ color: blackColor }}>Seed Company</Text>
+                                        <Text style={{ color: blackColor }}>₹ 56568</Text>
+                                    </View>
+                                </View>
+                                <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
+                                    <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
+                                        { }
+                                    </Text>
+                                </View>
+                                <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
+                                    <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
+                                        <View style={Styles.pondDetailsimage}>
+                                            <Image
+                                                source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                                                style={{ flex: 1 }}
+                                            />
+                                        </View>
+                                        <View style={Styles.pondDetailsimage}>
+                                            <Image
+                                                source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                                                style={{ flex: 1 }}
+                                            />
+                                        </View>
+                                        <View style={Styles.pondDetailsimage}>
+                                            <Image
+                                                source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                                                style={{ flex: 1 }}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
+                                    <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation images</Text>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
+                                        <View style={Styles.pondDetailsimage}>
+                                            <Image
+                                                source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                                                style={{ flex: 1 }}
+                                            />
+                                        </View>
+                                        <View style={Styles.pondDetailsimage}>
+                                            <Image
+                                                source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                                                style={{ flex: 1 }}
+                                            />
+                                        </View>
+                                        <View style={Styles.pondDetailsimage}>
+                                            <Image
+                                                source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
+                                                style={{ flex: 1 }}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        )}
+                    </View>
+                    <View style={{ justifyContent: 'space-between' }}>
+                        <Text style={{ alignSelf: 'center', fontSize: 20, color: 'black', fontWeight: '800' }}>Harvest Type</Text>
+                        <RadioForm radio_props={harvestType} initial={0} onPress={value => console.log(value)} />
                     </View>
 
                     <LabelTextInput
@@ -411,11 +579,13 @@ const HarvestCycleScreen: FC = () => {
                             width={windowWidth * 0.9}
                             value={waterTemperature}
                         />
-                        <View style={{ height: windowHeight * 0.15 }}>
+                        <View style={{ height: windowHeight * 0.15, justifyContent: 'space-between', alignContent: 'center' }}>
                             <Text style={{ marginTop: windowHeight * 0.03, alignSelf: 'center', fontWeight: 'bold', color: 'black' }}>
                                 Are You using chill kill?(Dropdown)
                             </Text>
+                            <RadioForm radio_props={chillKill} initial={0} onPress={value => console.log(value)} />
                         </View>
+
                         <LabelTextInput
                             nameOfField='Sold to'
                             onChange={(text) => {
@@ -430,7 +600,15 @@ const HarvestCycleScreen: FC = () => {
                                 setSoldTo(text);
                             }}
                             width={windowWidth * 0.9}
-                            value={soldTo}
+                            value={harvestCost}
+                        />
+                        <LabelTextInput
+                            nameOfField='Harvest Notes(Optional)'
+                            onChange={(text) => {
+                                setSoldTo(text);
+                            }}
+                            width={windowWidth * 0.9}
+                            value={harvestNotes}
                         />
                     </View>
                     <View style={{ width: windowWidth * 0.9, flex: 1 }}>
@@ -538,7 +716,7 @@ const HarvestCycleScreen: FC = () => {
 
 export default HarvestCycleScreen;
 
-const Styles = StyleSheet.create({
+const Stylings = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
@@ -844,5 +1022,162 @@ const PageStyles = StyleSheet.create({
         backgroundColor: '#0059AB',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+});
+
+const Styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    pondCard: {
+        borderRadius: 10,
+        alignSelf: 'center',
+        width: windowWidth * 0.95,
+        backgroundColor: whiteColor,
+        margin: windowWidth * 0.02,
+    },
+    backButton: {
+        color: '#ffffff',
+        fontSize: windowHeight * 0.02,
+        paddingLeft: windowWidth * 0.025,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        height: windowHeight * 0.07,
+        backgroundColor: '#000000',
+        alignItems: 'center',
+    },
+    logo: {
+        resizeMode: 'contain',
+        height: windowHeight * 0.07,
+        width: windowWidth * 0.25,
+    },
+    image: {
+        borderRadius: 8,
+        margin: 5.5,
+        marginBottom: 1,
+        height: windowHeight * 0.12,
+        width: windowWidth * 0.27,
+    },
+    pondName: {
+        fontSize: windowWidth * 0.045,
+        marginLeft: 6,
+        marginTop: 5,
+        fontWeight: '700',
+        color: '#000000',
+    },
+    EditPondDetails: {
+        marginTop: 5,
+        marginLeft: 3,
+        backgroundColor: '#f4f7f8',
+        alignItems: 'center',
+        height: windowHeight * 0.03,
+        width: windowWidth * 0.32,
+        borderRadius: 25,
+        padding: 2,
+    },
+    infoCard: {
+        height: windowHeight * 0.09,
+        width: windowWidth * 0.28,
+        backgroundColor: '#0059AB',
+        margin: windowWidth * 0.01,
+        borderRadius: 10,
+    },
+    infoCard2: {
+        height: windowHeight * 0.08,
+        width: windowWidth * 0.37,
+        backgroundColor: whiteColor,
+        margin: windowWidth * 0.01,
+        borderWidth: 1,
+        borderColor: '#E6E9EF',
+        borderRadius: 10,
+        padding: windowHeight * 0.01,
+    },
+    graph: {
+        borderRadius: 10,
+        padding: 2.5,
+        height: windowHeight * 0.3,
+        width: windowWidth * 0.93,
+        backgroundColor: whiteColor,
+        marginTop: 15,
+        marginBottom: 15,
+        marginRight: 5,
+        alignSelf: 'center',
+    },
+    imageBottom: {
+        height: windowHeight * 0.3,
+        width: windowWidth * 0.92,
+        borderRadius: 7,
+        alignSelf: 'center',
+    },
+    shadowProp: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 7,
+            height: 5,
+        },
+        shadowOpacity: 0.75,
+        shadowRadius: 6.68,
+        elevation: 5,
+    },
+    blueText: {
+        color: '#459BFF',
+        marginVertical: windowHeight * 0.01,
+        marginHorizontal: windowHeight * 0.02,
+        fontWeight: '600',
+    },
+    subTabContainer: {
+        marginTop: windowHeight * 0.01,
+        backgroundColor: '#000000',
+        height: windowHeight * 0.06,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    tabTextInactive: {
+        color: '#ffffff',
+        textAlign: 'center',
+    },
+    tabTextActive: {
+        color: '#000000',
+        textAlign: 'center',
+    },
+    tabActive: {
+        backgroundColor: '#ffffff',
+        height: windowHeight * 0.04,
+        width: windowWidth * 0.44,
+        paddingTop: windowHeight * 0.005,
+        borderRadius: 5,
+    },
+    tabInactive: {
+        backgroundColor: '#000000',
+        height: windowHeight * 0.04,
+        width: windowWidth * 0.44,
+        paddingTop: windowHeight * 0.005,
+        borderRadius: 5,
+    },
+    pondDetailsimage: {
+        backgroundColor: whiteColor,
+        height: windowHeight * 0.12,
+        width: windowWidth * 0.27,
+        borderColor: '#BDBDBD',
+        borderWidth: 2,
+        borderStyle: 'solid',
+    },
+    button: {
+        height: windowHeight * 0.04,
+        width: windowWidth * 0.4,
+        borderRadius: 10,
+        backgroundColor: successColor,
+        paddingHorizontal: windowWidth * 0.05,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
     },
 });

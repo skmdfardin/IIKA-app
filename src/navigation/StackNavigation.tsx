@@ -11,7 +11,8 @@ import AddFarm from '../screens/farm/AddFarm';
 import FarmDetails from '../screens/farm/FarmDetails';
 import AddCycle from '../screens/cycle/AddCycle';
 import AddPond from '../screens/pond/AddPond';
-import PondDetails from '../screens/pond/PondDetails';
+import PondDetailsActive from '../screens/pond/PondDetailsActive';
+import PondDetailsInactive from '../screens/pond/PondDetailsInactive';
 import { NavigationParamList } from '../types/navigation';
 
 const StackNavigation: FC = () => {
@@ -28,7 +29,8 @@ const StackNavigation: FC = () => {
         <Stack.Screen name="add_farm" component={AddFarm} />
         <Stack.Screen name="add_pond" component={AddPond} />
         <Stack.Screen name="farm_details" component={FarmDetails} />
-        <Stack.Screen name="pond_details" component={PondDetails} />
+        <Stack.Screen name="pond_details_active" component={PondDetailsActive} />
+        <Stack.Screen name="pond_details_inactive" component={PondDetailsInactive} />
         <Stack.Screen name="add_cycle" component={AddCycle} />
       </Stack.Navigator>
     </NavigationContainer>

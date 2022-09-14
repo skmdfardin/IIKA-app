@@ -20,10 +20,8 @@ import { useSelector } from 'react-redux';
 
 const logo = '../../media/AquaLogo.gif';
 
-type pondDetailsRouteType = RouteProp<NavigationParamList, 'pond_details'>;
+type pondDetailsRouteType = RouteProp<NavigationParamList, 'pond_details_active'>;
 type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
-
-//{"description": "description", "id": 12, "pond_images": [{"id": 19, "image": "http://localhost:9000/aqua/pond_images/Screenshot_1.png", "image_name": "Screenshot (1).png", "images": 12}, {"id": 20, "image": "http://localhost:9000/aqua/pond_images/Screenshot_6.png", "image_name": "Screenshot (6).png", "images": 12}], "pond_name": "pond2Dev2", "pond_type": 1}
 
 export interface ImageCarouselItem {
   id: number;
@@ -37,7 +35,7 @@ export type responseItem = {
   image_name: string;
 };
 
-const PondDetails: FC = () => {
+const PondDetailsActive: FC = () => {
   const navigation = useNavigation<naviType>();
 
   const {
@@ -49,7 +47,6 @@ const PondDetails: FC = () => {
   const token = store.email;
   const farmName = farmStore.farmName;
 
-  const [pondStatus, setPondStatus] = useState('inactive');
   const [currentTab, setCurrentTab] = useState('Details');
   const [pondDetailsDropStatus, setPondDetailsDropStatus] = useState(false);
   const [pondDescrition, setPondDescription] = useState<string>('');
@@ -104,7 +101,6 @@ const PondDetails: FC = () => {
   };
   const pondEdit = () => {
     console.log('Navigate to pond edit page');
-    setPondStatus('active');
   };
 
   return (
@@ -120,306 +116,150 @@ const PondDetails: FC = () => {
         <Image style={Styles.logo} source={require(logo)} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {pondStatus === 'inactive' ? (
-          <>
-            <View style={[Styles.pondCard, Styles.shadowProp, { paddingBottom: windowHeight * 0.02 }]}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  width: windowWidth * 0.95,
-                  height: windowHeight * 0.05,
-                  backgroundColor: '#0059AB',
-                  alignItems: 'center',
-                  paddingHorizontal: windowWidth * 0.02,
-                  borderTopEndRadius: 10,
-                  borderTopLeftRadius: 10,
-                }}
-              >
-                <Text style={{ color: whiteColor }}>#{pondID.toString()}</Text>
-                <View
-                  style={{
-                    backgroundColor: whiteColor,
-                    borderRadius: 20,
-                    width: windowWidth * 0.25,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text>Inactive</Text>
-                  <View
-                    style={{
-                      height: windowHeight * 0.0175,
-                      width: windowWidth * 0.035,
-                      backgroundColor: blackColor,
-                      marginLeft: windowWidth * 0.01,
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  padding: windowHeight * 0.01,
-                }}
-              >
-                <Image
-                  source={{
-                    uri:
-                      pondIdImage !== '' ? pondIdImage : 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
-                  }}
-                  style={{
-                    height: windowHeight * 0.09,
-                    width: windowWidth * 0.18,
-                    borderRadius: 10,
-                  }}
-                />
-                <View style={{ marginLeft: windowWidth * 0.02 }}>
-                  <Text>{farmName}</Text>
-                  <Text>{pondName}</Text>
-                  <Text>{pondType}</Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  marginHorizontal: windowWidth * 0.02,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    pondEdit();
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: pearlGreyColour,
-                      borderRadius: 10,
-                      marginVertical: windowHeight * 0.005,
-                      height: windowHeight * 0.05,
-                    }}
-                  >
-                    <Text style={Styles.blueText}>Edit Pond details</Text>
-                  </View>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    backgroundColor: pearlGreyColour,
-                    borderRadius: 10,
-                    marginVertical: windowHeight * 0.005,
-                    height: windowHeight * 0.05,
-                  }}
-                >
-                  <Text style={Styles.blueText}>View Cycle History</Text>
-                </View>
-                <View
-                  style={{
-                    backgroundColor: pearlGreyColour,
-                    borderRadius: 10,
-                    marginVertical: windowHeight * 0.005,
-                    height: windowHeight * 0.05,
-                  }}
-                >
-                  <Text style={Styles.blueText}>Create New Cycle</Text>
-                </View>
-              </View>
-            </View>
-            <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
-              <View style={Styles.infoCard}>
-                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
-                    Total Cycles
-                  </Text>
-                  <View style={{ alignContent: 'flex-end' }}>
-                    <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                      <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>235</Text>
-                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={Styles.infoCard}>
-                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
-                    Completed Cycles
-                  </Text>
-                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>10</Text>
-                </View>
-              </View>
-              <View style={Styles.infoCard}>
-                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
-                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>1.234</Text>
-                </View>
-              </View>
-            </View>
-            <View style={{ marginTop: 10 }}>
-              <ImageCarousel1
-                imageItem={pondImages}
-                callBackIndex={(index: number) => {
-                  console.log(index);
-                }}
-              />
-            </View>
-            <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
-              <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
-                {pondDescrition}
-              </Text>
-            </View>
-            <View style={[Styles.graph, Styles.shadowProp]}>
-              <Text>GRAPH</Text>
-            </View>
-            <View style={[Styles.graph, Styles.shadowProp]}>
-              <Text>GRAPH</Text>
-            </View>
-          </>
-        ) : (
-          <View style={[Styles.pondCard, Styles.shadowProp]}>
+        <View style={[Styles.pondCard, Styles.shadowProp]}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: windowWidth * 0.95,
+              height: windowHeight * 0.05,
+              backgroundColor: darkYellow,
+              alignItems: 'center',
+              paddingHorizontal: windowWidth * 0.02,
+              borderTopEndRadius: 10,
+              borderTopLeftRadius: 10,
+            }}
+          >
+            <Text style={{ color: whiteColor }}>#{pondID.toString()}</Text>
             <View
               style={{
+                backgroundColor: whiteColor,
+                borderRadius: 20,
+                width: windowWidth * 0.25,
                 flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: windowWidth * 0.95,
-                height: windowHeight * 0.05,
-                backgroundColor: darkYellow,
                 alignItems: 'center',
-                paddingHorizontal: windowWidth * 0.02,
-                borderTopEndRadius: 10,
-                borderTopLeftRadius: 10,
+                justifyContent: 'center',
               }}
             >
-              <Text style={{ color: whiteColor }}>#{pondID.toString()}</Text>
+              <Text>Active</Text>
               <View
                 style={{
-                  backgroundColor: whiteColor,
-                  borderRadius: 20,
-                  width: windowWidth * 0.25,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Text>Active</Text>
-                <View
-                  style={{
-                    height: windowHeight * 0.0175,
-                    width: windowWidth * 0.035,
-                    backgroundColor: successColor,
-                    marginLeft: windowWidth * 0.01,
-                    borderRadius: 10,
-                  }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                padding: windowHeight * 0.01,
-              }}
-            >
-              <Image
-                source={{
-                  uri:
-                    pondIdImage !== '' ? pondIdImage : 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
-                }}
-                style={{
-                  height: windowHeight * 0.09,
-                  width: windowWidth * 0.18,
+                  height: windowHeight * 0.0175,
+                  width: windowWidth * 0.035,
+                  backgroundColor: successColor,
+                  marginLeft: windowWidth * 0.01,
                   borderRadius: 10,
                 }}
               />
-              <View style={{ marginLeft: windowWidth * 0.02 }}>
-                <Text>{farmName}</Text>
-                <Text>{pondName}</Text>
-                <Text>{pondType}</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                marginHorizontal: windowWidth * 0.02,
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: pearlGreyColour,
-                  borderRadius: 10,
-                  marginVertical: windowHeight * 0.005,
-                  height: windowHeight * 0.05,
-                }}
-              >
-                <Text style={Styles.blueText}>Edit Pond details</Text>
-              </View>
-              <View
-                style={{
-                  backgroundColor: pearlGreyColour,
-                  borderRadius: 10,
-                  marginVertical: windowHeight * 0.005,
-                  height: windowHeight * 0.05,
-                }}
-              >
-                <Text style={Styles.blueText}>View Cycle History</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginHorizontal: windowWidth * 0.03,
-                marginVertical: windowHeight * 0.01,
-                alignItems: 'center',
-              }}
-            >
-              <View>
-                <Text>Species</Text>
-                <View
-                  style={{
-                    backgroundColor: pearlGreyColour,
-                    borderRadius: 10,
-                    marginVertical: windowHeight * 0.005,
-                    height: windowHeight * 0.05,
-                  }}
-                >
-                  <Text style={Styles.blueText}>Edit Cycle Details</Text>
-                </View>
-              </View>
-              <View>
-                <Text>#CycleId</Text>
-                <Text>Cycle Start Date</Text>
-                <View style={[Styles.button]}>
-                  <Text style={[Styles.buttonText]}>Harvest Cycle</Text>
-                </View>
-              </View>
-            </View>
-            <View style={Styles.subTabContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  toggleTab('Details');
-                }}
-              >
-                <View style={currentTab === 'Details' ? Styles.tabActive : Styles.tabInactive}>
-                  <Text style={currentTab === 'Details' ? Styles.tabTextActive : Styles.tabTextInactive}>Details</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  toggleTab('Records');
-                }}
-              >
-                <View style={currentTab === 'Records' ? Styles.tabActive : Styles.tabInactive}>
-                  <Text style={currentTab === 'Records' ? Styles.tabTextActive : Styles.tabTextInactive}>Records</Text>
-                </View>
-              </TouchableOpacity>
             </View>
           </View>
-        )}
-        {currentTab === 'Details' && pondStatus === 'active' ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              padding: windowHeight * 0.01,
+            }}
+          >
+            <Image
+              source={{
+                uri: pondIdImage !== '' ? pondIdImage : 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
+              }}
+              style={{
+                height: windowHeight * 0.09,
+                width: windowWidth * 0.18,
+                borderRadius: 10,
+              }}
+            />
+            <View style={{ marginLeft: windowWidth * 0.02 }}>
+              <Text>{farmName}</Text>
+              <Text>{pondName}</Text>
+              <Text>{pondType}</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              marginHorizontal: windowWidth * 0.02,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                backgroundColor: pearlGreyColour,
+                borderRadius: 10,
+                marginVertical: windowHeight * 0.005,
+                height: windowHeight * 0.05,
+              }}
+              onPress={() => {
+                pondEdit();
+              }}
+            >
+              <Text style={Styles.blueText}>Edit Pond details</Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: pearlGreyColour,
+                borderRadius: 10,
+                marginVertical: windowHeight * 0.005,
+                height: windowHeight * 0.05,
+              }}
+            >
+              <Text style={Styles.blueText}>View Cycle History</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: windowWidth * 0.03,
+              marginVertical: windowHeight * 0.01,
+              alignItems: 'center',
+            }}
+          >
+            <View>
+              <Text>Species</Text>
+              <View
+                style={{
+                  backgroundColor: pearlGreyColour,
+                  borderRadius: 10,
+                  marginVertical: windowHeight * 0.005,
+                  height: windowHeight * 0.05,
+                }}
+              >
+                <Text style={Styles.blueText}>Edit Cycle Details</Text>
+              </View>
+            </View>
+            <View>
+              <Text>#CycleId</Text>
+              <Text>Cycle Start Date</Text>
+              <View style={[Styles.button]}>
+                <Text style={[Styles.buttonText]}>Harvest Cycle</Text>
+              </View>
+            </View>
+          </View>
+          <View style={Styles.subTabContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                toggleTab('Details');
+              }}
+            >
+              <View style={currentTab === 'Details' ? Styles.tabActive : Styles.tabInactive}>
+                <Text style={currentTab === 'Details' ? Styles.tabTextActive : Styles.tabTextInactive}>Details</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                toggleTab('Records');
+              }}
+            >
+              <View style={currentTab === 'Records' ? Styles.tabActive : Styles.tabInactive}>
+                <Text style={currentTab === 'Records' ? Styles.tabTextActive : Styles.tabTextInactive}>Records</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {currentTab === 'Details' ? (
           <>
             <View style={{ marginHorizontal: windowWidth * 0.03 }}>
               <TouchableOpacity
@@ -619,7 +459,7 @@ const PondDetails: FC = () => {
               <Text>GRAPH</Text>
             </View>
           </>
-        ) : currentTab === 'Records' && pondStatus === 'active' ? (
+        ) : currentTab === 'Records' ? (
           <View>
             <Text>Records Place Holder</Text>
           </View>
@@ -628,7 +468,7 @@ const PondDetails: FC = () => {
     </SafeAreaView>
   );
 };
-export default PondDetails;
+export default PondDetailsActive;
 
 const Styles = StyleSheet.create({
   container: {
@@ -644,7 +484,7 @@ const Styles = StyleSheet.create({
   backButton: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
-    paddingLeft: windowWidth * 0.025,
+    paddingLeft: windowWidth * 0.05,
   },
   header: {
     flexDirection: 'row',

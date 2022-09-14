@@ -14,7 +14,7 @@ const PondCardArray: FC = () => {
   const validPonds = pondStore.pondDataArray;
 
   const onSelect = (pondID: number) => {
-    navigation.navigate('pond_details', { pondID });
+    navigation.navigate('pond_details_active', { pondID });
     console.log('Pond clicked', pondID);
   };
 

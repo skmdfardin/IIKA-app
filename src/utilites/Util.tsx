@@ -61,15 +61,19 @@ export const CallPostApiJson = async (urlString: string, formData: any, token: s
 
 export const CallGetApi = async (urlString: string, token: string) => {
   let res;
-  await axios
-    .get(urlString, {
-      headers: {
-        'AQUA-AUTH-TOKEN': token,
-      },
-    })
-    .then((response) => {
-      res = response;
-    });
+  try {
+    await axios
+      .get(urlString, {
+        headers: {
+          'AQUA-AUTH-TOKEN': token,
+        },
+      })
+      .then((response) => {
+        res = response;
+      });
+  } catch (error) {
+    console.log('URL:', urlString, '\nERROR:', error);
+  }
   return res ? res : null;
 };
 

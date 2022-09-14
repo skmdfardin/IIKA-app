@@ -70,7 +70,7 @@ const SignIn: FC = () => {
         setSignInError('Incorrect Email or Password');
       } else {
         resetState();
-        const profileCheck = await CallGetApi(profileURL, data.email);
+        const profileCheck: any = await CallGetApi(profileURL, data.email);
         const profileData = profileCheck.data;
         if (profileData.company_name !== '') {
           profileImageUrl = profileData.image.replace('localhost', '103.127.146.20');
@@ -80,7 +80,7 @@ const SignIn: FC = () => {
         if (data.farm_id !== null) {
           const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
           const pondURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-related-ponds/';
-          const farmApicall = await CallGetApi(farmURL, data.email);
+          const farmApicall: any = await CallGetApi(farmURL, data.email);
           const farmData = farmApicall.data.result;
           const temp = farmData.farm_images;
           const farmImageArray = temp.map((item: any) => {
@@ -89,6 +89,7 @@ const SignIn: FC = () => {
           const pondApiCall: any = await CallGetApi(pondURL, data.email);
           if (pondApiCall.data.result.ponds !== null) {
             const pondData = pondApiCall.data.result.ponds;
+            console.log('POND DATA', pondData);
             dispatch(storePondArray({ pondDataArray: pondData }));
           }
           dispatch(storeFarmName({ farmName: farmData.farm_name }));

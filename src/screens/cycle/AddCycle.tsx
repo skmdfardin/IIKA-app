@@ -33,8 +33,10 @@ import {
 import LabelTextInput from '../../components/LabelTextInput';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
+import { CallPostApi } from '../../utilites/Util';
 
 const logo = '../../media/AquaLogo.gif';
+const addCycleUrl = 'http://103.127.146.20:4000/api/v1/cycle/cycleregist/';
 
 type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
 
@@ -58,7 +60,6 @@ const AddCycle: FC = () => {
   const [calenderVisible, setCalenderVisible] = useState(false);
   const [isPondImage, setisPondImage] = useState(false);
   const [totalNumberofLarvae, setTotalNumberofLarvae] = useState('');
-  const [selectSeedCompany, setSelectSeedCompany] = useState('');
   const [seedInvestmentAmount, setSeedInvestmentAmount] = useState('');
   const [seedingDate, setSeedingDate] = useState('');
   const [pondPreparationCost, setPondPreparationCost] = useState('');
@@ -76,9 +77,17 @@ const AddCycle: FC = () => {
     { label: 'PL-10', value: 2 },
     { label: 'PL-15', value: 3 },
   ]);
+  const [selectSeedCompanyItems, setSelectSeedCompanyItems] = useState<dropdownValue[]>([
+    { label: 'Company-ABC', value: 1 },
+    { label: 'Company-XYZ', value: 2 },
+  ]);
+  const [selectSeedCompanyValue, setSelectSeedCompanyValue] = useState(0);
+  const [selectSeedCompanyOpen, setSelectSeedCompanyOpen] = useState(false);
   const [selectPondItems, setSelectPondItems] = useState<dropdownValue[]>([]);
   const [selectPondValue, setSelectPondValue] = useState(0);
   const [selectPondOpen, setSelectPondOpen] = useState(false);
+  const store = useSelector((state: any) => state.userStore);
+  const token = store.email;
 
   useEffect(() => {
     getPondItems();
@@ -116,7 +125,6 @@ const AddCycle: FC = () => {
 
   const initialState = () => {
     setTotalNumberofLarvae('');
-    setSelectSeedCompany('');
     setSeedInvestmentAmount('');
     setSeedingDate('');
     setPondPreparationCost('');
@@ -141,14 +149,24 @@ const AddCycle: FC = () => {
 
   const onSave = () => {
     const formData = new FormData();
+    //   {  "Pond": 0,
+    //   "species": 1,
+    //   "species_pl_stage": 1,
+    //   "seed_company": 0,
+    //   "invest_amount": 0,
+    //   "pondPrep_cost": 0,
+    //   "description": "string",
+    //   "numbers_of_larva": 0,
+    // }
     formData.append('Pond', selectPondValue);
-    formData.append('species', selectSpeciesValue.toString());
-    formData.append('speciesPlStage', speciesPLStageValue.toString());
-    formData.append('seed_company', selectSeedCompany);
+    formData.append('species', selectSpeciesValue);
+    formData.append('speciesPlStage', speciesPLStageValue);
+    formData.append('seed_company', selectSeedCompanyValue);
     formData.append('invest_amount', parseInt(seedInvestmentAmount, 10));
     formData.append('pondPrep_cost', parseInt(pondPreparationCost, 10));
-    formData.append('seeding_date', seedingDate);
+    //formData.append('seeding_date', seedingDate);
     formData.append('description', cycleDescription);
+    formData.append('numbers_of_larva', parseInt(totalNumberofLarvae, 10));
     if (seedImages.length > 0) {
       for (let i = 0; i < seedImages.length; i++) {
         const photo = seedImages[i];
@@ -170,6 +188,11 @@ const AddCycle: FC = () => {
       }
     }
     console.log('FORM DATA', formData);
+    CallPostApi(addCycleUrl, formData, token).then((response) => {
+      console.log('RESPONSE', response?.data);
+
+      // navigation.goBack();
+    });
   };
 
   const requestExternalWritePermission = async () => {
@@ -457,6 +480,7 @@ const AddCycle: FC = () => {
               setItems={setSelectPondItems}
               placeholder={''}
               listMode="SCROLLVIEW"
+              dropDownDirection="BOTTOM"
             />
           </View>
           <View
@@ -476,6 +500,7 @@ const AddCycle: FC = () => {
               setItems={setSelectSpeciesItems}
               placeholder={''}
               listMode="SCROLLVIEW"
+              dropDownDirection="BOTTOM"
             />
           </View>
           <View
@@ -495,6 +520,7 @@ const AddCycle: FC = () => {
               setItems={setSpeciesPLStageItems}
               placeholder={''}
               listMode="SCROLLVIEW"
+              dropDownDirection="BOTTOM"
             />
           </View>
           <LabelTextInput
@@ -505,14 +531,28 @@ const AddCycle: FC = () => {
             width={windowWidth * 0.9}
             value={totalNumberofLarvae}
           />
-          <LabelTextInput
-            nameOfField="Select Seed Company*"
-            onChange={(text) => {
-              setSelectSeedCompany(text);
+          <View
+            style={{
+              width: windowWidth * 0.9,
+              marginBottom: selectSeedCompanyOpen
+                ? windowHeight * 0.05 * selectSeedCompanyItems.length
+                : windowHeight * 0.01,
+              marginTop: windowHeight * 0.02,
             }}
-            width={windowWidth * 0.9}
-            value={selectSeedCompany}
-          />
+          >
+            <Text> Select Seed Company*:</Text>
+            <DropDownPicker
+              open={selectSeedCompanyOpen}
+              value={selectSeedCompanyValue}
+              items={selectSeedCompanyItems}
+              setOpen={setSelectSeedCompanyOpen}
+              setValue={setSelectSeedCompanyValue}
+              setItems={setSelectSeedCompanyItems}
+              placeholder={''}
+              listMode="SCROLLVIEW"
+              dropDownDirection="BOTTOM"
+            />
+          </View>
           <LabelTextInput
             nameOfField="Seed Investment Amount*"
             onChange={(text) => {

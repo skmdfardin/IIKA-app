@@ -8,44 +8,37 @@ import SignUp from '../screens/user/SignUp';
 import SplashScreen from '../screens/static/SplashScreen';
 import EditProfileScreen from '../screens/user/EditProfile';
 import AddFarm from '../screens/farm/AddFarm';
+import FarmDetails from '../screens/farm/FarmDetails';
 import AddCycle from '../screens/cycle/AddCycle';
 import AddPond from '../screens/pond/AddPond';
-import PondDetails from '../screens/pond/PondDetails';
+import PondDetailsActive from '../screens/pond/PondDetailsActive';
+import PondDetailsInactive from '../screens/pond/PondDetailsInactive';
 import CycleHistory from '../screens/cycle/CycleHistory';
 import CycleSummaryCard from '../components/cycleComponents/CycleSummaryCard';
 import HarvestCycleScreen from '../components/cycleComponents/HarvestCycleScreen';
+import { NavigationParamList } from '../types/navigation';
+
 const StackNavigation: FC = () => {
-  const Stack = createNativeStackNavigator();
+  const Stack = createNativeStackNavigator<NavigationParamList>();
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={SPLASH_SCREEN} component={SplashScreen} />
-        <Stack.Screen name={SLIDER_SCREEN} component={SliderScreen} />
-        <Stack.Screen name={SIGN_IN} component={SignIn} />
-        <Stack.Screen name={SIGN_UP} component={SignUp} />
-        <Stack.Screen name={EDIT_PROFILE_SCREEN} component={EditProfileScreen} />
-        <Stack.Screen name={NEW_USER_LANDING} component={NewUserLanding} />
-        <Stack.Screen name={ADD_CYCLE} component={AddCycle} />
-        <Stack.Screen name={ADD_FARM} component={AddFarm} />
-        <Stack.Screen name={ADD_POND} component={AddPond} />
-        <Stack.Screen name={POND_DETAILS} component={PondDetails} />
-        <Stack.Screen name={CYCLE_HISTORY} component={CycleHistory} />
-        <Stack.Screen name={HARVEST_CYCLE_SCREEN} component={HarvestCycleScreen} />
+        <Stack.Screen name="splash_screen" component={SplashScreen} />
+        <Stack.Screen name="slider_screen" component={SliderScreen} />
+        <Stack.Screen name="sign_in" component={SignIn} />
+        <Stack.Screen name="sign_up" component={SignUp} />
+        <Stack.Screen name="edit_profile_screen" component={EditProfileScreen} />
+        <Stack.Screen name="new_user_landing" component={NewUserLanding} />
+        <Stack.Screen name="add_farm" component={AddFarm} />
+        <Stack.Screen name="add_pond" component={AddPond} />
+        <Stack.Screen name="farm_details" component={FarmDetails} />
+        <Stack.Screen name="pond_details_active" component={PondDetailsActive} />
+        <Stack.Screen name="pond_details_inactive" component={PondDetailsInactive} />
+        <Stack.Screen name="add_cycle" component={AddCycle} />
+        <Stack.Screen name="harvest_cycle_screen" component={HarvestCycleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-export const SLIDER_SCREEN: string = 'slider_screen';
-export const SPLASH_SCREEN: string = 'splash_screen';
-export const SIGN_IN: string = 'sign_in';
-export const SIGN_UP: string = 'sign_up';
-export const NEW_USER_LANDING: string = 'new_user_landing';
-export const EDIT_PROFILE_SCREEN = 'edit_profile_screen';
-export const ADD_FARM = 'add_farm';
-export const ADD_POND = 'add_pond';
-export const ADD_CYCLE = 'add_cycle';
-export const POND_DETAILS = 'pond_details';
-export const CYCLE_HISTORY = 'cycle_history';
-export const CYCLE_SUMMARY_CARD = 'cycle_summary_card';
-export const HARVEST_CYCLE_SCREEN = 'harvest_cycle_screen';
+
 export default StackNavigation;

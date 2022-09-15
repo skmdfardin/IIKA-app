@@ -1,13 +1,16 @@
-import React, { FC } from 'react';
-import { View, StyleSheet, Image, Text } from 'react-native';
+import React, { FC, useState } from 'react';
+import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import ActivityCard from '../../components/userComponenets/ActivityCard';
 import UserBasicInfoCard from '../../components/userComponenets/UserBasicInfoCard';
 import HorizontalBigCardFarmInfo from '../../components/farmComponenets/HorizontalBigCardFarmInfo';
 import PondCardArray from '../../components/pondComponenets/PondCardArray';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
-import { EDIT_PROFILE_SCREEN, ADD_FARM, ADD_POND } from '../../navigation/StackNavigation';
+import { NavigationParamList } from '../../types/navigation';
+
+type naviType = NativeStackNavigationProp<NavigationParamList, 'new_user_landing'>;
 
 const { robotoRegular16, robotoBold20 } = styles;
 
@@ -16,21 +19,30 @@ const logo = '../../media/AquaLogo.gif';
 const menu = '../../media/menu.png';
 
 const NewUserLanding: FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const store = useSelector((state: any) => state.userStore);
   const farmStore = useSelector((state: any) => state.farmStore);
   const farmID = farmStore.farmID;
+  const [currentTab, setCurrentTab] = useState('Farm');
+
+  const toggleTab = (selectedTab: string) => {
+    setCurrentTab(selectedTab);
+  };
 
   const updateStatus = (): void => {
-    navigation.navigate(EDIT_PROFILE_SCREEN.toString());
+    navigation.navigate('edit_profile_screen');
   };
 
   const updateDummy = (): void => {
-    navigation.navigate(ADD_FARM.toString());
+    navigation.navigate('add_farm');
   };
 
   const goToAddPond = (): void => {
-    navigation.navigate(ADD_POND.toString());
+    navigation.navigate('add_pond');
+  };
+
+  const goToAddCycle = (): void => {
+    navigation.navigate('add_cycle');
   };
 
   return (
@@ -67,51 +79,73 @@ const NewUserLanding: FC = () => {
             </Text>
           </View>
         </View>
-      ) : farmID === '' ? (
-        <View>
-          <View style={Styles.subTabContainer}>
-            <View style={Styles.tabActive}>
-              <Text style={Styles.tabTextActive}>Farms & Ponds</Text>
-            </View>
-            <View style={Styles.tabInactive}>
-              <Text style={Styles.tabTextInactive}>Activity</Text>
-            </View>
-          </View>
-          <ActivityCard
-            titleText="Your Business has been successfully verified!"
-            messageText="Let's start by creating a farm and adding the details"
-            buttonText="Add Farm"
-            callBack={updateDummy}
-            buttonState={true}
-          />
-          <ActivityCard
-            titleText="Wohoo! Your account has been successfully created."
-            messageText="Now complete your Profile & Business registration!"
-            buttonText="Complete your profile"
-            callBack={updateStatus}
-            buttonState={false}
-          />
-          <Image style={Styles.image} source={require(fishBowl)} />
-        </View>
       ) : (
         <View>
           <View style={Styles.subTabContainer}>
-            <View style={Styles.tabActive}>
-              <Text style={Styles.tabTextActive}>Farms & Ponds</Text>
-            </View>
-            <View style={Styles.tabInactive}>
-              <Text style={Styles.tabTextInactive}>Activity</Text>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                toggleTab('Farm');
+              }}
+            >
+              <View style={currentTab === 'Farm' ? Styles.tabActive : Styles.tabInactive}>
+                <Text style={currentTab === 'Farm' ? Styles.tabTextActive : Styles.tabTextInactive}>Farm</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                toggleTab('Activity');
+              }}
+            >
+              <View style={currentTab === 'Activity' ? Styles.tabActive : Styles.tabInactive}>
+                <Text style={currentTab === 'Activity' ? Styles.tabTextActive : Styles.tabTextInactive}>Activity</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <HorizontalBigCardFarmInfo />
-          <PondCardArray />
-          <ActivityCard
-            titleText="Your Farm has been successfully created"
-            messageText="Let's start by adding ponds to your farm"
-            buttonText="Add Pond"
-            callBack={goToAddPond}
-            buttonState={true}
-          />
+          {currentTab === 'Farm' ? (
+            farmID === '' ? (
+              <View>
+                <ActivityCard
+                  titleText="Your Business has been successfully verified!"
+                  messageText="Let's start by creating a farm and adding the details"
+                  buttonText="Add Farm"
+                  callBack={updateDummy}
+                  buttonState={true}
+                />
+                <ActivityCard
+                  titleText="Wohoo! Your account has been successfully created."
+                  messageText="Now complete your Profile & Business registration!"
+                  buttonText="Complete your profile"
+                  callBack={updateStatus}
+                  buttonState={false}
+                />
+                <Image style={Styles.image} source={require(fishBowl)} />
+              </View>
+            ) : (
+              <View>
+                <ScrollView style={{ marginBottom: windowHeight * 0.38 }} showsVerticalScrollIndicator={false}>
+                  <HorizontalBigCardFarmInfo />
+                  <PondCardArray />
+                </ScrollView>
+              </View>
+            )
+          ) : (
+            <View>
+              <ActivityCard
+                titleText="Your Pond has been added!"
+                messageText="Let's add a cycle to your pond!"
+                buttonText="Add Cycle"
+                callBack={goToAddCycle}
+                buttonState={true}
+              />
+              <ActivityCard
+                titleText="Your Farm has been successfully created"
+                messageText="Let's start by adding ponds to your farm"
+                buttonText="Add Pond"
+                callBack={goToAddPond}
+                buttonState={true}
+              />
+            </View>
+          )}
         </View>
       )}
     </View>

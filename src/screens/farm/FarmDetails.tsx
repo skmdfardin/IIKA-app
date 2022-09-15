@@ -1,8 +1,10 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import ImageCarousel1 from '../../components/ImageCarousel1';
 import PondCardArray from '../../components/pondComponenets/PondCardArray';
 import { windowHeight, windowWidth, whiteColor } from '../../media/css/common';
+import { useSelector } from 'react-redux';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -12,109 +14,112 @@ export interface ImageCarouselItem {
   title: string;
 }
 
-const data: ImageCarouselItem[] = [
-  {
-    id: 0,
-    uri: 'https://images.pexels.com/photos/97465/pexels-photo-97465.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    title: 'Dahlia',
-  }, // https://unsplash.com/photos/Jup6QMQdLnM
-  {
-    id: 1,
-    uri: 'https://media.gettyimages.com/photos/the-perfect-backyard-picture-id157329538?s=612x612',
-    title: 'Sunflower',
-  }, // https://unsplash.com/photos/oO62CP-g1EA
-  {
-    id: 2,
-    uri: 'https://images.pexels.com/photos/97465/pexels-photo-97465.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    title: 'Zinnia',
-  }, // https://unsplash.com/photos/gKMmJEvcyA8
-  {
-    id: 3,
-    uri: 'https://wallpaperaccess.com/full/803470.jpg',
-    title: 'Tulip',
-  }, // https://unsplash.com/photos/N7zBDF1r7PM
-  {
-    id: 4,
-    uri: 'https://wallpaperaccess.com/full/803470.jpg',
-    title: 'Chrysanthemum',
-  }, // https://unsplash.com/photos/GsGZJMK0bJc
-  {
-    id: 5,
-    uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e',
-    title: 'Hydrangea',
-  }, // https://unsplash.com/photos/coIBOiWBPjk
-];
-
 const FarmDetails: FC = () => {
-  const farmEdit = () => {
-    console.log('Navigate to farm edit page');
+  const navigation = useNavigation();
+  const farmStore = useSelector((state: any) => state.farmStore);
+  const tempName = 'farm Image';
+  const farmImages = farmStore.farmImages;
+  const [carasolImages, setCarasolImages] = useState<ImageCarouselItem[]>([]);
+
+  useEffect(() => {
+    const tempData: ImageCarouselItem[] = farmImages.map((image: String, index: Number) => {
+      return {
+        id: index,
+        uri: image,
+        title: tempName + index,
+      };
+    });
+    setData(tempData);
+  }, [farmImages]);
+
+  const setData = (tempData: ImageCarouselItem[]) => {
+    setCarasolImages(tempData);
   };
 
-  const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
-
-  const callBackSliderIndex = (index: number) => {
-    setCurrentSliderIndex(index);
+  const farmEdit = () => {
+    console.log('Navigate to farm edit page');
   };
 
   return (
     <SafeAreaView style={Styles.container}>
       <View style={Styles.header}>
-        <Text style={Styles.backButton}>BACK</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={Styles.backButton}>BACK</Text>
+        </TouchableOpacity>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={[Styles.farmCard, Styles.shadowProp]}>
-          <Image style={Styles.image} source={{ uri: 'https://wallpaperaccess.com/full/803470.jpg' }} />
-          <View style={{ flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-            <Text style={Styles.farmName}>Farm Name</Text>
+          <Image style={Styles.image} source={{ uri: farmImages[0] }} />
+          <View
+            style={{
+              flexDirection: 'column',
+              flex: 1,
+              justifyContent: 'space-between',
+              marginLeft: windowWidth * 0.01,
+            }}
+          >
             <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'column' }}>
+              <View style={{ flexDirection: 'column', justifyContent: 'space-around' }}>
+                <Text style={Styles.farmName}>{farmStore.farmName}</Text>
                 <TouchableOpacity
                   style={Styles.EditFarmDetails}
                   onPress={() => {
                     farmEdit();
                   }}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: '900', color: '#479dfb' }}>Edit Farm Details</Text>
+                  <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: '#479dfb' }}>
+                    Edit Farm Details
+                  </Text>
                 </TouchableOpacity>
-                <Text style={{ marginTop: 20, marginLeft: 6 }}>Avg FCR: 1.2</Text>
+                <Text style={{ fontSize: windowHeight * 0.018 }}>Avg FCR: 1.2</Text>
               </View>
               <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginRight: 10, marginBottom: 8 }}>
-                <Text style={{ fontSize: 12, fontWeight: '500', color: '#000000' }}>#FarmID</Text>
-                <Text style={{ fontSize: 12, fontWeight: '400', color: '#000000' }}>Location</Text>
+                <Text style={{ fontSize: windowHeight * 0.014, fontWeight: '500', color: '#000000' }}>
+                  #{farmStore.farmID}
+                </Text>
+                <Text style={{ fontSize: windowHeight * 0.014, fontWeight: '400', color: '#000000' }}>Location</Text>
               </View>
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
+        <View style={{ marginTop: windowHeight * 0.05, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
           <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Total Harvest</Text>
+            <View style={{ flexDirection: 'column', padding: windowWidth * 0.02 }}>
+              <Text style={{ fontSize: windowHeight * 0.017, fontWeight: '900', color: 'white' }}>Total Harvest</Text>
               <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>235</Text>
-                <Text style={{ fontSize: 15, fontWeight: '300', color: 'white' }}>tn</Text>
+                <Text style={{ fontSize: windowHeight * 0.03, fontWeight: '900', color: 'white' }}>235</Text>
+                <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
               </View>
             </View>
           </View>
           <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Active Cycles</Text>
-              <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>10</Text>
+            <View style={{ flexDirection: 'column', padding: windowWidth * 0.02 }}>
+              <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: 'white' }}>Active Cycles</Text>
+              <Text style={{ fontSize: windowHeight * 0.03, fontWeight: '900', color: 'white' }}>10</Text>
             </View>
           </View>
           <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: 13, fontWeight: '900', color: 'white' }}>Total Ponds</Text>
-              <Text style={{ fontSize: 22, fontWeight: '900', color: 'white' }}>235</Text>
+            <View style={{ flexDirection: 'column', padding: windowWidth * 0.02 }}>
+              <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: 'white' }}>Total Ponds</Text>
+              <Text style={{ fontSize: windowHeight * 0.03, fontWeight: '900', color: 'white' }}>235</Text>
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
-          <Text style={{ fontSize: 18, fontWeight: '400', color: '#000000' }}>
-            This is where the description of the Farm goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed
-            do eiusmod tempor incididunt ut labore et dolore magna aliqua.This is where the description of the Farm
-            goes.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.
+        <View
+          style={{
+            marginVertical: windowHeight * 0.02,
+            marginHorizontal: windowWidth * 0.05,
+            margin: 7,
+            alignSelf: 'center',
+          }}
+        >
+          <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '400', color: '#000000' }}>
+            {farmStore.farmDescription}
           </Text>
         </View>
         <View style={[Styles.graph, Styles.shadowProp]}>
@@ -123,14 +128,17 @@ const FarmDetails: FC = () => {
         <View style={[Styles.graph, Styles.shadowProp]}>
           <Text>GRAPH</Text>
         </View>
-        <View style={{ marginTop: 25 }}>
+        <View style={{ marginVertical: windowHeight * 0.05 }}>
           <Text style={{ alignSelf: 'center', fontSize: 20, fontWeight: '800', color: '#000000' }}>All Ponds</Text>
-          <View style={{ flexDirection: 'row', marginTop: 10 }}>
-            <PondCardArray />
-          </View>
+          <PondCardArray />
         </View>
-        <View style={{ marginTop: 10 }}>
-          <ImageCarousel1 imageItem={data} callBackIndex={(index: number) => callBackSliderIndex(index)} />
+        <View style={{ marginVertical: windowHeight * 0.01 }}>
+          <ImageCarousel1
+            imageItem={carasolImages}
+            callBackIndex={(index: number) => {
+              console.log(index);
+            }}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -166,7 +174,7 @@ const Styles = StyleSheet.create({
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.06,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
   image: {
@@ -177,15 +185,12 @@ const Styles = StyleSheet.create({
     width: windowWidth * 0.27,
   },
   farmName: {
-    fontSize: 20,
-    marginLeft: 6,
+    fontSize: windowHeight * 0.022,
     marginTop: 5,
     fontWeight: '700',
     color: '#000000',
   },
   EditFarmDetails: {
-    marginTop: 5,
-    marginLeft: 3,
     backgroundColor: '#f4f7f8',
     alignItems: 'center',
     height: windowHeight * 0.03,
@@ -197,13 +202,12 @@ const Styles = StyleSheet.create({
     height: windowHeight * 0.09,
     width: windowWidth * 0.28,
     backgroundColor: '#0059ab',
-    marginTop: 10,
-    marginRight: 10,
+    marginHorizontal: windowWidth * 0.02,
     borderRadius: 10,
   },
   graph: {
     borderRadius: 10,
-    padding: 2.5,
+    padding: windowHeight * 0.01,
     height: windowHeight * 0.3,
     width: windowWidth * 0.93,
     backgroundColor: whiteColor,

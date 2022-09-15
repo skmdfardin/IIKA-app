@@ -2,23 +2,26 @@ import React, { FC } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { EDIT_PROFILE_SCREEN } from '../../navigation/StackNavigation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NavigationParamList } from '../../types/navigation';
 import { windowHeight, windowWidth, styles } from '../../media/css/common';
 
 const { robotoRegular13, robotoRegular16, robotoBold20 } = styles;
 
 const profile = '../../media/profile.png';
 
+type naviType = NativeStackNavigationProp<NavigationParamList>;
+
 const UserBasicInfoCard: FC = () => {
   const store = useSelector((state: any) => state.userStore);
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
 
   const name = store.firstName;
   const profileImage = store.profileImage;
 
   const onSubmit = () => {
     console.log('STORE:', store);
-    navigation.navigate(EDIT_PROFILE_SCREEN.toString());
+    navigation.navigate('edit_profile_screen');
   };
 
   return (

@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import React, { FunctionComponent, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -16,25 +16,32 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Text } from 'react-native-paper';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import LabelTextInput from '../../components/LabelTextInput';
 import { blackColor, commonBlueColor, whiteColor, windowHeight, windowWidth } from '../../media/css/common';
 import { CallPostApi } from '../../utilites/Util';
+import { storeIsProfileComplete } from '../../reduxstore/userSlice';
+import { NavigationParamList } from '../../types/navigation';
 
 interface EditProfileScreenProps {}
 
 const logo = '../../media/AquaLogo.gif';
 const profile = '../../media/profile.png';
 
+type naviType = NativeStackNavigationProp<NavigationParamList, 'edit_profile_screen'>;
+
 const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   const store = useSelector((state: any) => state.userStore);
+  const dispatch = useDispatch();
   const [isSaving, setIsSaving] = useState(false);
   const [userName, setuserName] = useState(store.userName);
-  const [fileUri, setFileUri] = useState(undefined);
+  const [fileUri, setFileUri] = useState('');
   const [fileResponse, setFileResponse] = useState(undefined);
   const [visible, setVisible] = useState(false);
+  const profileImage: string = store.profileImage;
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const token = store.email;
 
   const alert = (text: string) => {
@@ -150,6 +157,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
     CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
       console.log('RESPONSE', response);
       setIsSaving(false);
+      dispatch(storeIsProfileComplete({ isProfileComplete: true }));
       navigation.goBack();
     });
   };
@@ -284,7 +292,9 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
             >
               <Image
                 style={{ width: 100, height: 100, borderRadius: 100 / 2, marginTop: 5 }}
-                source={fileUri !== undefined ? { uri: fileUri } : require(profile)}
+                source={
+                  fileUri !== '' ? { uri: fileUri } : profileImage !== '' ? { uri: profileImage } : require(profile)
+                }
               />
             </TouchableOpacity>
             <View style={{ marginStart: windowWidth * 0.1 }} />
@@ -431,12 +441,12 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     width: windowWidth,
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     backgroundColor: '#000000',
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
 });

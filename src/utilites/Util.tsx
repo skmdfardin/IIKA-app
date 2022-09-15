@@ -18,10 +18,6 @@ export const CallPostApi = async (urlString: string, formData: any, token: strin
     });
   } catch (error) {
     console.log('API CALL ERROR:', error);
-    console.log('error data', error.response.data);
-    console.log('error status', error.response.status);
-    console.log('error header', error.response.headers);
-    console.log('error message', error.message);
   }
   return returnResponse;
 };
@@ -65,15 +61,19 @@ export const CallPostApiJson = async (urlString: string, formData: any, token: s
 
 export const CallGetApi = async (urlString: string, token: string) => {
   let res;
-  await axios
-    .get(urlString, {
-      headers: {
-        'AQUA-AUTH-TOKEN': token,
-      },
-    })
-    .then((response) => {
-      res = response;
-    });
+  try {
+    await axios
+      .get(urlString, {
+        headers: {
+          'AQUA-AUTH-TOKEN': token,
+        },
+      })
+      .then((response) => {
+        res = response;
+      });
+  } catch (error) {
+    console.log('URL:', urlString, '\nERROR:', error);
+  }
   return res ? res : null;
 };
 

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -165,12 +165,9 @@ const AddFarm: FC = () => {
         });
       }
     }
-    console.log('called');
-    console.log('URL', url);
-    console.log('token', token);
-    console.log('Formdata', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
+
       navigation.goBack();
     });
   };
@@ -639,7 +636,9 @@ const AddFarm: FC = () => {
               })}
           </View>
           {isSaving ? (
-            <ActivityIndicator size="large" color="#00ff00" />
+            <View style={{ marginTop: windowHeight * 0.1 }}>
+              <ActivityIndicator size="large" color="#00ff00" />
+            </View>
           ) : (
             <View
               style={{
@@ -681,7 +680,6 @@ const PageStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
     height: windowHeight * 0.09,
     backgroundColor: '#000000',
     alignItems: 'center',

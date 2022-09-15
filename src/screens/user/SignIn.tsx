@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
-import { SIGN_UP, NEW_USER_LANDING } from '../../navigation/StackNavigation';
 import {
   storeEmailId,
   storeFirstName,
@@ -14,9 +14,11 @@ import {
   storeIsProfileComplete,
   storeProfileImage,
 } from '../../reduxstore/userSlice';
-import { storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
+import { storeFarmDescription, storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { CallGetApi } from '../../utilites/Util';
+import { storePondArray } from '../../reduxstore/pondSlice';
+import { NavigationParamList } from '../../types/navigation';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
@@ -24,6 +26,7 @@ const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
 const glogo = '../../media/googleLogo.png';
+type naviType = NativeStackNavigationProp<NavigationParamList, 'sign_in'>;
 
 const SignIn: FC = () => {
   const [emailId, setEmailId] = useState('');
@@ -31,11 +34,11 @@ const SignIn: FC = () => {
   const [signInError, setSignInError] = useState('');
   const [isSignInError, setIsSignInError] = useState(false);
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const dispatch = useDispatch();
 
   const goToSignUp = () => {
-    navigation.navigate(SIGN_UP.toString());
+    navigation.navigate('sign_up');
   };
 
   const toggle = () => {
@@ -61,35 +64,38 @@ const SignIn: FC = () => {
         body: JSON.stringify({ email: emailId, password: password }),
       };
       const response = await fetch(signInURL, requestOptions);
-      console.log('RESPONSE', response);
       data = await response.json();
-      if (data.message) {
+      if (data.message || data.detail === 'CSRF Failed: CSRF token missing or incorrect.') {
         setIsSignInError(true);
         setSignInError('Incorrect Email or Password');
       } else {
-        console.log('DATA', data);
-        const profileCheck = await CallGetApi(profileURL, data.email);
+        resetState();
+        const profileCheck: any = await CallGetApi(profileURL, data.email);
         const profileData = profileCheck.data;
-        console.log('profileData', profileData);
         if (profileData.company_name !== '') {
           profileImageUrl = profileData.image.replace('localhost', '103.127.146.20');
-          console.log(profileImageUrl);
           dispatch(storeIsProfileComplete({ isProfileComplete: true }));
           dispatch(storeProfileImage({ profileImage: profileImageUrl }));
         }
         if (data.farm_id !== null) {
           const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
-          const farmApicall = await CallGetApi(farmURL, data.email);
+          const pondURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-related-ponds/';
+          const farmApicall: any = await CallGetApi(farmURL, data.email);
           const farmData = farmApicall.data.result;
           const temp = farmData.farm_images;
-          const farmImageArray = temp.map((item) => {
+          const farmImageArray = temp.map((item: any) => {
             return item.image.replace('localhost', '103.127.146.20');
           });
-          console.log('FARM images:', farmImageArray);
-
+          const pondApiCall: any = await CallGetApi(pondURL, data.email);
+          if (pondApiCall.data.result.ponds !== null) {
+            const pondData = pondApiCall.data.result.ponds;
+            console.log('POND DATA', pondData);
+            dispatch(storePondArray({ pondDataArray: pondData }));
+          }
           dispatch(storeFarmName({ farmName: farmData.farm_name }));
           dispatch(storeFarmImages({ farmImages: farmImageArray }));
           dispatch(storeFarmID({ farmID: data.farm_id }));
+          dispatch(storeFarmDescription({ farmDescription: farmData.description }));
         }
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));
@@ -97,8 +103,8 @@ const SignIn: FC = () => {
         dispatch(storeMobile({ mobile: data.phone_no }));
         dispatch(storeUserName({ userName: data.username }));
         dispatch(storeIsVerified({ isVerified: data.is_verified }));
-        resetState();
-        navigation.navigate(NEW_USER_LANDING.toString());
+
+        navigation.navigate('new_user_landing');
       }
     } catch (error) {
       console.log('Error', error);
@@ -139,9 +145,11 @@ const SignIn: FC = () => {
             <Text style={Styles.errorText}>{signInError}</Text>
           </View>
         )}
-        <TouchableOpacity style={Styles.button} onPress={onSubmit}>
-          <Text style={Styles.buttonText}>Sign In</Text>
-        </TouchableOpacity>
+        {
+          <TouchableOpacity style={Styles.button} onPress={onSubmit}>
+            <Text style={Styles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
+        }
         <View style={Styles.googleContainer}>
           <Image style={Styles.glogo} source={require(glogo)} />
           <Text>Log In via Google</Text>

@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { FC } from 'react';
 import { View, StyleSheet, Image, Text, Dimensions } from 'react-native';
 import LoadingBar from '../../components/LoadingBar';
-import { SLIDER_SCREEN } from '../../navigation/StackNavigation';
+import { NavigationParamList } from '../../types/navigation';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -10,8 +11,10 @@ const windowHeight = Dimensions.get('window').height;
 const logo = '../../media/AquaLogo.gif';
 const fishLogo = '../../media/FishLogo.gif';
 
+type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
+
 const SplashScreen: FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   return (
     <View style={Styles.container}>
       <View style={Styles.imageContainer}>
@@ -24,7 +27,11 @@ const SplashScreen: FC = () => {
         <Text style={Styles.text}>"The Question is not what you look at,</Text>
         <Text style={Styles.text}>but what you see"</Text>
       </View>
-      <LoadingBar onExit={() => navigation.navigate(SLIDER_SCREEN.toString())} />
+      <LoadingBar
+        onExit={() => {
+          navigation.navigate('slider_screen');
+        }}
+      />
     </View>
   );
 };

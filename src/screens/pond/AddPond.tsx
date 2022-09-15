@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Image,
   StyleSheet,
@@ -12,9 +12,11 @@ import {
   Modal,
   Pressable,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
   windowHeight,
   windowWidth,
@@ -27,8 +29,8 @@ import {
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
-import { CallPostApi, CallPostApiJson } from '../../utilites/Util';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { CallPostApi } from '../../utilites/Util';
+import { storePondArray } from '../../reduxstore/pondSlice';
 
 // const pondConstructTypesOptions = ["Soil", "Tarpaulin"]
 
@@ -43,6 +45,7 @@ type imageFrame = {
 };
 
 const AddPond: FC = () => {
+  const [isSaving, setIsSaving] = useState(false);
   const [visible, setVisible] = useState(false);
   const [pondName, setPondName] = useState('');
   const [pondLength, setPondLength] = useState('');
@@ -72,6 +75,7 @@ const AddPond: FC = () => {
     { label: 'Reservoir Pond', value: 3 },
   ]);
   const [imageNum, setImageNum] = useState(0);
+  const dispatch = useDispatch();
 
   const addImage = () => {
     setVisible(true);
@@ -87,6 +91,7 @@ const AddPond: FC = () => {
     setPondLocation('');
     setPondDesc('');
     setImageList([]);
+    setIsSaving(false);
   };
 
   const removeimage = (name: string) => {
@@ -94,6 +99,7 @@ const AddPond: FC = () => {
     setImageList(newImageList);
   };
   const onSave = () => {
+    setIsSaving(true);
     const formData = new FormData();
 
     formData.append('farm', farmID);
@@ -119,6 +125,16 @@ const AddPond: FC = () => {
     console.log('FormData', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
+      const newPond = {
+        description: response?.data.description,
+        id: response?.data.id,
+        pond_images: response?.data.pond_images,
+        pond_name: response?.data.pond_name,
+        pond_type: response?.data.pond_type,
+      };
+      const tempArray = [newPond];
+      dispatch(storePondArray({ pondDataArray: tempArray }));
+      initialState();
       navigation.goBack();
     });
   };
@@ -174,7 +190,7 @@ const AddPond: FC = () => {
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: 'farm-' + pondName.split(' ').join('') + '-' + imageNum + '.jpg',
+          name: pondName.split(' ').join('') + '-' + imageNum + '.jpg',
         };
         setImageNum(imageNum + 1);
         console.log('IMAGE URL', imageURI);
@@ -218,7 +234,7 @@ const AddPond: FC = () => {
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: 'farm-' + pondName.split(' ').join('') + '-' + imageNum + '.jpg',
+        name: pondName.split(' ').join('') + '-' + imageNum + '.jpg',
       };
       setImageNum(imageNum + 1);
       console.log('IMAGE URL', imageURI);
@@ -501,30 +517,36 @@ const AddPond: FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: windowWidth * 0.6,
-              justifyContent: 'space-around',
-            }}
-          >
-            <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: discardColour }]}
-              onPress={() => {
-                initialState();
+          {isSaving ? (
+            <View style={{ marginTop: windowHeight * 0.01 }}>
+              <ActivityIndicator size="large" color="#00ff00" />
+            </View>
+          ) : (
+            <View
+              style={{
+                flexDirection: 'row',
+                width: windowWidth * 0.6,
+                justifyContent: 'space-around',
               }}
             >
-              <Text style={PageStyles.buttonText}>Discard</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: saveColour }]}
-              onPress={() => {
-                onSave();
-              }}
-            >
-              <Text style={PageStyles.buttonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity
+                style={[PageStyles.endButton, { backgroundColor: discardColour }]}
+                onPress={() => {
+                  initialState();
+                }}
+              >
+                <Text style={PageStyles.buttonText}>Discard</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[PageStyles.endButton, { backgroundColor: saveColour }]}
+                onPress={() => {
+                  onSave();
+                }}
+              >
+                <Text style={PageStyles.buttonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -541,13 +563,13 @@ const PageStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
 
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
   scroll: {
@@ -563,6 +585,7 @@ const PageStyles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
+    paddingLeft: windowWidth * 0.025,
   },
   certificateButton: {
     height: windowHeight * 0.05,

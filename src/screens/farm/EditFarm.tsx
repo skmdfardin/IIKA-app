@@ -670,13 +670,13 @@ const PageStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
 
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
   scroll: {

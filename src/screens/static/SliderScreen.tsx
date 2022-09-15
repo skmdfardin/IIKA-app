@@ -4,9 +4,11 @@ import { windowHeight, windowWidth, whiteColor, commonBlueColor } from '../../me
 import ImageCarousel from '../../components/ImageCarousel';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { SIGN_IN, SIGN_UP } from '../../navigation/StackNavigation';
+import { NavigationParamList } from '../../types/navigation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface SliderScreenProps {}
+type naviType = NativeStackNavigationProp<NavigationParamList, 'slider_screen'>;
 
 const logo = '../../media/AquaLogo.gif';
 const fishLogo = '../../media/FishLogo.gif';
@@ -56,7 +58,7 @@ const textList: Array<SliderTextItems> = [
 
 const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
   const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
-  const navigation = useNavigation();
+  const navigation = useNavigation<naviType>();
   const callBackSliderIndex = (index: number) => {
     setCurrentSliderIndex(index);
     console.log('currentSliderIndex 40 ', index);
@@ -142,7 +144,7 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                     alignItems: 'center',
                   }}
                   onPress={() => {
-                    navigation.navigate(SIGN_UP.toString());
+                    navigation.navigate('sign_up');
                   }}
                 >
                   <Text
@@ -170,7 +172,7 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                     alignItems: 'center',
                   }}
                   onPress={() => {
-                    navigation.navigate(SIGN_IN.toString());
+                    navigation.navigate('sign_in');
                   }}
                 >
                   <Text

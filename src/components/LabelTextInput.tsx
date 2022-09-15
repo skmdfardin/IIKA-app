@@ -18,7 +18,7 @@ interface LabelTextInputProps {
 const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
   return (
     <View style={{ marginTop: props.marginTop }}>
-      <Text style={{ color: blackColor }}>{props.nameOfField}</Text>
+      <Text style={{ color: blackColor, fontWeight: '800', fontSize: windowWidth * 0.035 }}>{props.nameOfField}</Text>
       <View
         style={{
           borderColor: blackColor,

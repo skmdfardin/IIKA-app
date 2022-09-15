@@ -15,6 +15,7 @@ export type NavigationParamList = {
   pond_details_inactive: {
     pondID: Number | string;
   };
+  harvest_cycle_screen: undefined;
 };
 
 export interface RootStackParamList extends NavigationParamList {}

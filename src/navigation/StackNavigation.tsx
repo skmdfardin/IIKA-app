@@ -13,9 +13,7 @@ import AddCycle from '../screens/cycle/AddCycle';
 import AddPond from '../screens/pond/AddPond';
 import PondDetailsActive from '../screens/pond/PondDetailsActive';
 import PondDetailsInactive from '../screens/pond/PondDetailsInactive';
-import CycleHistory from '../screens/cycle/CycleHistory';
-import CycleSummaryCard from '../components/cycleComponents/CycleSummaryCard';
-import HarvestCycleScreen from '../components/cycleComponents/HarvestCycleScreen';
+import HarvestCycleScreen from '../screens/cycle/HarvestCycleScreen';
 import { NavigationParamList } from '../types/navigation';
 
 const StackNavigation: FC = () => {

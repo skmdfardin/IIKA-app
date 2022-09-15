@@ -13,6 +13,9 @@ import AddCycle from '../screens/cycle/AddCycle';
 import AddPond from '../screens/pond/AddPond';
 import PondDetailsActive from '../screens/pond/PondDetailsActive';
 import PondDetailsInactive from '../screens/pond/PondDetailsInactive';
+import CycleHistory from '../screens/cycle/CycleHistory';
+import CycleSummaryCard from '../components/cycleComponents/CycleSummaryCard';
+import HarvestCycleScreen from '../components/cycleComponents/HarvestCycleScreen';
 import { NavigationParamList } from '../types/navigation';
 
 const StackNavigation: FC = () => {
@@ -32,8 +35,10 @@ const StackNavigation: FC = () => {
         <Stack.Screen name="pond_details_active" component={PondDetailsActive} />
         <Stack.Screen name="pond_details_inactive" component={PondDetailsInactive} />
         <Stack.Screen name="add_cycle" component={AddCycle} />
+        <Stack.Screen name="harvest_cycle_screen" component={HarvestCycleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
+
 export default StackNavigation;

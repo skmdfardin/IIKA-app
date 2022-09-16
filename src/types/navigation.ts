@@ -18,6 +18,7 @@ export type NavigationParamList = {
   harvest_cycle_screen: {
     pondID: Number | string;
     cycleID: Number | string;
+    pondName: string;
     harvestType: 0 | 1;
   };
 };

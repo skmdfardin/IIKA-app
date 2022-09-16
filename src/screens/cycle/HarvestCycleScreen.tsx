@@ -67,7 +67,7 @@ const HarvestCycleScreen: FC = () => {
   const navigation = useNavigation<naviType>();
   const dispatch = useDispatch();
   const {
-    params: { pondID, cycleID, harvestType },
+    params: { pondID, cycleID, harvestType, pondName },
   } = useRoute<harvestCycleRoute>();
 
   const store = useSelector((state: any) => state.userStore);
@@ -574,7 +574,7 @@ const HarvestCycleScreen: FC = () => {
         <View style={PageStyles.scroll}>
           <View style={{ flexDirection: 'column', width: windowWidth * 0.9 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={Stylings.customText}>Pond Name</Text>
+              <Text style={Stylings.customText}>{pondName}</Text>
               <Text style={{ marginTop: windowWidth * 0.03 }}>#{pondID.toString()}</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

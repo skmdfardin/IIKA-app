@@ -187,7 +187,12 @@ const PondDetailsActive: FC = () => {
               style={[Styles.button]}
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('harvest_cycle_screen', { pondID: pondID, cycleID: cycleID, harvestType: 0 });
+                navigation.navigate('harvest_cycle_screen', {
+                  pondID: pondID,
+                  cycleID: cycleID,
+                  harvestType: 0,
+                  pondName: pondName,
+                });
               }}
             >
               <Text style={[Styles.buttonText]}>Partial Harvest</Text>
@@ -197,7 +202,12 @@ const PondDetailsActive: FC = () => {
               style={[Styles.button, { backgroundColor: '#00A25B' }]}
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('harvest_cycle_screen', { pondID: pondID, cycleID: cycleID, harvestType: 1 });
+                navigation.navigate('harvest_cycle_screen', {
+                  pondID: pondID,
+                  cycleID: cycleID,
+                  harvestType: 1,
+                  pondName: pondName,
+                });
               }}
             >
               <Text style={[Styles.buttonText]}>Full Harvest</Text>
@@ -317,7 +327,7 @@ const PondDetailsActive: FC = () => {
             }}
           >
             <View>
-              <Text>Species</Text>
+              <Text>Vannamei</Text>
               <View
                 style={{
                   backgroundColor: pearlGreyColour,

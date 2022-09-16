@@ -203,16 +203,19 @@ const PondDetailsInactive: FC = () => {
             >
               <Text style={Styles.blueText}>View Cycle History</Text>
             </View>
-            <View
+            <TouchableOpacity
               style={{
                 backgroundColor: pearlGreyColour,
                 borderRadius: 10,
                 marginVertical: windowHeight * 0.005,
                 height: windowHeight * 0.05,
               }}
+              onPress={() => {
+                navigation.navigate('add_cycle');
+              }}
             >
               <Text style={Styles.blueText}>Create New Cycle</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>

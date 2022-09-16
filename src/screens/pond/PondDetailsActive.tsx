@@ -50,10 +50,21 @@ const PondDetailsActive: FC = () => {
   const [currentTab, setCurrentTab] = useState('Details');
   const [pondDetailsDropStatus, setPondDetailsDropStatus] = useState(false);
   const [pondDescrition, setPondDescription] = useState<string>('');
-  const [pondName, setPondName] = useState<string>('');
-  const [pondType, setPondType] = useState<string>('');
+  const [pondName, setPondName] = useState('');
+  const [pondType, setPondType] = useState('');
   const [pondImages, setPondImages] = useState<ImageCarouselItem[]>([]);
-  const [pondIdImage, setPondIdImage] = useState<string>('');
+  const [pondIdImage, setPondIdImage] = useState('');
+
+  const [cycleID, setCycleID] = useState(Number);
+  const [cycleDescription, setCycleDescription] = useState('');
+  const [seedingDate, setSeedingDate] = useState('');
+  const [speciesPLStage, setSpeciesPLStage] = useState(Number);
+  const [noOfLarve, setNoOfLarve] = useState(Number);
+  const [pondPrepCost, setPondPrepCost] = useState(Number);
+  const [seedCompany, setSeedCompany] = useState('');
+  const [seedCost, setSeedCost] = useState(Number);
+  const [seedImages, setSeedImages] = useState(['']);
+  const [cyclePondImages, setCyclePondImages] = useState(['']);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -70,13 +81,36 @@ const PondDetailsActive: FC = () => {
     return 'unknown';
   };
 
+  const getSeedCompany = (companyNo: number) => {
+    if (companyNo === 1) {
+      return 'Company-ABC';
+    }
+    if (companyNo === 2) {
+      return 'Company-XYZ';
+    }
+    return 'unknown';
+  };
+
+  const getPLStage = (PLstage: number) => {
+    if (PLstage === 1) {
+      return 'PL-5';
+    }
+    if (PLstage === 2) {
+      return 'PL-10';
+    }
+    if (PLstage === 3) {
+      return 'PL-15';
+    }
+    return 'unknown';
+  };
+
   useEffect(() => {
     const fetchData = async () => {
-      const pondUrl = 'http://103.127.146.20:4000/api/v1/ponds/pondregist/' + pondID.toString() + '/get-pond-summary/';
+      const pondUrl = 'http://103.127.146.20:4000/api/v1/ponds/pondregist/' + pondID.toString();
       try {
         const pondData: any = await CallGetApi(pondUrl, token);
         if (pondData !== null) {
-          const detail = pondData.data.result;
+          const detail = pondData.data;
           const tempData: ImageCarouselItem[] = detail.pond_images.map((item: responseItem) => {
             return {
               id: item.id,
@@ -90,6 +124,31 @@ const PondDetailsActive: FC = () => {
           setPondName(detail.pond_name);
           setPondType(temp);
           setPondIdImage(tempData[0].uri);
+          setCycleID(detail.active_cycle_id);
+          try {
+            const cycleURL = 'http://103.127.146.20:4000/api/v1/cycle/cycleregist/' + detail.active_cycle_id;
+            const cycleData: any = await CallGetApi(cycleURL, token);
+            const data = cycleData.data;
+
+            setCycleDescription(data.description);
+            setSeedingDate(data.seeding_date);
+            setSpeciesPLStage(data.species_pl_stage);
+            setNoOfLarve(data.numbers_of_larva);
+            setPondPrepCost(data.pondPrep_cost);
+            setSeedCompany(getSeedCompany(data.seed_company));
+            setSeedCost(data.invest_amount);
+            const seedTemp = data.seed_images.map((seed: any) => {
+              return seed.image.replace('localhost', '103.127.146.20');
+            });
+            setSeedImages(seedTemp);
+            const pondTemp = data.pond_images.map((seed: any) => {
+              return seed.image.replace('localhost', '103.127.146.20');
+            });
+            setCyclePondImages(pondTemp);
+            console.log('Seed Temp \n', seedTemp, '\n Pond Temp \n', pondTemp);
+          } catch (err) {
+            console.log(err);
+          }
         }
       } catch (error) {
         console.log(error);
@@ -128,7 +187,7 @@ const PondDetailsActive: FC = () => {
               style={[Styles.button]}
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('harvest_cycle_screen');
+                navigation.navigate('harvest_cycle_screen', { pondID: pondID, cycleID: cycleID, harvestType: 0 });
               }}
             >
               <Text style={[Styles.buttonText]}>Partial Harvest</Text>
@@ -138,7 +197,7 @@ const PondDetailsActive: FC = () => {
               style={[Styles.button, { backgroundColor: '#00A25B' }]}
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate('harvest_cycle_screen');
+                navigation.navigate('harvest_cycle_screen', { pondID: pondID, cycleID: cycleID, harvestType: 1 });
               }}
             >
               <Text style={[Styles.buttonText]}>Full Harvest</Text>
@@ -271,7 +330,7 @@ const PondDetailsActive: FC = () => {
               </View>
             </View>
             <View>
-              <Text>#CycleID</Text>
+              <Text>#{cycleID}</Text>
               <Text>2022-02-02</Text>
               <TouchableOpacity
                 style={[Styles.button]}
@@ -367,7 +426,7 @@ const PondDetailsActive: FC = () => {
                           Seeding Date
                         </Text>
                         <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
-                          2022-02-02
+                          {seedingDate}
                         </Text>
                       </View>
                     </View>
@@ -395,62 +454,40 @@ const PondDetailsActive: FC = () => {
                       }}
                     >
                       <Text style={{ color: blackColor }}>Vennami</Text>
-                      <Text style={{ color: blackColor }}>18 days</Text>
-                      <Text style={{ color: blackColor }}>2500</Text>
-                      <Text style={{ color: blackColor }}>₹ 45,222</Text>
-                      <Text style={{ color: blackColor }}>Seed Company</Text>
-                      <Text style={{ color: blackColor }}>₹ 56568</Text>
+                      <Text style={{ color: blackColor }}>{getPLStage(speciesPLStage)}</Text>
+                      <Text style={{ color: blackColor }}>{noOfLarve}</Text>
+                      <Text style={{ color: blackColor }}>₹ {pondPrepCost}</Text>
+                      <Text style={{ color: blackColor }}>{seedCompany}</Text>
+                      <Text style={{ color: blackColor }}>₹ {seedCost}</Text>
                     </View>
                   </View>
                   <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
                     <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
-                      {pondDescrition}
+                      {cycleDescription}
                     </Text>
                   </View>
                   <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
                     <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
-                      <View style={Styles.pondDetailsimage}>
-                        <Image
-                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                          style={{ flex: 1 }}
-                        />
-                      </View>
-                      <View style={Styles.pondDetailsimage}>
-                        <Image
-                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                          style={{ flex: 1 }}
-                        />
-                      </View>
-                      <View style={Styles.pondDetailsimage}>
-                        <Image
-                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                          style={{ flex: 1 }}
-                        />
-                      </View>
+                      {seedImages.map((seed, index) => {
+                        return (
+                          <View style={Styles.pondDetailsimage} key={index}>
+                            <Image source={{ uri: seed }} style={{ flex: 1 }} />
+                          </View>
+                        );
+                      })}
                     </View>
                   </View>
                   <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
                     <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation images</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
-                      <View style={Styles.pondDetailsimage}>
-                        <Image
-                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                          style={{ flex: 1 }}
-                        />
-                      </View>
-                      <View style={Styles.pondDetailsimage}>
-                        <Image
-                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                          style={{ flex: 1 }}
-                        />
-                      </View>
-                      <View style={Styles.pondDetailsimage}>
-                        <Image
-                          source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                          style={{ flex: 1 }}
-                        />
-                      </View>
+                      {cyclePondImages.map((seed, index) => {
+                        return (
+                          <View style={Styles.pondDetailsimage} key={index}>
+                            <Image source={{ uri: seed }} style={{ flex: 1 }} />
+                          </View>
+                        );
+                      })}
                     </View>
                   </View>
                 </View>

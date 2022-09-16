@@ -103,7 +103,7 @@ const AddCycle: FC = () => {
     try {
       temp = await validPonds.map((pond: any) => {
         return {
-          label: pond.id.toString() + '-' + pond.pond_name,
+          label: pond.id.string + '-' + pond.pond_name,
           value: pond.id,
         };
       });
@@ -153,6 +153,7 @@ const AddCycle: FC = () => {
 
     formData.append('Pond', selectPondValue);
     formData.append('species', selectSpeciesValue);
+    formData.append('species_pl_stage', speciesPLStageValue);
     formData.append('seed_company', selectSeedCompanyValue);
     formData.append('invest_amount', parseInt(seedInvestmentAmount, 10));
     formData.append('pondPrep_cost', parseInt(pondPreparationCost, 10));
@@ -232,9 +233,9 @@ const AddCycle: FC = () => {
         const assetsOfImage = response.assets[0];
         let temp = '';
         if (!isPondImage) {
-          temp = 'seed' + selectPondValue.toString + seedImages.length.toString + 'image';
+          temp = 'seed' + selectPondValue + seedImages.length + 'image';
         } else {
-          temp = 'cycle' + selectPondValue.toString + pondImages.length.toString + 'image';
+          temp = 'cycle' + selectPondValue + pondImages.length + 'image';
         }
         const imageURI = {
           uri: assetsOfImage.uri,
@@ -283,9 +284,9 @@ const AddCycle: FC = () => {
       const assetsOfImage = response.assets[0];
       let temp = '';
       if (!isPondImage) {
-        temp = 'seed' + selectPondValue.toString + seedImages.length.toString + 'image';
+        temp = 'seed' + selectPondValue + seedImages.length + 'image';
       } else {
-        temp = 'cycle' + selectPondValue.toString + pondImages.length.toString + 'image';
+        temp = 'cycle' + selectPondValue + pondImages.length + 'image';
       }
       const imageURI = {
         uri: assetsOfImage.uri,

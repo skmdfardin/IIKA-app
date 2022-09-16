@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -15,6 +15,8 @@ import {
 import { Calendar } from 'react-native-calendars';
 import moment from 'moment';
 import Aicons from 'react-native-vector-icons/AntDesign';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import {
   windowHeight,
@@ -29,12 +31,16 @@ import {
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
 import RadioForm from 'react-native-simple-radio-button';
-import { CallPostApi } from '../../utilites/Util';
+import { CallGetApi, CallPostApi } from '../../utilites/Util';
 import { useSelector } from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { NavigationParamList } from '../../types/navigation';
 
 const logo = '../../media/AquaLogo.gif';
 const url = 'http://103.127.146.20:4000/api/v1/harvest/harvestregist/';
+
+type harvestCycleRoute = RouteProp<NavigationParamList, 'harvest_cycle_screen'>;
+type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
 
 type imageFrame = {
   uri: string | undefined;
@@ -47,7 +53,7 @@ type dropdownValue = {
   value: number;
 };
 
-const harvestType = [
+const harvestTypeItems = [
   { label: 'Partial Harvest', value: 'P' },
   { label: 'Full Harvest', value: 'F' },
 ];
@@ -57,6 +63,11 @@ const chillKill = [
 ];
 
 const HarvestCycleScreen: FC = () => {
+  const navigation = useNavigation<naviType>();
+  const {
+    params: { pondID, cycleID, harvestType },
+  } = useRoute<harvestCycleRoute>();
+
   const store = useSelector((state: any) => state.userStore);
   const farmStore = useSelector((state: any) => state.farmStore);
   const token = store.email;
@@ -83,9 +94,42 @@ const HarvestCycleScreen: FC = () => {
   const [PondImages, setPondImages] = useState<imageFrame[]>([]);
   const [LogisticsImages, setLogisticsImages] = useState<imageFrame[]>([]);
   const [cycleDetailsDropStatus, setCycleDetailsDropStatus] = useState(false);
-  const [harvestTypeValue, setHarvestTypeValue] = useState(Number);
-  const [chillKillValue, setChillKillValue] = useState(Boolean);
+  const [harvestTypeValue, setHarvestTypeValue] = useState(harvestType);
+  const [chillKillValue, setChillKillValue] = useState(true);
   const [calenderVisible, setCalenderVisible] = useState(false);
+
+  const [cycleDescription, setCycleDescription] = useState('');
+  const [seedingDate, setSeedingDate] = useState('');
+  const [speciesPLStage, setSpeciesPLStage] = useState(Number);
+  const [noOfLarve, setNoOfLarve] = useState(Number);
+  const [pondPrepCost, setPondPrepCost] = useState(Number);
+  const [seedCompany, setSeedCompany] = useState('');
+  const [seedCost, setSeedCost] = useState(Number);
+  const [seedImages, setSeedImages] = useState(['']);
+  const [cyclePondImages, setCyclePondImages] = useState(['']);
+
+  const getSeedCompany = (companyNo: number) => {
+    if (companyNo === 1) {
+      return 'Company-ABC';
+    }
+    if (companyNo === 2) {
+      return 'Company-XYZ';
+    }
+    return 'unknown';
+  };
+
+  const getPLStage = (PLstage: number) => {
+    if (PLstage === 1) {
+      return 'PL-5';
+    }
+    if (PLstage === 2) {
+      return 'PL-10';
+    }
+    if (PLstage === 3) {
+      return 'PL-15';
+    }
+    return 'unknown';
+  };
 
   const addImage = () => {
     setVisible(true);
@@ -112,6 +156,36 @@ const HarvestCycleScreen: FC = () => {
     setPondImages([]);
     setLogisticsImages([]);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const cycleURL = 'http://103.127.146.20:4000/api/v1/cycle/cycleregist/' + cycleID;
+        const cycleData: any = await CallGetApi(cycleURL, token);
+        const data = cycleData.data;
+
+        setCycleDescription(data.description);
+        setSeedingDate(data.seeding_date);
+        setSpeciesPLStage(data.species_pl_stage);
+        setNoOfLarve(data.numbers_of_larva);
+        setPondPrepCost(data.pondPrep_cost);
+        setSeedCompany(getSeedCompany(data.seed_company));
+        setSeedCost(data.invest_amount);
+        const seedTemp = data.seed_images.map((seed: any) => {
+          return seed.image.replace('localhost', '103.127.146.20');
+        });
+        setSeedImages(seedTemp);
+        const pondTemp = data.pond_images.map((seed: any) => {
+          return seed.image.replace('localhost', '103.127.146.20');
+        });
+        setCyclePondImages(pondTemp);
+        console.log('Seed Temp \n', seedTemp, '\n Pond Temp \n', pondTemp);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [cycleID, token]);
 
   const alert = (text: string) => {
     console.log('29 from alert', text);
@@ -178,7 +252,7 @@ const HarvestCycleScreen: FC = () => {
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
 
-      // navigation.goBack();
+      navigation.goBack();
     });
   };
 
@@ -451,7 +525,13 @@ const HarvestCycleScreen: FC = () => {
         </View>
       </Modal>
       <View style={PageStyles.header}>
-        <Text style={PageStyles.backButton}>BACK</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={Styles.backButton}>BACK</Text>
+        </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
 
@@ -460,7 +540,7 @@ const HarvestCycleScreen: FC = () => {
           <View style={{ flexDirection: 'column', width: windowWidth * 0.9 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={Stylings.customText}>Pond Name</Text>
-              <Text style={{ marginTop: windowWidth * 0.03 }}>#Pond Id</Text>
+              <Text style={{ marginTop: windowWidth * 0.03 }}>#{pondID.toString()}</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={{ marginTop: windowWidth * 0.01, color: 'midnightblue', fontWeight: '800' }}>
@@ -479,14 +559,14 @@ const HarvestCycleScreen: FC = () => {
                 }}
               >
                 <Text style={{ fontSize: 11, color: 'black', marginLeft: windowWidth * 0.03, fontWeight: '800' }}>
-                  #cycleID
+                  #{cycleID}
                 </Text>
                 <Text style={{ fontSize: 11, color: 'black' }}>12.03.2022</Text>
               </View>
             </View>
           </View>
 
-          <View style={{ width: windowWidth * 0.9 }}>
+          <View style={{ width: windowWidth * 0.95 }}>
             <TouchableOpacity
               onPress={() => {
                 setCycleDetailsDropStatus(!cycleDetailsDropStatus);
@@ -546,7 +626,7 @@ const HarvestCycleScreen: FC = () => {
                         Seeding Date
                       </Text>
                       <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
-                        02.02.22
+                        {seedingDate}
                       </Text>
                     </View>
                   </View>
@@ -574,62 +654,40 @@ const HarvestCycleScreen: FC = () => {
                     }}
                   >
                     <Text style={{ color: blackColor }}>Vennami</Text>
-                    <Text style={{ color: blackColor }}>18 days</Text>
-                    <Text style={{ color: blackColor }}>2500</Text>
-                    <Text style={{ color: blackColor }}>₹ 45,222</Text>
-                    <Text style={{ color: blackColor }}>Seed Company</Text>
-                    <Text style={{ color: blackColor }}>₹ 56568</Text>
+                    <Text style={{ color: blackColor }}>{getPLStage(speciesPLStage)}</Text>
+                    <Text style={{ color: blackColor }}>{noOfLarve}</Text>
+                    <Text style={{ color: blackColor }}>₹ {pondPrepCost}</Text>
+                    <Text style={{ color: blackColor }}>{seedCompany}</Text>
+                    <Text style={{ color: blackColor }}>₹ {seedCost}</Text>
                   </View>
                 </View>
                 <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
                   <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
-                    Cycle Description
+                    {cycleDescription}
                   </Text>
                 </View>
                 <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
                   <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
+                    {seedImages.map((seed, index) => {
+                      return (
+                        <View style={Styles.pondDetailsimage} key={index}>
+                          <Image source={{ uri: seed }} style={{ flex: 1 }} />
+                        </View>
+                      );
+                    })}
                   </View>
                 </View>
                 <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
                   <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation images</Text>
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
-                    <View style={Styles.pondDetailsimage}>
-                      <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1501577316686-a5cbf6c1df7e' }}
-                        style={{ flex: 1 }}
-                      />
-                    </View>
+                    {cyclePondImages.map((seed, index) => {
+                      return (
+                        <View style={Styles.pondDetailsimage} key={index}>
+                          <Image source={{ uri: seed }} style={{ flex: 1 }} />
+                        </View>
+                      );
+                    })}
                   </View>
                 </View>
               </View>
@@ -638,9 +696,9 @@ const HarvestCycleScreen: FC = () => {
           <View style={{ justifyContent: 'space-between', marginVertical: windowHeight * 0.025 }}>
             <Text style={{ alignSelf: 'center', fontSize: 20, color: 'black', fontWeight: '800' }}>Harvest Type</Text>
             <RadioForm
-              radio_props={harvestType}
+              radio_props={harvestTypeItems}
               animation={false}
-              initial={0}
+              initial={harvestType}
               onPress={(value) => {
                 setHarvestTypeValue(value);
               }}
@@ -910,18 +968,6 @@ const Stylings = StyleSheet.create({
     fontSize: windowHeight * 0.02,
     paddingLeft: windowWidth * 0.025,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: windowHeight * 0.07,
-    backgroundColor: '#000000',
-    alignItems: 'center',
-  },
-  logo: {
-    resizeMode: 'contain',
-    height: windowHeight * 0.06,
-    width: windowWidth * 0.25,
-  },
   fishlogo: {
     resizeMode: 'contain',
     marginLeft: windowWidth * 0.03,
@@ -1149,14 +1195,13 @@ const PageStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',
   },
   logo: {
     resizeMode: 'contain',
-    height: windowHeight * 0.09,
+    height: windowHeight * 0.07,
     width: windowWidth * 0.25,
   },
   scroll: {
@@ -1224,18 +1269,6 @@ const Styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
     paddingLeft: windowWidth * 0.025,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    height: windowHeight * 0.07,
-    backgroundColor: '#000000',
-    alignItems: 'center',
-  },
-  logo: {
-    resizeMode: 'contain',
-    height: windowHeight * 0.07,
-    width: windowWidth * 0.25,
   },
   image: {
     borderRadius: 8,

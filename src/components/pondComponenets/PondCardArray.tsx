@@ -42,6 +42,7 @@ const PondCardArray: FC = () => {
               <View style={[Styles.container, styles.shadow]} key={index}>
                 <TouchableOpacity
                   onPress={() => {
+                    console.log('POND', pond);
                     onSelect(pond.id, pond.is_active_pond);
                   }}
                 >

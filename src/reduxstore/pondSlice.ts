@@ -7,7 +7,7 @@ const pondSlice = createSlice({
   },
   reducers: {
     storePondArray: (storePondArray, action) => {
-      storePondArray.pondDataArray.push(...action.payload.pondDataArray);
+      storePondArray.pondDataArray = action.payload.pondDataArray;
     },
   },
 });

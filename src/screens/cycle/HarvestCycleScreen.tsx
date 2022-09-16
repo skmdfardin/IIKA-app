@@ -32,9 +32,10 @@ import {
 import LabelTextInput from '../../components/LabelTextInput';
 import RadioForm from 'react-native-simple-radio-button';
 import { CallGetApi, CallPostApi } from '../../utilites/Util';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NavigationParamList } from '../../types/navigation';
+import { storePondArray } from '../../reduxstore/pondSlice';
 
 const logo = '../../media/AquaLogo.gif';
 const url = 'http://103.127.146.20:4000/api/v1/harvest/harvestregist/';
@@ -64,12 +65,14 @@ const chillKill = [
 
 const HarvestCycleScreen: FC = () => {
   const navigation = useNavigation<naviType>();
+  const dispatch = useDispatch();
   const {
     params: { pondID, cycleID, harvestType },
   } = useRoute<harvestCycleRoute>();
 
   const store = useSelector((state: any) => state.userStore);
   const farmStore = useSelector((state: any) => state.farmStore);
+  const farmID = farmStore.farmID;
   const token = store.email;
 
   const [selectSeedCompanyItems, setSelectSeedCompanyItems] = useState<dropdownValue[]>([
@@ -94,7 +97,7 @@ const HarvestCycleScreen: FC = () => {
   const [PondImages, setPondImages] = useState<imageFrame[]>([]);
   const [LogisticsImages, setLogisticsImages] = useState<imageFrame[]>([]);
   const [cycleDetailsDropStatus, setCycleDetailsDropStatus] = useState(false);
-  const [harvestTypeValue, setHarvestTypeValue] = useState(harvestType);
+  const [harvestTypeValue, setHarvestTypeValue] = useState('');
   const [chillKillValue, setChillKillValue] = useState(true);
   const [calenderVisible, setCalenderVisible] = useState(false);
 
@@ -159,6 +162,11 @@ const HarvestCycleScreen: FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (harvestType === 0) {
+        setHarvestTypeValue('P');
+      } else {
+        setHarvestTypeValue('F');
+      }
       try {
         const cycleURL = 'http://103.127.146.20:4000/api/v1/cycle/cycleregist/' + cycleID;
         const cycleData: any = await CallGetApi(cycleURL, token);
@@ -207,17 +215,35 @@ const HarvestCycleScreen: FC = () => {
   const onSave = () => {
     const formData = new FormData();
 
+    //   "harvest_type": "F",
+    // "total_kgs": 0,
+    // "is_chill_kill": true,
+    // "temperature": 0,
+    // "harvest_notes": "string",
+    // "harvest_cost": 0,
+    // "animal_count_1": 0,
+    // "total_kg_1": 0,
+    // "price_kg_1": 0,
+    // "sold_to": 0,
+    // "cycle": 0
+
     formData.append('harvest_type', harvestTypeValue);
-    formData.append('total_kgs', parseInt(totalHarvest, 10));
+    let temp1 = parseInt(totalHarvest, 10);
+    formData.append('total_kgs', temp1);
     formData.append('is_chill_kill', chillKillValue);
-    formData.append('temperature', parseInt(waterTemperature, 10));
+    let temp2 = parseInt(waterTemperature, 10);
+    formData.append('temperature', temp2);
     formData.append('harvest_notes', harvestNotes);
-    formData.append('harvest_cost', parseInt(harvestCost, 10));
-    formData.append('animal_count_1', parseInt(animalCount, 10));
-    formData.append('total_kg_1', parseInt(totalKg, 10));
-    formData.append('price_kg_1', parseInt(pricePerKg, 10));
+    let temp3 = parseInt(harvestCost, 10);
+    formData.append('harvest_cost', temp3);
+    let temp4 = parseInt(animalCount, 10);
+    formData.append('animal_count_1', temp4);
+    let temp5 = parseInt(totalKg, 10);
+    formData.append('total_kg_1', temp5);
+    let temp6 = parseInt(pricePerKg, 10);
+    formData.append('price_kg_1', temp6);
     formData.append('sold_to', selectSeedCompanyValue);
-    formData.append('cycle', 4);
+    formData.append('cycle', cycleID);
     if (animalImages.length > 0) {
       for (let i = 0; i < animalImages.length; i++) {
         const photo = animalImages[i];
@@ -231,7 +257,7 @@ const HarvestCycleScreen: FC = () => {
     if (PondImages.length > 0) {
       for (let i = 0; i < PondImages.length; i++) {
         const photo = PondImages[i];
-        formData.append('seed_images', {
+        formData.append('pond_images', {
           name: photo.name,
           type: photo.type,
           uri: photo.uri,
@@ -241,7 +267,7 @@ const HarvestCycleScreen: FC = () => {
     if (LogisticsImages.length > 0) {
       for (let i = 0; i < LogisticsImages.length; i++) {
         const photo = LogisticsImages[i];
-        formData.append('seed_images', {
+        formData.append('log_images', {
           name: photo.name,
           type: photo.type,
           uri: photo.uri,
@@ -249,10 +275,19 @@ const HarvestCycleScreen: FC = () => {
       }
     }
     console.log('FORM DATA \n', formData);
-    CallPostApi(url, formData, token).then((response) => {
-      console.log('RESPONSE', response?.data);
-
-      navigation.goBack();
+    CallPostApi(url, formData, token).then(async () => {
+      console.log('Success in harvest');
+      try {
+        const pondURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + farmID + '/get-related-ponds/';
+        const pondApiCall: any = await CallGetApi(pondURL, token);
+        if (pondApiCall.data.result.ponds !== null) {
+          const pondData = pondApiCall.data.result.ponds;
+          dispatch(storePondArray({ pondDataArray: pondData }));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      navigation.navigate('new_user_landing');
     });
   };
 
@@ -304,13 +339,13 @@ const HarvestCycleScreen: FC = () => {
         let number = 0;
         if (!isPondImage && !isLogisticsImage) {
           number = animalImages.length;
-          name = 'animal' + number;
+          name = 'animal' + number + 'cycle' + cycleID;
         } else if (!LogisticsImages) {
           number = PondImages.length;
-          name = 'pond' + number;
+          name = 'pond' + number + 'cycle' + cycleID;
         } else {
           number = LogisticsImages.length;
-          name = 'logistic' + number;
+          name = 'logistic' + number + 'cycle' + cycleID;
         }
         const imageURI = {
           uri: assetsOfImage.uri,
@@ -559,7 +594,7 @@ const HarvestCycleScreen: FC = () => {
                 }}
               >
                 <Text style={{ fontSize: 11, color: 'black', marginLeft: windowWidth * 0.03, fontWeight: '800' }}>
-                  #{cycleID}
+                  #{cycleID.toString()}
                 </Text>
                 <Text style={{ fontSize: 11, color: 'black' }}>12.03.2022</Text>
               </View>
@@ -700,6 +735,7 @@ const HarvestCycleScreen: FC = () => {
               animation={false}
               initial={harvestType}
               onPress={(value) => {
+                console.log(value);
                 setHarvestTypeValue(value);
               }}
             />

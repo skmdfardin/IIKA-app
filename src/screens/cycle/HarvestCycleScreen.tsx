@@ -35,7 +35,7 @@ import { CallGetApi, CallPostApi } from '../../utilites/Util';
 import { useDispatch, useSelector } from 'react-redux';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NavigationParamList } from '../../types/navigation';
-import { storePondArray } from '../../reduxstore/pondSlice';
+import { replacePondArray } from '../../reduxstore/pondSlice';
 
 const logo = '../../media/AquaLogo.gif';
 const url = 'http://103.127.146.20:4000/api/v1/harvest/harvestregist/';
@@ -282,7 +282,7 @@ const HarvestCycleScreen: FC = () => {
         const pondApiCall: any = await CallGetApi(pondURL, token);
         if (pondApiCall.data.result.ponds !== null) {
           const pondData = pondApiCall.data.result.ponds;
-          dispatch(storePondArray({ pondDataArray: pondData }));
+          dispatch(replacePondArray({ pondDataArray: pondData }));
         }
       } catch (error) {
         console.log(error);

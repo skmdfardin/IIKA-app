@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationParamList } from '../../types/navigation';
 import { whiteColor, windowHeight, windowWidth, styles } from '../../media/css/common';
+import ActivityCard from '../userComponenets/ActivityCard';
 
 type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
 
@@ -21,6 +22,10 @@ const PondCardArray: FC = () => {
     }
   };
 
+  const goToAddPond = (): void => {
+    navigation.navigate('add_pond');
+  };
+
   const pondType = (pondTypeNo: number) => {
     if (pondTypeNo === 1) {
       return 'Nursery';
@@ -35,30 +40,38 @@ const PondCardArray: FC = () => {
 
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-      {validPonds !== null
-        ? validPonds.map((pond: any, index: number) => {
-            const image = pond.pond_images[0].image.replace('localhost', '103.127.146.20');
-            return (
-              <View style={[Styles.container, styles.shadow]} key={index}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log('POND', pond);
-                    onSelect(pond.id, pond.is_active_pond);
+      {validPonds.length !== 0 ? (
+        validPonds.map((pond: any, index: number) => {
+          const image = pond.pond_images[0].image.replace('localhost', '103.127.146.20');
+          return (
+            <View style={[Styles.container, styles.shadow]} key={index}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('POND', pond);
+                  onSelect(pond.id, pond.is_active_pond);
+                }}
+              >
+                <Image
+                  style={Styles.image}
+                  source={{
+                    uri: image,
                   }}
-                >
-                  <Image
-                    style={Styles.image}
-                    source={{
-                      uri: image,
-                    }}
-                  />
-                  <Text style={Styles.title}>{pond.pond_name}</Text>
-                  <Text style={Styles.subtitle}>{pondType(pond.pond_type)}</Text>
-                </TouchableOpacity>
-              </View>
-            );
-          })
-        : null}
+                />
+                <Text style={Styles.title}>{pond.pond_name}</Text>
+                <Text style={Styles.subtitle}>{pondType(pond.pond_type)}</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        })
+      ) : (
+        <ActivityCard
+          titleText="Your Farm has been successfully created"
+          messageText="Let's start by adding ponds to your farm"
+          buttonText="Add Pond"
+          callBack={goToAddPond}
+          buttonState={true}
+        />
+      )}
     </View>
   );
 };

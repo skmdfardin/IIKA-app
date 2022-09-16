@@ -7,11 +7,14 @@ const pondSlice = createSlice({
   },
   reducers: {
     storePondArray: (storePondArray, action) => {
+      storePondArray.pondDataArray.push(...action.payload.pondDataArray);
+    },
+    replacePondArray: (storePondArray, action) => {
       storePondArray.pondDataArray = action.payload.pondDataArray;
     },
   },
 });
 
-export const { storePondArray } = pondSlice.actions;
+export const { storePondArray, replacePondArray } = pondSlice.actions;
 
 export default pondSlice.reducer;

@@ -34,7 +34,7 @@ import LabelTextInput from '../../components/LabelTextInput';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { CallGetApi, CallPostApi } from '../../utilites/Util';
-import { storePondArray } from '../../reduxstore/pondSlice';
+import { replacePondArray, storePondArray } from '../../reduxstore/pondSlice';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -191,7 +191,7 @@ const AddCycle: FC = () => {
         const pondApiCall: any = await CallGetApi(pondURL, token);
         if (pondApiCall.data.result.ponds !== null) {
           const pondData = pondApiCall.data.result.ponds;
-          dispatch(storePondArray({ pondDataArray: pondData }));
+          dispatch(replacePondArray({ pondDataArray: pondData }));
         }
       } catch (error) {
         console.log(error);

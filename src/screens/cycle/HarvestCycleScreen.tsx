@@ -12,7 +12,9 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import AIcon from 'react-native-vector-icons/AntDesign';
+import { Calendar } from 'react-native-calendars';
+import moment from 'moment';
+import Aicons from 'react-native-vector-icons/AntDesign';
 import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import {
   windowHeight,
@@ -21,34 +23,51 @@ import {
   asphaltGreyColour,
   blackColor,
   commonBlueColor,
-  styles,
   discardColour,
   saveColour,
   successColor,
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
-import AIcons from 'react-native-vector-icons/AntDesign';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import RadioForm from 'react-native-simple-radio-button';
+import { CallPostApi } from '../../utilites/Util';
+import { useSelector } from 'react-redux';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const logo = '../../media/AquaLogo.gif';
-
-const shadow = styles.shadow;
+const url = 'http://103.127.146.20:4000/api/v1/harvest/harvestregist/';
 
 type imageFrame = {
   uri: string | undefined;
   type: string | undefined;
   name: string | undefined;
 };
+
+type dropdownValue = {
+  label: string;
+  value: number;
+};
+
 const harvestType = [
-  { label: 'Partial Harvest', value: 0 },
-  { label: 'Full Harvest', value: 1 },
+  { label: 'Partial Harvest', value: 'P' },
+  { label: 'Full Harvest', value: 'F' },
 ];
 const chillKill = [
-  { label: 'Yes', value: 'Chill Kill Used' },
-  { label: 'No', value: 'No chill kill' },
+  { label: 'Yes', value: 'true' },
+  { label: 'No', value: 'false' },
 ];
 
 const HarvestCycleScreen: FC = () => {
+  const store = useSelector((state: any) => state.userStore);
+  const farmStore = useSelector((state: any) => state.farmStore);
+  const token = store.email;
+
+  const [selectSeedCompanyItems, setSelectSeedCompanyItems] = useState<dropdownValue[]>([
+    { label: 'Company-ABC', value: 1 },
+    { label: 'Company-XYZ', value: 2 },
+  ]);
+  const [selectSeedCompanyValue, setSelectSeedCompanyValue] = useState(0);
+  const [selectSeedCompanyOpen, setSelectSeedCompanyOpen] = useState(false);
+
   const [visible, setVisible] = useState(false);
   const [isPondImage, setisPondImage] = useState(false);
   const [isLogisticsImage, setisLogisticsImage] = useState(false);
@@ -58,15 +77,15 @@ const HarvestCycleScreen: FC = () => {
   const [totalKg, setTotalKg] = useState('');
   const [pricePerKg, setpricePerKg] = useState('');
   const [waterTemperature, setWaterTemperature] = useState('');
-  const [soldTo, setSoldTo] = useState('');
   const [harvestCost, setHarvestCost] = useState('');
   const [harvestNotes, setharvestNotes] = useState('');
   const [animalImages, setAnimalImages] = useState<imageFrame[]>([]);
   const [PondImages, setPondImages] = useState<imageFrame[]>([]);
   const [LogisticsImages, setLogisticsImages] = useState<imageFrame[]>([]);
   const [cycleDetailsDropStatus, setCycleDetailsDropStatus] = useState(false);
-  const [pondDescrition, setPondDescription] = useState<string>('');
-  const [radioState, setRadioState] = useState(0);
+  const [harvestTypeValue, setHarvestTypeValue] = useState(Number);
+  const [chillKillValue, setChillKillValue] = useState(Boolean);
+  const [calenderVisible, setCalenderVisible] = useState(false);
 
   const addImage = () => {
     setVisible(true);
@@ -87,13 +106,11 @@ const HarvestCycleScreen: FC = () => {
     setTotalKg('');
     setpricePerKg('');
     setWaterTemperature('');
-    setSoldTo('');
     setHarvestCost('');
     setharvestNotes('');
     setAnimalImages([]);
     setPondImages([]);
     setLogisticsImages([]);
-    setRadioState(0);
   };
 
   const alert = (text: string) => {
@@ -114,7 +131,55 @@ const HarvestCycleScreen: FC = () => {
   };
 
   const onSave = () => {
-    console.log('data saved successfully');
+    const formData = new FormData();
+
+    formData.append('harvest_type', harvestTypeValue);
+    formData.append('total_kgs', parseInt(totalHarvest, 10));
+    formData.append('is_chill_kill', chillKillValue);
+    formData.append('temperature', parseInt(waterTemperature, 10));
+    formData.append('harvest_notes', harvestNotes);
+    formData.append('harvest_cost', parseInt(harvestCost, 10));
+    formData.append('animal_count_1', parseInt(animalCount, 10));
+    formData.append('total_kg_1', parseInt(totalKg, 10));
+    formData.append('price_kg_1', parseInt(pricePerKg, 10));
+    formData.append('sold_to', selectSeedCompanyValue);
+    formData.append('cycle', 4);
+    if (animalImages.length > 0) {
+      for (let i = 0; i < animalImages.length; i++) {
+        const photo = animalImages[i];
+        formData.append('ani_images', {
+          name: photo.name,
+          type: photo.type,
+          uri: photo.uri,
+        });
+      }
+    }
+    if (PondImages.length > 0) {
+      for (let i = 0; i < PondImages.length; i++) {
+        const photo = PondImages[i];
+        formData.append('seed_images', {
+          name: photo.name,
+          type: photo.type,
+          uri: photo.uri,
+        });
+      }
+    }
+    if (LogisticsImages.length > 0) {
+      for (let i = 0; i < LogisticsImages.length; i++) {
+        const photo = LogisticsImages[i];
+        formData.append('seed_images', {
+          name: photo.name,
+          type: photo.type,
+          uri: photo.uri,
+        });
+      }
+    }
+    console.log('FORM DATA \n', formData);
+    CallPostApi(url, formData, token).then((response) => {
+      console.log('RESPONSE', response?.data);
+
+      // navigation.goBack();
+    });
   };
 
   const requestExternalWritePermission = async () => {
@@ -161,16 +226,27 @@ const HarvestCycleScreen: FC = () => {
           return;
         }
         const assetsOfImage = response.assets[0];
+        let name = '';
+        let number = 0;
+        if (!isPondImage && !isLogisticsImage) {
+          number = animalImages.length;
+          name = 'animal' + number;
+        } else if (!LogisticsImages) {
+          number = PondImages.length;
+          name = 'pond' + number;
+        } else {
+          number = LogisticsImages.length;
+          name = 'logistic' + number;
+        }
         const imageURI = {
           uri: assetsOfImage.uri,
           type: assetsOfImage.type,
-          name: assetsOfImage.fileName,
+          name: name,
         };
-        if (!isPondImage) {
-          console;
+        if (!isPondImage && !isLogisticsImage) {
           console.log('successful');
           setAnimalImages([...animalImages, imageURI]);
-        } else if (!LogisticsImages) {
+        } else if (!isLogisticsImage) {
           setPondImages([...PondImages, imageURI]);
           setisPondImage(false);
         } else {
@@ -210,13 +286,25 @@ const HarvestCycleScreen: FC = () => {
       }
       console.log('RESPONSE', response);
       const assetsOfImage = response.assets[0];
+      let name = '';
+      let number = 0;
+      if (!isPondImage && !isLogisticsImage) {
+        number = animalImages.length;
+        name = 'animal' + number;
+      } else if (!LogisticsImages) {
+        number = PondImages.length;
+        name = 'pond' + number;
+      } else {
+        number = LogisticsImages.length;
+        name = 'logistic' + number;
+      }
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
-        name: assetsOfImage.fileName,
+        name: name,
       };
       console.log(isPondImage);
-      if (!isPondImage) {
+      if (!isPondImage && !isLogisticsImage) {
         console;
         console.log('successful');
         setAnimalImages([...animalImages, imageURI]);
@@ -247,6 +335,23 @@ const HarvestCycleScreen: FC = () => {
 
   return (
     <SafeAreaView style={PageStyles.container}>
+      <Modal visible={calenderVisible} transparent={true}>
+        <TouchableOpacity
+          style={{ backgroundColor: '#000000aa', flex: 1, justifyContent: 'center' }}
+          onPress={() => {
+            setCalenderVisible(!calenderVisible);
+          }}
+        >
+          <Calendar
+            initialDate={moment().format('YYYY-MM-DD')}
+            onDayPress={(day) => {
+              console.log('selected day', day.dateString);
+              setHarvestDate(day.dateString);
+              setCalenderVisible(false);
+            }}
+          />
+        </TouchableOpacity>
+      </Modal>
       <Modal visible={visible} transparent>
         <View style={{ backgroundColor: '#000000aa', flex: 1 }}>
           <View
@@ -349,35 +454,28 @@ const HarvestCycleScreen: FC = () => {
         <Text style={PageStyles.backButton}>BACK</Text>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
-      {/* <View style={{ backgroundColor: orangeColor2, height: windowHeight * 0.04 }}>
-                <View>
-                    <Text style={PageStyles.text}> + Add New Cycle</Text>
-                </View>
-            </View> */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={PageStyles.scroll}>
-          <View style={{ flexDirection: 'column' }}>
-            <View style={{ width: windowWidth * 0.87, flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'column', width: windowWidth * 0.9 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={Stylings.customText}>Pond Name</Text>
-              <Text style={{ marginLeft: windowWidth * 0.5, marginTop: windowWidth * 0.03 }}>#pondID</Text>
+              <Text style={{ marginTop: windowWidth * 0.03 }}>#Pond Id</Text>
             </View>
-            <View style={{ width: windowWidth * 0.87, flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={{ marginTop: windowWidth * 0.01, color: 'midnightblue', fontWeight: '800' }}>
-                Poseidon Seafood Farms
+                {farmStore.farmName}
               </Text>
-              <Text style={{ alignSelf: 'flex-end', marginTop: windowWidth * 0.01 }}>Nellore</Text>
+              <Text style={{ alignSelf: 'flex-end', marginTop: windowWidth * 0.01 }}>Location</Text>
             </View>
-            <View style={{ flexDirection: 'row', marginTop: windowHeight * 0.04 }}>
-              <Text style={{ fontSize: 20, fontWeight: '400', color: 'black', marginLeft: windowWidth * 0.02 }}>
-                Vannamei
-              </Text>
+            <View
+              style={{ flexDirection: 'row', marginTop: windowHeight * 0.04, flex: 1, justifyContent: 'space-between' }}
+            >
+              <Text style={{ fontSize: 20, fontWeight: '400', color: 'black' }}>Vannamei</Text>
               <View
                 style={{
                   flexDirection: 'column',
                   height: windowHeight * 0.05,
-                  alignSelf: 'flex-end',
-                  marginLeft: windowWidth * 0.5,
                 }}
               >
                 <Text style={{ fontSize: 11, color: 'black', marginLeft: windowWidth * 0.03, fontWeight: '800' }}>
@@ -412,9 +510,9 @@ const HarvestCycleScreen: FC = () => {
                   Cycle Initiation Info
                 </Text>
                 {cycleDetailsDropStatus ? (
-                  <AIcons name="caretdown" size={25} color={whiteColor} />
+                  <Aicons name="caretdown" size={25} color={whiteColor} />
                 ) : (
-                  <AIcons name="caretright" size={25} color={whiteColor} />
+                  <Aicons name="caretright" size={25} color={whiteColor} />
                 )}
               </View>
             </TouchableOpacity>
@@ -484,7 +582,9 @@ const HarvestCycleScreen: FC = () => {
                   </View>
                 </View>
                 <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
-                  <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>{}</Text>
+                  <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
+                    Cycle Description
+                  </Text>
                 </View>
                 <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
                   <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
@@ -535,11 +635,17 @@ const HarvestCycleScreen: FC = () => {
               </View>
             )}
           </View>
-          <View style={{ justifyContent: 'space-between' }}>
+          <View style={{ justifyContent: 'space-between', marginVertical: windowHeight * 0.025 }}>
             <Text style={{ alignSelf: 'center', fontSize: 20, color: 'black', fontWeight: '800' }}>Harvest Type</Text>
-            <RadioForm radio_props={harvestType} initial={0} onPress={(value) => console.log(value)} />
+            <RadioForm
+              radio_props={harvestType}
+              animation={false}
+              initial={0}
+              onPress={(value) => {
+                setHarvestTypeValue(value);
+              }}
+            />
           </View>
-
           <LabelTextInput
             nameOfField="Total Harvest(Kg)"
             onChange={(text) => {
@@ -554,6 +660,8 @@ const HarvestCycleScreen: FC = () => {
             onChange={(text) => {
               setHarvestDate(text);
             }}
+            onCalenderPress={() => setCalenderVisible(true)}
+            isCalender={true}
             width={windowWidth * 0.9}
             value={harvestDate}
           />
@@ -572,7 +680,7 @@ const HarvestCycleScreen: FC = () => {
               <LabelTextInput
                 nameOfField="Total Kg"
                 onChange={(text) => {
-                  setAnimalCount(text);
+                  setTotalKg(text);
                 }}
                 width={windowWidth * 0.28}
                 value={totalKg}
@@ -602,21 +710,42 @@ const HarvestCycleScreen: FC = () => {
               <Text style={{ marginTop: windowHeight * 0.03, alignSelf: 'center', fontWeight: 'bold', color: 'black' }}>
                 Are You using chill kill?(Dropdown)
               </Text>
-              <RadioForm radio_props={chillKill} initial={0} onPress={(value) => console.log(value)} />
+              <RadioForm
+                radio_props={chillKill}
+                initial={0}
+                animation={false}
+                onPress={(value) => {
+                  setChillKillValue(value.replace('"', ''));
+                }}
+              />
             </View>
 
-            <LabelTextInput
-              nameOfField="Sold to"
-              onChange={(text) => {
-                setSoldTo(text);
+            <View
+              style={{
+                width: windowWidth * 0.9,
+                marginBottom: selectSeedCompanyOpen
+                  ? windowHeight * 0.05 * selectSeedCompanyItems.length
+                  : windowHeight * 0.01,
+                marginTop: windowHeight * 0.02,
               }}
-              width={windowWidth * 0.9}
-              value={soldTo}
-            />
+            >
+              <Text> Sold to*:</Text>
+              <DropDownPicker
+                open={selectSeedCompanyOpen}
+                value={selectSeedCompanyValue}
+                items={selectSeedCompanyItems}
+                setOpen={setSelectSeedCompanyOpen}
+                setValue={setSelectSeedCompanyValue}
+                setItems={setSelectSeedCompanyItems}
+                placeholder={''}
+                listMode="SCROLLVIEW"
+                dropDownDirection="BOTTOM"
+              />
+            </View>
             <LabelTextInput
               nameOfField="Harvest Cost(₹)"
               onChange={(text) => {
-                setSoldTo(text);
+                setHarvestCost(text);
               }}
               width={windowWidth * 0.9}
               value={harvestCost}
@@ -624,7 +753,7 @@ const HarvestCycleScreen: FC = () => {
             <LabelTextInput
               nameOfField="Harvest Notes(Optional)"
               onChange={(text) => {
-                setSoldTo(text);
+                setharvestNotes(text);
               }}
               width={windowWidth * 0.9}
               value={harvestNotes}
@@ -661,7 +790,7 @@ const HarvestCycleScreen: FC = () => {
                 })}
               <TouchableOpacity onPress={addImage}>
                 <View style={[PageStyles.addImage]}>
-                  <AIcon name="plus" size={30} color={asphaltGreyColour} />
+                  <Aicons name="plus" size={30} color={asphaltGreyColour} />
                 </View>
               </TouchableOpacity>
             </View>
@@ -698,7 +827,7 @@ const HarvestCycleScreen: FC = () => {
                 })}
               <TouchableOpacity onPress={addPondImage}>
                 <View style={[PageStyles.addImage]}>
-                  <AIcon name="plus" size={30} color={asphaltGreyColour} />
+                  <Aicons name="plus" size={30} color={asphaltGreyColour} />
                 </View>
               </TouchableOpacity>
             </View>
@@ -734,7 +863,7 @@ const HarvestCycleScreen: FC = () => {
                 })}
               <TouchableOpacity onPress={addLogisticsImage}>
                 <View style={[PageStyles.addImage]}>
-                  <AIcon name="plus" size={30} color={asphaltGreyColour} />
+                  <Aicons name="plus" size={30} color={asphaltGreyColour} />
                 </View>
               </TouchableOpacity>
             </View>

@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import React, { FC, useEffect, useState } from 'react';
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AIcons from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -55,6 +55,8 @@ const PondDetailsActive: FC = () => {
   const [pondImages, setPondImages] = useState<ImageCarouselItem[]>([]);
   const [pondIdImage, setPondIdImage] = useState<string>('');
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   const pondTypeString = (pondTypeNo: number) => {
     if (pondTypeNo === 1) {
       return 'Nursery';
@@ -105,6 +107,45 @@ const PondDetailsActive: FC = () => {
 
   return (
     <SafeAreaView style={Styles.container}>
+      <Modal visible={modalVisible} transparent={true}>
+        <TouchableOpacity
+          style={{ backgroundColor: '#000000aa', flex: 1, justifyContent: 'flex-end' }}
+          onPress={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View
+            style={{
+              height: windowHeight * 0.2,
+              backgroundColor: whiteColor,
+              borderTopLeftRadius: 50,
+              borderTopRightRadius: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <TouchableOpacity
+              style={[Styles.button]}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                navigation.navigate('harvest_cycle_screen');
+              }}
+            >
+              <Text style={[Styles.buttonText]}>Partial Harvest</Text>
+            </TouchableOpacity>
+            <Text style={{ color: blackColor, fontWeight: '700' }}>or</Text>
+            <TouchableOpacity
+              style={[Styles.button, { backgroundColor: '#00A25B' }]}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                navigation.navigate('harvest_cycle_screen');
+              }}
+            >
+              <Text style={[Styles.buttonText]}>Full Harvest</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
       <View style={Styles.header}>
         <TouchableOpacity
           onPress={() => {
@@ -230,11 +271,16 @@ const PondDetailsActive: FC = () => {
               </View>
             </View>
             <View>
-              <Text>#CycleId</Text>
-              <Text>Cycle Start Date</Text>
-              <View style={[Styles.button]}>
+              <Text>#CycleID</Text>
+              <Text>2022-02-02</Text>
+              <TouchableOpacity
+                style={[Styles.button]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
                 <Text style={[Styles.buttonText]}>Harvest Cycle</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={Styles.subTabContainer}>
@@ -321,7 +367,7 @@ const PondDetailsActive: FC = () => {
                           Seeding Date
                         </Text>
                         <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
-                          02.02.22
+                          2022-02-02
                         </Text>
                       </View>
                     </View>
@@ -614,12 +660,12 @@ const Styles = StyleSheet.create({
   },
   button: {
     height: windowHeight * 0.04,
-    width: windowWidth * 0.4,
     borderRadius: 10,
     backgroundColor: successColor,
     paddingHorizontal: windowWidth * 0.05,
     justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: windowHeight * 0.01,
   },
   buttonText: {
     color: '#ffffff',

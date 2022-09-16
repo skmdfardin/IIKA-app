@@ -36,6 +36,7 @@ import moment from 'moment';
 import { CallPostApi } from '../../utilites/Util';
 
 const logo = '../../media/AquaLogo.gif';
+
 const addCycleUrl = 'http://103.127.146.20:4000/api/v1/cycle/cycleregist/';
 
 type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
@@ -149,22 +150,13 @@ const AddCycle: FC = () => {
 
   const onSave = () => {
     const formData = new FormData();
-    //   {  "Pond": 0,
-    //   "species": 1,
-    //   "species_pl_stage": 1,
-    //   "seed_company": 0,
-    //   "invest_amount": 0,
-    //   "pondPrep_cost": 0,
-    //   "description": "string",
-    //   "numbers_of_larva": 0,
-    // }
+
     formData.append('Pond', selectPondValue);
     formData.append('species', selectSpeciesValue);
-    formData.append('speciesPlStage', speciesPLStageValue);
     formData.append('seed_company', selectSeedCompanyValue);
     formData.append('invest_amount', parseInt(seedInvestmentAmount, 10));
     formData.append('pondPrep_cost', parseInt(pondPreparationCost, 10));
-    //formData.append('seeding_date', seedingDate);
+    formData.append('seeding_date', seedingDate);
     formData.append('description', cycleDescription);
     formData.append('numbers_of_larva', parseInt(totalNumberofLarvae, 10));
     if (seedImages.length > 0) {
@@ -190,8 +182,7 @@ const AddCycle: FC = () => {
     console.log('FORM DATA', formData);
     CallPostApi(addCycleUrl, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
-
-      // navigation.goBack();
+      navigation.goBack();
     });
   };
 

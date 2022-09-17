@@ -12,6 +12,8 @@ type naviType = NativeStackNavigationProp<NavigationParamList>;
 
 const HorizontalBigCardFarmInfo: FC = () => {
   const farmStore = useSelector((state: any) => state.farmStore);
+  const pondStore = useSelector((state: any) => state.pondStore);
+  const noPond = pondStore.pondDataArray.length;
   const navigation = useNavigation<naviType>();
   const farmImage = farmStore.farmImages[0];
   return (
@@ -34,8 +36,8 @@ const HorizontalBigCardFarmInfo: FC = () => {
           <Text style={[robotoBold20, { color: blackColor }]}>{farmStore.farmName}</Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'column' }}>
-              <Text style={[robotoRegular18, { color: blackColor }]}>No of Ponds</Text>
-              <Text style={[robotoRegular18, { color: blackColor }]}>Average FCR</Text>
+              <Text style={[robotoRegular18, { color: blackColor }]}>No of Ponds: {noPond}</Text>
+              <Text style={[robotoRegular18, { color: blackColor }]}>Average FCR: -</Text>
             </View>
             <View style={{ flexDirection: 'column', justifyContent: 'flex-end' }}>
               <Text style={[robotoRegular12, { color: blackColor }]}>#{farmStore.farmID}</Text>

@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
+import Iicon from 'react-native-vector-icons/Ionicons';
+import { blackColor } from '../media/css/common';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -16,9 +18,14 @@ interface Props {
 
 const CustomeTextInput: FC<Props> = (props) => {
   const [errorState, setErrorState] = useState(props.errorState);
+  const [isSecure, setIsSecure] = useState(props.isPassword);
 
-  const toggle = () => {
+  const toggleError = () => {
     setErrorState(!errorState);
+  };
+
+  const toggleSecure = () => {
+    setIsSecure(!isSecure);
   };
 
   return (
@@ -26,13 +33,26 @@ const CustomeTextInput: FC<Props> = (props) => {
       <View style={[Styles.container, { width: props.fieldWidth > 0 ? props.fieldWidth : windowWidth * 0.9 }]}>
         <TextInput
           placeholder={props.placeholder}
-          secureTextEntry={props.isPassword}
+          secureTextEntry={isSecure}
           onChangeText={props.onChangeText}
+          style={{ flex: 1 }}
         />
+        {props.isPassword && (
+          <TouchableOpacity
+            onPress={toggleSecure}
+            style={{ justifyContent: 'center', paddingRight: windowWidth * 0.01 }}
+          >
+            {isSecure ? (
+              <Iicon name="eye" size={20} color={blackColor} />
+            ) : (
+              <Iicon name="eye-off" size={20} color={blackColor} />
+            )}
+          </TouchableOpacity>
+        )}
       </View>
       {errorState && (
         <View style={[Styles.errorContainer, { width: props.fieldWidth > 0 ? props.fieldWidth : windowWidth * 0.9 }]}>
-          <TouchableOpacity onPress={toggle}>
+          <TouchableOpacity onPress={toggleError}>
             <Text style={Styles.errorText}>X</Text>
           </TouchableOpacity>
           <Text style={Styles.errorText}>{props.errorMessage}</Text>
@@ -54,6 +74,7 @@ const Styles = StyleSheet.create({
     paddingHorizontal: windowWidth * 0.05,
     borderColor: '#C5C7D0',
     borderWidth: 1,
+    flexDirection: 'row',
   },
   errorContainer: {
     marginHorizontal: windowWidth * 0.01,

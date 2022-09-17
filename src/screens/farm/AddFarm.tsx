@@ -32,6 +32,7 @@ import {
 import LabelTextInput from '../../components/LabelTextInput';
 import Map from '../../components/Map';
 import { CallPostApi } from '../../utilites/Util';
+import { storeFarmDescription, storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -73,6 +74,7 @@ const AddFarm: FC = () => {
   const [imageList, setImageList] = useState<imageFrame[]>([]);
   const [certificateImageList, setCertificateImageList] = useState<imageFrame[]>([]);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const store = useSelector((state: any) => state.userStore);
   const token = store.email;
   const [imageNum, setImageNum] = useState(0);
@@ -167,6 +169,15 @@ const AddFarm: FC = () => {
     }
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
+      const farmData = response?.data;
+      const temp = farmData.farm_images;
+      const farmImageArray = temp.map((item: any) => {
+        return item.image.replace('localhost', '103.127.146.20');
+      });
+      dispatch(storeFarmName({ farmName: farmData.farm_name }));
+      dispatch(storeFarmImages({ farmImages: farmImageArray }));
+      dispatch(storeFarmID({ farmID: farmData.farm_id }));
+      dispatch(storeFarmDescription({ farmDescription: farmData.description }));
 
       navigation.goBack();
     });
@@ -492,7 +503,7 @@ const AddFarm: FC = () => {
             />
           </View>
           <LabelTextInput
-            nameOfField="location*:"
+            nameOfField="Location*:"
             onChange={(text) => {
               console.log(text);
             }}
@@ -501,7 +512,7 @@ const AddFarm: FC = () => {
           />
           <Map />
           <LabelTextInput
-            nameOfField="farm Description:"
+            nameOfField="Farm Description:"
             onChange={(text) => {
               setFarmDesc(text);
             }}
@@ -509,7 +520,16 @@ const AddFarm: FC = () => {
             value={farmDesc}
           />
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>Farm images*</Text>
+            <Text
+              style={{
+                marginTop: windowWidth * 0.03,
+                fontSize: windowWidth * 0.035,
+                color: blackColor,
+                fontWeight: '600',
+              }}
+            >
+              Farm images*
+            </Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -545,7 +565,16 @@ const AddFarm: FC = () => {
             </View>
           </View>
           <View>
-            <Text>Farm Certifications*</Text>
+            <Text
+              style={{
+                marginVertical: windowWidth * 0.03,
+                fontSize: windowHeight * 0.025,
+                color: blackColor,
+                fontWeight: '400',
+              }}
+            >
+              Farm Certifications*
+            </Text>
             {certificateImage === null ? (
               <TouchableOpacity onPress={addCertificateImage}>
                 <View style={[PageStyles.addImage, { marginLeft: windowWidth * 0.25 }]}>
@@ -568,7 +597,16 @@ const AddFarm: FC = () => {
               <Text style={PageStyles.buttonText}>Upload Certificate</Text>
             </TouchableOpacity>
             <View style={{ marginVertical: windowHeight * 0.01 }}>
-              <Text>Select New Certificate:</Text>
+              <Text
+                style={{
+                  marginVertical: windowWidth * 0.03,
+                  fontSize: windowHeight * 0.025,
+                  color: blackColor,
+                  fontWeight: '400',
+                }}
+              >
+                Select New Certificate:
+              </Text>
               <View style={[PageStyles.certificateInput, shadow]}>
                 <TextInput
                   onChangeText={(text) => {
@@ -580,7 +618,16 @@ const AddFarm: FC = () => {
               </View>
             </View>
             <View style={{ marginVertical: windowHeight * 0.01 }}>
-              <Text>Certificate No:</Text>
+              <Text
+                style={{
+                  marginVertical: windowWidth * 0.03,
+                  fontSize: windowHeight * 0.025,
+                  color: blackColor,
+                  fontWeight: '400',
+                }}
+              >
+                Certificate No:
+              </Text>
               <View style={[PageStyles.certificateInput, shadow]}>
                 <TextInput
                   onChangeText={(text) => {
@@ -592,7 +639,16 @@ const AddFarm: FC = () => {
               </View>
             </View>
             <View style={{ marginVertical: windowHeight * 0.01 }}>
-              <Text>Additional Details:</Text>
+              <Text
+                style={{
+                  marginVertical: windowWidth * 0.03,
+                  fontSize: windowHeight * 0.025,
+                  color: blackColor,
+                  fontWeight: '400',
+                }}
+              >
+                Additional Details:
+              </Text>
               <View style={[PageStyles.certificateInput, shadow]}>
                 <TextInput
                   onChangeText={(text) => {

@@ -31,11 +31,13 @@ import {
   orangeColor2,
 } from '../../media/css/common';
 import LabelTextInput from '../../components/LabelTextInput';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
-import { CallPostApi } from '../../utilites/Util';
+import { CallGetApi, CallPostApi } from '../../utilites/Util';
+import { replacePondArray, storePondArray } from '../../reduxstore/pondSlice';
 
 const logo = '../../media/AquaLogo.gif';
+
 const addCycleUrl = 'http://103.127.146.20:4000/api/v1/cycle/cycleregist/';
 
 type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
@@ -53,7 +55,10 @@ type dropdownValue = {
 
 const AddCycle: FC = () => {
   const navigation = useNavigation<naviType>();
+  const dispatch = useDispatch();
   const pondStore = useSelector((state: any) => state.pondStore);
+  const farmStore = useSelector((state: any) => state.farmStore);
+  const farmID = farmStore.farmID;
   const validPonds = pondStore.pondDataArray;
 
   const [visible, setVisible] = useState(false);
@@ -102,13 +107,14 @@ const AddCycle: FC = () => {
     try {
       temp = await validPonds.map((pond: any) => {
         return {
-          label: pond.id.toString() + '-' + pond.pond_name,
+          label: pond.id + '-' + pond.pond_name,
           value: pond.id,
         };
       });
     } catch (error) {
       console.log(error);
     }
+    console.log(temp);
     pondItems(temp);
   };
 
@@ -149,22 +155,14 @@ const AddCycle: FC = () => {
 
   const onSave = () => {
     const formData = new FormData();
-    //   {  "Pond": 0,
-    //   "species": 1,
-    //   "species_pl_stage": 1,
-    //   "seed_company": 0,
-    //   "invest_amount": 0,
-    //   "pondPrep_cost": 0,
-    //   "description": "string",
-    //   "numbers_of_larva": 0,
-    // }
+
     formData.append('Pond', selectPondValue);
     formData.append('species', selectSpeciesValue);
-    formData.append('speciesPlStage', speciesPLStageValue);
+    formData.append('species_pl_stage', speciesPLStageValue);
     formData.append('seed_company', selectSeedCompanyValue);
     formData.append('invest_amount', parseInt(seedInvestmentAmount, 10));
     formData.append('pondPrep_cost', parseInt(pondPreparationCost, 10));
-    //formData.append('seeding_date', seedingDate);
+    formData.append('seeding_date', seedingDate);
     formData.append('description', cycleDescription);
     formData.append('numbers_of_larva', parseInt(totalNumberofLarvae, 10));
     if (seedImages.length > 0) {
@@ -187,11 +185,18 @@ const AddCycle: FC = () => {
         });
       }
     }
-    console.log('FORM DATA', formData);
-    CallPostApi(addCycleUrl, formData, token).then((response) => {
-      console.log('RESPONSE', response?.data);
-
-      // navigation.goBack();
+    CallPostApi(addCycleUrl, formData, token).then(async () => {
+      try {
+        const pondURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + farmID + '/get-related-ponds/';
+        const pondApiCall: any = await CallGetApi(pondURL, token);
+        if (pondApiCall.data.result.ponds !== null) {
+          const pondData = pondApiCall.data.result.ponds;
+          dispatch(replacePondArray({ pondDataArray: pondData }));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      navigation.goBack();
     });
   };
 
@@ -209,7 +214,6 @@ const AddCycle: FC = () => {
   };
 
   const pictureFromCamera = async (photo: any) => {
-    console.log('type', photo);
     const options: CameraOptions = {
       quality: 1,
       mediaType: photo,
@@ -219,15 +223,12 @@ const AddCycle: FC = () => {
 
     if (isCameraPermitted && isStoragePermitted) {
       launchCamera(options, (response) => {
-        console.log('Response = ', response.assets);
-
         if (response.didCancel) {
           alert('User cancelled camera picker');
           return;
         }
         if (response.errorCode === 'camera_unavailable') {
           alert('Camera not available on device');
-          console.log('708');
           return;
         }
         if (response.errorCode === 'permission') {
@@ -241,9 +242,9 @@ const AddCycle: FC = () => {
         const assetsOfImage = response.assets[0];
         let temp = '';
         if (!isPondImage) {
-          temp = 'seed' + selectPondValue.toString + seedImages.length.toString + 'image';
+          temp = 'seed' + selectPondValue + seedImages.length + 'image';
         } else {
-          temp = 'cycle' + selectPondValue.toString + pondImages.length.toString + 'image';
+          temp = 'cycle' + selectPondValue + pondImages.length + 'image';
         }
         const imageURI = {
           uri: assetsOfImage.uri,
@@ -251,13 +252,11 @@ const AddCycle: FC = () => {
           name: temp,
         };
         if (!isPondImage) {
-          console.log('successful');
           setSeedImages([...seedImages, imageURI]);
         } else {
           setPondImages([...pondImages, imageURI]);
           setisPondImage(false);
         }
-        console.log('86', response);
         setVisible(false);
       });
     }
@@ -269,15 +268,12 @@ const AddCycle: FC = () => {
       quality: 1,
     };
     launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
-
       if (response.didCancel) {
         alert('User cancelled camera picker');
         return;
       }
       if (response.errorCode === 'camera_unavailable') {
         alert('Camera not available on device');
-        console.log('747');
         return;
       }
       if (response.errorCode === 'permission') {
@@ -288,29 +284,24 @@ const AddCycle: FC = () => {
         alert(response.errorMessage ? response.errorMessage : '');
         return;
       }
-      console.log('RESPONSE', response);
       const assetsOfImage = response.assets[0];
       let temp = '';
       if (!isPondImage) {
-        temp = 'seed' + selectPondValue.toString + seedImages.length.toString + 'image';
+        temp = 'seed' + selectPondValue + seedImages.length + 'image';
       } else {
-        temp = 'cycle' + selectPondValue.toString + pondImages.length.toString + 'image';
+        temp = 'cycle' + selectPondValue + pondImages.length + 'image';
       }
       const imageURI = {
         uri: assetsOfImage.uri,
         type: assetsOfImage.type,
         name: temp,
       };
-      console.log(isPondImage);
       if (!isPondImage) {
-        console;
-        console.log('successful');
         setSeedImages([...seedImages, imageURI]);
       } else {
         setPondImages([...pondImages, imageURI]);
         setisPondImage(false);
       }
-      console.log('86', response);
       setVisible(false);
     });
   };
@@ -355,7 +346,6 @@ const AddCycle: FC = () => {
                 alignItems: 'center',
               }}
               onPress={() => {
-                console.log('launch camera');
                 pictureFromCamera('photo');
               }}
             >
@@ -383,7 +373,6 @@ const AddCycle: FC = () => {
                 alignItems: 'center',
               }}
               onPress={() => {
-                console.log('open gallery');
                 fromGallery('photo');
               }}
             >
@@ -438,7 +427,6 @@ const AddCycle: FC = () => {
           <Calendar
             initialDate={moment().format('YYYY-MM-DD')}
             onDayPress={(day) => {
-              console.log('selected day', day.dateString);
               setSeedingDate(day.dateString);
               setCalenderVisible(false);
             }}

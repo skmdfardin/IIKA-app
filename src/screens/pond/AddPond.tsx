@@ -122,7 +122,6 @@ const AddPond: FC = () => {
         });
       }
     }
-    console.log('FormData', formData);
     CallPostApi(url, formData, token).then((response) => {
       console.log('RESPONSE', response?.data);
       const newPond = {

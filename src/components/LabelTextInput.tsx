@@ -23,7 +23,8 @@ const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
         style={{
           borderColor: blackColor,
           borderWidth: 1,
-          borderRadius: 15,
+          borderRadius: 12,
+          marginTop: 9,
           borderStyle: props.disabled ? 'dashed' : 'solid',
           width: props.width,
           backgroundColor: '#F5F6F8',
@@ -41,7 +42,7 @@ const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
             onPress={props.onCalenderPress}
             style={{ justifyContent: 'center', paddingRight: windowWidth * 0.05 }}
           >
-            <MIcon name="calendar-month-outline" size={25} color={blackColor} />
+            <MIcon name="calendar-month-outline" size={21} color={blackColor} />
           </TouchableOpacity>
         )}
       </View>

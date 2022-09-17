@@ -451,13 +451,26 @@ const AddCycle: FC = () => {
             navigation.goBack();
           }}
         >
-          <Text style={PageStyles.backButton}>BACK</Text>
+          <Text style={PageStyles.backButton}>Back</Text>
         </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
-      <View style={{ backgroundColor: orangeColor2, height: windowHeight * 0.04 }}>
-        <View>
-          <Text style={PageStyles.text}> + Add New Cycle</Text>
+      <View style={{ backgroundColor: orangeColor2, height: windowHeight * 0.045 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <Text
+            style={[
+              PageStyles.text,
+              {
+                fontSize: windowWidth * 0.069,
+                fontWeight: '400',
+                marginLeft: windowWidth * 0.055,
+                marginTop: windowHeight * -0.005,
+              },
+            ]}
+          >
+            +
+          </Text>
+          <Text style={[PageStyles.text, { fontSize: windowWidth * 0.04, fontWeight: '700' }]}> Add New Cycle</Text>
         </View>
       </View>
 
@@ -540,7 +553,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text> Select Seed Company*:</Text>
+            <Text> Select Seed Company*</Text>
             <DropDownPicker
               open={selectSeedCompanyOpen}
               value={selectSeedCompanyValue}
@@ -698,22 +711,20 @@ export default AddCycle;
 const PageStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff',
   },
   text: {
     color: whiteColor,
-    justifyContent: 'center',
-    paddingLeft: windowWidth * 0.02,
-    paddingTop: windowHeight * 0.008,
+    alignSelf: 'center',
   },
   backButton: {
     color: '#ffffff',
-    fontSize: windowHeight * 0.02,
+    fontSize: windowHeight * 0.023,
     paddingLeft: windowWidth * 0.025,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
     height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',

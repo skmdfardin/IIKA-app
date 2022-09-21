@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { blackColor, windowWidth } from '../media/css/common';
+import { blackColor, windowHeight, windowWidth } from '../media/css/common';
 
 interface LabelTextInputProps {
   nameOfField: string;
@@ -18,13 +18,15 @@ interface LabelTextInputProps {
 const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
   return (
     <View style={{ marginTop: props.marginTop }}>
-      <Text style={{ color: blackColor, fontWeight: '700', fontSize: windowWidth * 0.036 }}>{props.nameOfField}</Text>
+      <Text style={{ color: blackColor, fontSize: windowWidth * 0.036, fontFamily: 'Poppins-SemiBold' }}>
+        {props.nameOfField}
+      </Text>
       <View
         style={{
           borderColor: blackColor,
           borderWidth: 1,
-          borderRadius: 12,
-          marginTop: 9,
+          borderRadius: 10,
+          marginTop: windowHeight * 0.008,
           borderStyle: props.disabled ? 'dashed' : 'solid',
           width: props.width,
           backgroundColor: '#F5F6F8',

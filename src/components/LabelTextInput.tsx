@@ -5,6 +5,7 @@ import { blackColor, windowHeight, windowWidth } from '../media/css/common';
 
 interface LabelTextInputProps {
   nameOfField: string;
+  FieldUnit?: string;
   width: number;
   value: string;
   disabled?: boolean;
@@ -18,9 +19,12 @@ interface LabelTextInputProps {
 const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
   return (
     <View style={{ marginTop: props.marginTop }}>
-      <Text style={{ color: blackColor, fontSize: windowWidth * 0.036, fontFamily: 'Poppins-SemiBold' }}>
-        {props.nameOfField}
-      </Text>
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={{ color: blackColor, fontSize: windowWidth * 0.036, fontFamily: 'Poppins-SemiBold' }}>
+          {props.nameOfField}
+        </Text>
+        {props.FieldUnit && <Text style={{ fontFamily: 'Poppins-Italic', color: '#000000' }}>{props.FieldUnit}</Text>}
+      </View>
       <View
         style={{
           borderColor: blackColor,

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationParamList } from '../../types/navigation';
@@ -130,7 +130,7 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 5,
-    borderRadius: 10,
+    borderRadius: 5,
     width: windowWidth * 0.3,
     backgroundColor: whiteColor,
   },
@@ -138,29 +138,31 @@ const Styles = StyleSheet.create({
     borderRadius: 8,
     margin: 5.5,
     marginBottom: 1,
-    height: windowHeight * 0.085,
+    height: windowHeight * 0.08,
     width: windowWidth * 0.26,
   },
   title: {
     fontSize: 13,
     marginBottom: 0,
     marginLeft: 7,
-    fontWeight: '600',
+    fontFamily:'Poppins-SemiBold',
     color: '#000000',
   },
   subtitle: {
-    fontSize: 11,
+    fontSize: 12,
     marginLeft: 7,
-    fontWeight: '500',
+    marginTop:-3,
+    color: '#000000',
+    fontFamily:'Poppins-Medium',
   },
   shadowProp: {
     shadowColor: '#000000',
     shadowOffset: {
       width: 5,
-      height: 5,
+      height: 3,
     },
-    shadowOpacity: 0.75,
-    shadowRadius: 6.68,
+    shadowOpacity: 1,
+    shadowRadius: 3,
     elevation: 3,
   },
 });

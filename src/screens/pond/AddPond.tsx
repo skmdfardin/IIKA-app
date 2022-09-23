@@ -561,7 +561,6 @@ const PageStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
     height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',

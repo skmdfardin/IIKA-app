@@ -177,7 +177,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   };
 
   return (
-    <ScrollView>
+    <View style={Styles.container}>
       <Modal visible={visible} transparent>
         <View style={{ backgroundColor: '#000000aa', flex: 1 }}>
           <View
@@ -276,157 +276,164 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
           </View>
         </View>
       </Modal>
-      <View style={{ flexDirection: 'column' }}>
-        <View style={Styles.container}>
-          <View style={Styles.header}>
-            <Image style={Styles.logo} source={require(logo)} />
-          </View>
-        </View>
-        <View style={{ marginStart: windowWidth * 0.03 }}>
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity
-              onPress={() => {
-                setVisible(true);
-                console.log('', visible);
+      <View style={Styles.header}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Text style={Styles.buttonText}>BACK</Text>
+        </TouchableOpacity>
+        <Image style={Styles.logo} source={require(logo)} />
+      </View>
+      <ScrollView>
+        <View style={{ flexDirection: 'column', flex: 1 }}>
+          <View style={{ marginStart: windowWidth * 0.03 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  setVisible(true);
+                  console.log('', visible);
+                }}
+              >
+                <Image
+                  style={{ width: 100, height: 100, borderRadius: 100 / 2, marginTop: 5 }}
+                  source={
+                    fileUri !== '' ? { uri: fileUri } : profileImage !== '' ? { uri: profileImage } : require(profile)
+                  }
+                />
+              </TouchableOpacity>
+              <View style={{ marginStart: windowWidth * 0.1 }} />
+              <View style={{ flexDirection: 'column', marginTop: windowWidth * 0.018 }}>
+                <Text style={{ color: blackColor, fontWeight: 'bold', textAlign: 'right', alignSelf: 'flex-end' }}>
+                  Admin User
+                </Text>
+                <LabelTextInput
+                  nameOfField={'Username/ID :'}
+                  width={windowWidth * 0.5}
+                  onChange={(text) => {
+                    setuserName(text);
+                  }}
+                  marginTop={windowWidth * 0.018}
+                  value={userName}
+                  disabled={true}
+                />
+              </View>
+            </View>
+            <Formik
+              initialValues={{
+                username: store.userName,
+                fullname: store.firstName,
+                emailId: store.email,
+                mobileNo: store.mobile,
+                companyName: '',
+                gstCode: '',
+                panNo: '',
+                addressOne: '',
+                addressTwo: '',
+                pincode: '',
+                website: '',
+              }}
+              onSubmit={(values) => {
+                console.log('values', values);
+                setIsSaving(true);
+                onSubmitPressed(values);
               }}
             >
-              <Image
-                style={{ width: 100, height: 100, borderRadius: 100 / 2, marginTop: 5 }}
-                source={
-                  fileUri !== '' ? { uri: fileUri } : profileImage !== '' ? { uri: profileImage } : require(profile)
-                }
-              />
-            </TouchableOpacity>
-            <View style={{ marginStart: windowWidth * 0.1 }} />
-            <View style={{ flexDirection: 'column', marginTop: windowWidth * 0.018 }}>
-              <Text style={{ color: blackColor, fontWeight: 'bold', textAlign: 'right', alignSelf: 'flex-end' }}>
-                Admin User
-              </Text>
-              <LabelTextInput
-                nameOfField={'Username/ID :'}
-                width={windowWidth * 0.5}
-                onChange={(text) => {
-                  setuserName(text);
-                }}
-                marginTop={windowWidth * 0.018}
-                value={userName}
-                disabled={true}
-              />
-            </View>
-          </View>
-          <Formik
-            initialValues={{
-              username: store.userName,
-              fullname: store.firstName,
-              emailId: store.email,
-              mobileNo: store.mobile,
-              companyName: '',
-              gstCode: '',
-              panNo: '',
-              addressOne: '',
-              addressTwo: '',
-              pincode: '',
-              website: '',
-            }}
-            onSubmit={(values) => {
-              console.log('values', values);
-              setIsSaving(true);
-              onSubmitPressed(values);
-            }}
-          >
-            {({ handleChange, handleSubmit, values }) => (
-              <View style={{ marginStart: 8 }}>
-                <LabelTextInput
-                  nameOfField={'Full Name:'}
-                  onChange={handleChange('fullname')}
-                  width={windowWidth * 0.89}
-                  value={values.fullname}
-                />
-                <LabelTextInput
-                  nameOfField={'Registered E-Mail ID:'}
-                  onChange={handleChange('emailId')}
-                  width={windowWidth * 0.89}
-                  value={values.emailId}
-                />
-                <View style={{ flexDirection: 'row' }}>
+              {({ handleChange, handleSubmit, values }) => (
+                <View style={{ marginStart: 8 }}>
                   <LabelTextInput
-                    nameOfField={'ICC:'}
-                    onChange={() => console.log('icc')}
-                    width={windowWidth * 0.15}
-                    disabled
-                    value={'+91'}
+                    nameOfField={'Full Name:'}
+                    onChange={handleChange('fullname')}
+                    width={windowWidth * 0.89}
+                    value={values.fullname}
                   />
-                  <View style={{ width: 16 }} />
                   <LabelTextInput
-                    nameOfField={'Mobile Number:'}
-                    onChange={handleChange('mobileNo')}
-                    width={windowWidth * 0.7}
-                    value={values.mobileNo}
+                    nameOfField={'Registered E-Mail ID:'}
+                    onChange={handleChange('emailId')}
+                    width={windowWidth * 0.89}
+                    value={values.emailId}
                   />
-                </View>
-                <LabelTextInput
-                  nameOfField={'Company Name:'}
-                  onChange={handleChange('companyName')}
-                  width={windowWidth * 0.89}
-                  value={values.companyName}
-                />
-                <LabelTextInput
-                  nameOfField={'SIC Code/GST No.:'}
-                  onChange={handleChange('gstCode')}
-                  width={windowWidth * 0.89}
-                  value={values.gstCode}
-                />
-                <LabelTextInput
-                  nameOfField={'PAN No.:'}
-                  onChange={handleChange('panNo')}
-                  width={windowWidth * 0.89}
-                  value={values.panNo}
-                />
-                <LabelTextInput
-                  nameOfField={'Address Line 1:'}
-                  onChange={handleChange('addressOne')}
-                  width={windowWidth * 0.89}
-                  value={values.addressOne}
-                />
-                <LabelTextInput
-                  nameOfField={'Address Line 2:'}
-                  onChange={handleChange('addressTwo')}
-                  width={windowWidth * 0.89}
-                  value={values.addressTwo}
-                />
-                <LabelTextInput
-                  nameOfField={'Pincode:'}
-                  onChange={handleChange('pincode')}
-                  width={windowWidth * 0.89}
-                  value={values.pincode}
-                />
-                <LabelTextInput
-                  nameOfField={'Website:'}
-                  onChange={handleChange('website')}
-                  width={windowWidth * 0.89}
-                  value={values.website}
-                />
-                {isSaving ? (
-                  <ActivityIndicator size="large" color="#00ff00" style={{ marginVertical: windowHeight * 0.02 }} />
-                ) : (
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-evenly',
-                      marginVertical: windowHeight * 0.02,
-                    }}
-                  >
-                    <Button color={commonBlueColor} onPress={(text) => console.log('button', text)} title="discard" />
-                    <Button onPress={handleSubmit} title="Submit" />
+                  <View style={{ flexDirection: 'row' }}>
+                    <LabelTextInput
+                      nameOfField={'ICC:'}
+                      onChange={() => console.log('icc')}
+                      width={windowWidth * 0.15}
+                      disabled
+                      value={'+91'}
+                    />
+                    <View style={{ width: 16 }} />
+                    <LabelTextInput
+                      nameOfField={'Mobile Number:'}
+                      onChange={handleChange('mobileNo')}
+                      width={windowWidth * 0.7}
+                      value={values.mobileNo}
+                    />
                   </View>
-                )}
-              </View>
-            )}
-          </Formik>
+                  <LabelTextInput
+                    nameOfField={'Company Name:'}
+                    onChange={handleChange('companyName')}
+                    width={windowWidth * 0.89}
+                    value={values.companyName}
+                  />
+                  <LabelTextInput
+                    nameOfField={'SIC Code/GST No.:'}
+                    onChange={handleChange('gstCode')}
+                    width={windowWidth * 0.89}
+                    value={values.gstCode}
+                  />
+                  <LabelTextInput
+                    nameOfField={'PAN No.:'}
+                    onChange={handleChange('panNo')}
+                    width={windowWidth * 0.89}
+                    value={values.panNo}
+                  />
+                  <LabelTextInput
+                    nameOfField={'Address Line 1:'}
+                    onChange={handleChange('addressOne')}
+                    width={windowWidth * 0.89}
+                    value={values.addressOne}
+                  />
+                  <LabelTextInput
+                    nameOfField={'Address Line 2:'}
+                    onChange={handleChange('addressTwo')}
+                    width={windowWidth * 0.89}
+                    value={values.addressTwo}
+                  />
+                  <LabelTextInput
+                    nameOfField={'Pincode:'}
+                    onChange={handleChange('pincode')}
+                    width={windowWidth * 0.89}
+                    value={values.pincode}
+                  />
+                  <LabelTextInput
+                    nameOfField={'Website:'}
+                    onChange={handleChange('website')}
+                    width={windowWidth * 0.89}
+                    value={values.website}
+                  />
+                  {isSaving ? (
+                    <ActivityIndicator size="large" color="#00ff00" style={{ marginVertical: windowHeight * 0.02 }} />
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly',
+                        marginVertical: windowHeight * 0.02,
+                      }}
+                    >
+                      <Button color={commonBlueColor} onPress={(text) => console.log('button', text)} title="discard" />
+                      <Button onPress={handleSubmit} title="Submit" />
+                    </View>
+                  )}
+                </View>
+              )}
+            </Formik>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -435,18 +442,23 @@ export default EditProfileScreen;
 const Styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
-    alignItems: 'center',
+    flex: 1,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    width: windowWidth,
+    justifyContent: 'space-between',
     height: windowHeight * 0.07,
     backgroundColor: '#000000',
+    alignItems: 'center',
   },
   logo: {
     resizeMode: 'contain',
     height: windowHeight * 0.07,
     width: windowWidth * 0.25,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: windowHeight * 0.02,
+    paddingLeft: windowWidth * 0.025,
   },
 });

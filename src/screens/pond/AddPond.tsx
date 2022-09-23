@@ -434,6 +434,7 @@ const AddPond: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={pondLength}
+            isNumeric={true}
           />
           <LabelTextInput
             nameOfField="Pond Breadth*:"
@@ -442,6 +443,7 @@ const AddPond: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={pondBreadth}
+            isNumeric={true}
           />
           <LabelTextInput
             nameOfField="Pond Depth*:"
@@ -450,6 +452,7 @@ const AddPond: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={pondDepth}
+            isNumeric={true}
           />
 
           <LabelTextInput
@@ -459,6 +462,7 @@ const AddPond: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={pondSurfaceArea}
+            isNumeric={true}
           />
 
           <LabelTextInput
@@ -468,6 +472,7 @@ const AddPond: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={pondCapacity}
+            isNumeric={true}
           />
           <Map />
 

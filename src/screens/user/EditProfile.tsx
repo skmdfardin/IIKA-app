@@ -135,38 +135,41 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
   };
 
   const onSubmitPressed = async (values: any) => {
-    const formData = new FormData();
-    formData.append('email', values.emailId);
-    formData.append('phone_no', values.mobileNo);
-    formData.append('first_name', values.fullname);
-    formData.append('username', userName);
-    formData.append('image', {
-      uri: fileResponse.assets[0].uri,
-      type: fileResponse.assets[0].type,
-      name: 'profile.jpg',
-    });
-    formData.append('company_name', values.companyName);
-    formData.append('sic_gst_code', values.gstCode);
-    formData.append('pan_no', values.panNo);
-    formData.append('address_one', values.addressOne);
-    formData.append('address_two', values.addressTwo);
-    formData.append('pincode', values.pincode);
-    formData.append('website', values.website);
-    console.log('FORM DATA:', formData);
-    console.log('Token', token);
-    CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
-      console.log('RESPONSE', response);
+    if (fileResponse.assets[0].uri !== undefined) {
+      const formData = new FormData();
+      formData.append('email', values.emailId);
+      formData.append('phone_no', values.mobileNo);
+      formData.append('first_name', values.fullname);
+      formData.append('username', userName);
+      formData.append('image', {
+        uri: fileResponse.assets[0].uri,
+        type: fileResponse.assets[0].type,
+        name: 'profile.jpg',
+      });
+      formData.append('company_name', values.companyName);
+      formData.append('sic_gst_code', values.gstCode);
+      formData.append('pan_no', values.panNo);
+      formData.append('address_one', values.addressOne);
+      formData.append('address_two', values.addressTwo);
+      formData.append('pincode', values.pincode);
+      formData.append('website', values.website);
+      console.log('FORM DATA:', formData);
+      console.log('Token', token);
+      CallPostApi('http://103.127.146.20:4000/api/v1/account/profile', formData, token).then((response) => {
+        console.log('RESPONSE', response);
+        setIsSaving(false);
+        dispatch(storeIsProfileComplete({ isProfileComplete: true }));
+        navigation.goBack();
+      });
+    } else {
       setIsSaving(false);
-      dispatch(storeIsProfileComplete({ isProfileComplete: true }));
-      navigation.goBack();
-    });
+    }
   };
 
   const requestExternalWritePermission = async () => {
     if (Platform.OS === 'android') {
       try {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-        // If WRITE_EXTERNAL_STORAGE Permission is granted
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
         console.warn(err);
@@ -359,7 +362,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
                       nameOfField={'ICC:'}
                       onChange={() => console.log('icc')}
                       width={windowWidth * 0.15}
-                      disabled
+                      disabled={true}
                       value={'+91'}
                     />
                     <View style={{ width: 16 }} />
@@ -368,6 +371,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
                       onChange={handleChange('mobileNo')}
                       width={windowWidth * 0.7}
                       value={values.mobileNo}
+                      isNumeric={true}
                     />
                   </View>
                   <LabelTextInput
@@ -405,6 +409,8 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
                     onChange={handleChange('pincode')}
                     width={windowWidth * 0.89}
                     value={values.pincode}
+                    isNumeric={true}
+                    maxLength={6}
                   />
                   <LabelTextInput
                     nameOfField={'Website:'}

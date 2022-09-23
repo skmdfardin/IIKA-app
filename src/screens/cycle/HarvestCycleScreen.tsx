@@ -768,6 +768,7 @@ const HarvestCycleScreen: FC = () => {
                 }}
                 width={windowWidth * 0.28}
                 value={animalCount}
+                isNumeric={true}
               />
             </View>
             <View style={{ marginRight: windowWidth * 0.02 }}>
@@ -778,6 +779,7 @@ const HarvestCycleScreen: FC = () => {
                 }}
                 width={windowWidth * 0.28}
                 value={totalKg}
+                isNumeric={true}
               />
             </View>
             <View style={{}}>
@@ -788,6 +790,7 @@ const HarvestCycleScreen: FC = () => {
                 }}
                 width={windowWidth * 0.28}
                 value={pricePerKg}
+                isNumeric={true}
               />
             </View>
           </View>
@@ -799,6 +802,7 @@ const HarvestCycleScreen: FC = () => {
               }}
               width={windowWidth * 0.9}
               value={waterTemperature}
+              isNumeric={true}
             />
             <View style={{ height: windowHeight * 0.15, justifyContent: 'space-between', alignContent: 'center' }}>
               <Text style={{ marginTop: windowHeight * 0.03, alignSelf: 'center', fontWeight: 'bold', color: 'black' }}>
@@ -843,6 +847,7 @@ const HarvestCycleScreen: FC = () => {
               }}
               width={windowWidth * 0.9}
               value={harvestCost}
+              isNumeric={true}
             />
             <LabelTextInput
               nameOfField="Harvest Notes(Optional)"

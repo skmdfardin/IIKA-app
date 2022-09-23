@@ -66,6 +66,7 @@ const AddCycle: FC = () => {
   const [isPondImage, setisPondImage] = useState(false);
   const [totalNumberofLarvae, setTotalNumberofLarvae] = useState('');
   const [seedInvestmentAmount, setSeedInvestmentAmount] = useState('');
+  const [seedQuantity, setSeedQuantity] = useState('');
   const [seedingDate, setSeedingDate] = useState('');
   const [pondPreparationCost, setPondPreparationCost] = useState('');
   const [cycleDescription, setCycleDescription] = useState('');
@@ -162,6 +163,7 @@ const AddCycle: FC = () => {
     formData.append('seed_company', selectSeedCompanyValue);
     formData.append('invest_amount', parseInt(seedInvestmentAmount, 10));
     formData.append('pondPrep_cost', parseInt(pondPreparationCost, 10));
+    formData.append('seeding_qty', parseInt(seedQuantity, 10));
     formData.append('seeding_date', seedingDate);
     formData.append('description', cycleDescription);
     formData.append('numbers_of_larva', parseInt(totalNumberofLarvae, 10));
@@ -565,6 +567,7 @@ const AddCycle: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={seedInvestmentAmount}
+            isNumeric={true}
           />
           <LabelTextInput
             nameOfField="Seeding Date*"
@@ -577,6 +580,15 @@ const AddCycle: FC = () => {
             }}
             width={windowWidth * 0.9}
             value={seedingDate}
+          />
+          <LabelTextInput
+            nameOfField="Seed Quantity*:"
+            onChange={(text) => {
+              setSeedQuantity(text);
+            }}
+            width={windowWidth * 0.9}
+            value={pondPreparationCost}
+            isNumeric={true}
           />
           <LabelTextInput
             nameOfField="Pond Preparation Cost*:"
@@ -681,7 +693,7 @@ const AddCycle: FC = () => {
                 initialState();
               }}
             >
-              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Discard</Text>
+              <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>Discard</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[PageStyles.endButton, { backgroundColor: saveColour }]}
@@ -689,7 +701,7 @@ const AddCycle: FC = () => {
                 onSave();
               }}
             >
-              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Save</Text>
+              <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>

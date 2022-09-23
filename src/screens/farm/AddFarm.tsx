@@ -454,7 +454,7 @@ const AddFarm: FC = () => {
           />
           <LabelTextInput
             nameOfField="Farm area*"
-            FieldUnit='(acres)'
+            FieldUnit="(acres)"
             onChange={(text) => {
               setFarmArea(text);
             }}
@@ -515,6 +515,8 @@ const AddFarm: FC = () => {
               }}
               width={windowWidth * 0.425}
               value={pincode}
+              isNumeric={true}
+              maxLength={6}
             />
           </View>
           <LabelTextInput
@@ -540,7 +542,7 @@ const AddFarm: FC = () => {
                 marginTop: windowWidth * 0.03,
                 fontSize: windowWidth * 0.035,
                 color: blackColor,
-                fontFamily:'Poppins-SemiBold',
+                fontFamily: 'Poppins-SemiBold',
               }}
             >
               Farm images*
@@ -567,7 +569,7 @@ const AddFarm: FC = () => {
                           removeimage(image.name!);
                         }}
                       >
-                        <Text style={[PageStyles.buttonText, {fontFamily:'Poppins-Regular'}]}>remove image</Text>
+                        <Text style={[PageStyles.buttonText, { fontFamily: 'Poppins-Regular' }]}>remove image</Text>
                       </TouchableOpacity>
                     </View>
                   );
@@ -585,7 +587,7 @@ const AddFarm: FC = () => {
                 marginVertical: windowWidth * 0.03,
                 fontSize: windowHeight * 0.025,
                 color: blackColor,
-                fontFamily:'Poppins-Regular',
+                fontFamily: 'Poppins-Regular',
               }}
             >
               Farm Certifications*
@@ -609,7 +611,7 @@ const AddFarm: FC = () => {
                 console.log('UPDATE');
               }}
             >
-              <Text style={[PageStyles.buttonText, {fontFamily:'Poppins-Regular'}]}>Upload Certificate</Text>
+              <Text style={[PageStyles.buttonText, { fontFamily: 'Poppins-Regular' }]}>Upload Certificate</Text>
             </TouchableOpacity>
             <View style={{ marginVertical: windowHeight * 0.01 }}>
               <Text
@@ -617,7 +619,7 @@ const AddFarm: FC = () => {
                   marginVertical: windowWidth * 0.03,
                   fontSize: windowHeight * 0.025,
                   color: blackColor,
-                  fontFamily:'Poppins-Regular',
+                  fontFamily: 'Poppins-Regular',
                 }}
               >
                 Select New Certificate
@@ -638,7 +640,7 @@ const AddFarm: FC = () => {
                   marginVertical: windowWidth * 0.03,
                   fontSize: windowHeight * 0.025,
                   color: blackColor,
-                  fontFamily:'Poppins-Regular',
+                  fontFamily: 'Poppins-Regular',
                 }}
               >
                 Certificate No
@@ -650,6 +652,7 @@ const AddFarm: FC = () => {
                   }}
                   value={certificateNumber > 0 ? certificateNumber.toString() : ''}
                   placeholder="No"
+                  keyboardType="numeric"
                 />
               </View>
             </View>
@@ -659,7 +662,7 @@ const AddFarm: FC = () => {
                   marginVertical: windowWidth * 0.03,
                   fontSize: windowHeight * 0.025,
                   color: blackColor,
-                  fontFamily:'Poppins-Regular',
+                  fontFamily: 'Poppins-Regular',
                 }}
               >
                 Additional Details
@@ -678,7 +681,7 @@ const AddFarm: FC = () => {
               style={[PageStyles.certificateButton, { backgroundColor: greenColour }]}
               onPress={addCertificate}
             >
-              <Text style={[PageStyles.buttonText, {fontFamily:'Poppins-Regular'}]}>Add New Certificate</Text>
+              <Text style={[PageStyles.buttonText, { fontFamily: 'Poppins-Regular' }]}>Add New Certificate</Text>
             </TouchableOpacity>
             {certificateList &&
               certificateList.map((certificate, index) => {
@@ -694,7 +697,9 @@ const AddFarm: FC = () => {
                           deleteCertificate(certificate.certificate_number!);
                         }}
                       >
-                        <Text style={[PageStyles.buttonText, {fontFamily:'Poppins-Regular'}]}>Delete Certificate</Text>
+                        <Text style={[PageStyles.buttonText, { fontFamily: 'Poppins-Regular' }]}>
+                          Delete Certificate
+                        </Text>
                       </TouchableOpacity>
                     </View>
                     <View>
@@ -724,7 +729,7 @@ const AddFarm: FC = () => {
                   initialState();
                 }}
               >
-                <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Discard</Text>
+                <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>Discard</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[PageStyles.endButton, { backgroundColor: saveColour }]}
@@ -732,7 +737,7 @@ const AddFarm: FC = () => {
                   onSave();
                 }}
               >
-                <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Save</Text>
+                <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>Save</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -747,9 +752,9 @@ export default AddFarm;
 const PageStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
-   AddFarmText: {
+  AddFarmText: {
     color: whiteColor,
     fontSize: windowWidth * 0.04,
     fontFamily: 'Poppins-Bold',

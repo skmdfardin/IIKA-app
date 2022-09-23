@@ -64,6 +64,7 @@ const PondDetailsActive: FC = () => {
   const [pondPrepCost, setPondPrepCost] = useState(Number);
   const [seedCompany, setSeedCompany] = useState('');
   const [seedCost, setSeedCost] = useState(Number);
+  const [seedQuantity, setSeedQuantity] = useState(Number);
   const [seedImages, setSeedImages] = useState(['']);
   const [cyclePondImages, setCyclePondImages] = useState(['']);
 
@@ -138,6 +139,7 @@ const PondDetailsActive: FC = () => {
             setPondPrepCost(data.pondPrep_cost);
             setSeedCompany(getSeedCompany(data.seed_company));
             setSeedCost(data.invest_amount);
+            setSeedQuantity(data.seeding_qty);
             const seedTemp = data.seed_images.map((seed: any) => {
               return seed.image.replace('localhost', '103.127.146.20');
             });
@@ -480,7 +482,7 @@ const PondDetailsActive: FC = () => {
                           Seed (kg)
                         </Text>
                         <Text style={{ fontSize: windowHeight * 0.024, fontFamily: 'Poppins-Bold', color: blackColor }}>
-                          2546Kg
+                          {seedQuantity}Kg
                         </Text>
                       </View>
                     </View>

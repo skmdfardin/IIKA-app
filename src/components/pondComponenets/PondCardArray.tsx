@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationParamList } from '../../types/navigation';
-import { whiteColor, windowHeight, windowWidth, styles } from '../../media/css/common';
+import { whiteColor, windowHeight, windowWidth, styles, successColor, blackColor } from '../../media/css/common';
 import ActivityCard from '../userComponenets/ActivityCard';
 
 type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
@@ -51,12 +51,59 @@ const PondCardArray: FC = () => {
                   onSelect(pond.id, pond.is_active_pond);
                 }}
               >
-                <Image
+                <ImageBackground
                   style={Styles.image}
                   source={{
                     uri: image,
                   }}
-                />
+                >
+                  {pond.is_active_pond && (
+                    <>
+                      <View
+                        style={{
+                          width: windowWidth * 0.08,
+                          height: windowHeight * 0.04,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: '#3A95FF',
+                          borderRadius: 50,
+                          position: 'absolute',
+                          top: windowHeight * -0.02,
+                          right: windowWidth * -0.02,
+                        }}
+                      >
+                        <Text style={{ color: whiteColor, fontSize: windowHeight * 0.01 }}>DOC:</Text>
+                        <Text style={{ color: whiteColor, fontSize: windowHeight * 0.01 }}>{pond.doc}</Text>
+                      </View>
+
+                      <View
+                        style={{
+                          backgroundColor: blackColor,
+                          borderRadius: 20,
+                          width: windowWidth * 0.18,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          alignSelf: 'flex-end',
+                          position: 'absolute',
+                          top: windowHeight * 0.065,
+                          right: windowWidth * -0.01,
+                        }}
+                      >
+                        <Text style={{ color: whiteColor, fontSize: windowHeight * 0.015 }}>Active</Text>
+                        <View
+                          style={{
+                            height: windowHeight * 0.01,
+                            width: windowWidth * 0.02,
+                            backgroundColor: successColor,
+                            marginLeft: windowWidth * 0.01,
+                            borderRadius: 10,
+                          }}
+                        />
+                      </View>
+                    </>
+                  )}
+                </ImageBackground>
                 <Text style={Styles.title}>{pond.pond_name}</Text>
                 <Text style={Styles.subtitle}>{pondType(pond.pond_type)}</Text>
               </TouchableOpacity>

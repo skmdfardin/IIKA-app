@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, Text, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';

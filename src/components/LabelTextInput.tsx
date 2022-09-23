@@ -1,7 +1,7 @@
-import React, { FunctionComponent } from 'react';
-import { Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { blackColor, windowWidth } from '../media/css/common';
+import { blackColor, windowHeight, windowWidth } from '../media/css/common';
 
 interface LabelTextInputProps {
   nameOfField: string;
@@ -9,13 +9,25 @@ interface LabelTextInputProps {
   value: string;
   disabled?: boolean;
   marginTop?: number;
-  error?: boolean;
+  errorState?: boolean;
+  errorMessage?: string;
   isCalender?: boolean;
   onChange?: (text: string) => void;
   onCalenderPress?: () => void;
+  isNumeric?: boolean;
+  maxLength?: number;
 }
 
 const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
+  const [errorState, setErrorState] = useState(props.errorState);
+  const toggleError = () => {
+    setErrorState(!errorState);
+  };
+
+  useEffect(() => {
+    setErrorState(props.errorState);
+  }, [props.errorState]);
+
   return (
     <View style={{ marginTop: props.marginTop }}>
       <Text style={{ color: blackColor, fontWeight: '800', fontSize: windowWidth * 0.035 }}>{props.nameOfField}</Text>
@@ -35,6 +47,8 @@ const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
           onChangeText={props.onChange}
           value={props.value}
           style={{ color: blackColor, flex: 1 }}
+          keyboardType={props.isNumeric ? 'numeric' : 'default'}
+          maxLength={props.maxLength}
         />
         {props.isCalender && (
           <TouchableOpacity
@@ -43,6 +57,14 @@ const LabelTextInput: FunctionComponent<LabelTextInputProps> = (props) => {
           >
             <MIcon name="calendar-month-outline" size={25} color={blackColor} />
           </TouchableOpacity>
+        )}
+        {errorState && (
+          <View style={[Styles.errorContainer, { width: props.width }]}>
+            <TouchableOpacity onPress={toggleError}>
+              <Text style={Styles.errorText}>X</Text>
+            </TouchableOpacity>
+            <Text style={Styles.errorText}>{props.errorMessage}</Text>
+          </View>
         )}
       </View>
     </View>
@@ -54,8 +76,29 @@ LabelTextInput.defaultProps = {
   width: windowWidth * 0.9,
   disabled: false,
   marginTop: windowWidth * 0.05,
-  error: false,
+  errorState: false,
   isCalender: false,
+  errorMessage: '',
+  isNumeric: false,
+  maxLength: 500,
 };
+
+const Styles = StyleSheet.create({
+  errorContainer: {
+    marginHorizontal: windowWidth * 0.01,
+    backgroundColor: '#C5C7D0',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  errorText: {
+    marginVertical: windowHeight * 0.005,
+    marginLeft: windowWidth * 0.03,
+    marginRight: windowWidth * 0.01,
+    textAlign: 'center',
+    color: '#ffffff',
+    flexShrink: 1,
+  },
+});
 
 export default LabelTextInput;

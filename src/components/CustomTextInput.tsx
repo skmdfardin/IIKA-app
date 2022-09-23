@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet, Dimensions, TextInput, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import Iicon from 'react-native-vector-icons/Ionicons';
@@ -14,11 +14,17 @@ interface Props {
   errorState: boolean;
   errorMessage: string;
   isPassword: boolean;
+  isNumeric?: boolean;
+  maxLength?: number;
 }
 
 const CustomeTextInput: FC<Props> = (props) => {
-  const [errorState, setErrorState] = useState(props.errorState);
+  const [errorState, setErrorState] = useState(Boolean);
   const [isSecure, setIsSecure] = useState(props.isPassword);
+
+  useEffect(() => {
+    setErrorState(props.errorState);
+  }, [props.errorState]);
 
   const toggleError = () => {
     setErrorState(!errorState);
@@ -36,6 +42,8 @@ const CustomeTextInput: FC<Props> = (props) => {
           secureTextEntry={isSecure}
           onChangeText={props.onChangeText}
           style={{ flex: 1 }}
+          keyboardType={props.isNumeric ? 'numeric' : 'default'}
+          maxLength={props.maxLength}
         />
         {props.isPassword && (
           <TouchableOpacity
@@ -63,6 +71,11 @@ const CustomeTextInput: FC<Props> = (props) => {
 };
 
 export default CustomeTextInput;
+
+CustomeTextInput.defaultProps = {
+  isNumeric: false,
+  maxLength: 500,
+};
 
 const Styles = StyleSheet.create({
   container: {

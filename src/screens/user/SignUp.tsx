@@ -1,12 +1,13 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { NavigationParamList } from '../../types/navigation';
+import { ComparePassword, CheckEmail } from '../../service/validation';
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
@@ -41,40 +42,65 @@ const SignUp: FC = () => {
     setConfirmPasswordError(false);
     setMobileNumError(false);
   };
-
+  const validate = () => {
+    const comparePassword = ComparePassword(password, confirmPassword);
+    const checkEmail = CheckEmail(email);
+    let isError = false;
+    if (comparePassword !== null) {
+      setConfirmPasswordError(true);
+      isError = true;
+    } else {
+      setConfirmPasswordError(false);
+      isError = false;
+    }
+    if (checkEmail !== null) {
+      setEmailError(true);
+      isError = true;
+    } else {
+      setEmailError(false);
+      isError = false;
+    }
+    if (!isError) {
+      return false;
+    } else {
+      return true;
+    }
+  };
   const onSubmit = async () => {
-    let data;
-    try {
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email,
-          first_name: firstName,
-          last_name: lastName,
-          password: password,
-          password2: confirmPassword,
-          phone_no: mobileNum,
-        }),
-      };
-      const response = await fetch(signInURL, requestOptions);
-      data = await response.json();
-      if (data.response) {
-        console.log('DATA /n', data);
-        dispatch(storeEmailId({ email: data.email }));
-        dispatch(storeFirstName({ firstName: data.first_name }));
-        dispatch(storeLastName({ lastName: data.last_name }));
-        dispatch(storeMobile({ mobile: data.phone_no }));
-        dispatch(storeUserName({ userName: data.username }));
-        console.log('responce', data.responce);
-        console.log('Data', data);
-        resetState();
-        navigation.navigate('new_user_landing');
-      } else {
-        console.log('Response', data);
+    if (validate()) {
+      let data;
+      try {
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            first_name: firstName,
+            last_name: lastName,
+            password: password,
+            password2: confirmPassword,
+            phone_no: mobileNum,
+          }),
+        };
+        const response = await fetch(signInURL, requestOptions);
+        data = await response.json();
+        if (data.response) {
+          console.log('DATA /n', data);
+          dispatch(storeEmailId({ email: data.email }));
+          dispatch(storeFirstName({ firstName: data.first_name }));
+          dispatch(storeLastName({ lastName: data.last_name }));
+          dispatch(storeMobile({ mobile: data.phone_no }));
+          dispatch(storeUserName({ userName: data.username }));
+          console.log('responce', data.responce);
+          console.log('Data', data);
+          resetState();
+          navigation.navigate('new_user_landing');
+        } else {
+          console.log('Response', data);
+        }
+      } catch (error) {
+        console.log('Error', error);
       }
-    } catch (error) {
-      console.log('Error', error);
     }
   };
 
@@ -86,6 +112,7 @@ const SignUp: FC = () => {
         <Image style={Styles.backImage3} source={require(fishLogo)} />
         <Image style={Styles.logo} source={require(logo)} />
       </View>
+
       <View style={Styles.subContainer}>
         <Text style={Styles.text}>Create an account</Text>
         <View style={{ flexDirection: 'row' }}>
@@ -110,7 +137,7 @@ const SignUp: FC = () => {
           placeholder="Email ID"
           onChangeText={(text) => setEmail(text)}
           fieldWidth={0}
-          errorMessage="Email Error"
+          errorMessage="Enter a proper email"
           errorState={emailError}
           isPassword={false}
         />
@@ -118,7 +145,7 @@ const SignUp: FC = () => {
           placeholder="Password"
           onChangeText={(text) => setPassword(text)}
           fieldWidth={0}
-          errorMessage="test!"
+          errorMessage=""
           errorState={passwordError}
           isPassword={true}
         />
@@ -126,7 +153,7 @@ const SignUp: FC = () => {
           placeholder="Confirm Password"
           onChangeText={(text) => setConfirmPassword(text)}
           fieldWidth={0}
-          errorMessage="test!"
+          errorMessage="Passwords do not match"
           errorState={confirmPasswordError}
           isPassword={true}
         />
@@ -134,9 +161,11 @@ const SignUp: FC = () => {
           placeholder="Enter Mobile no"
           onChangeText={(text) => setMobileNum(parseInt(text, 10))}
           fieldWidth={0}
-          errorMessage="test!"
+          errorMessage=""
           errorState={mobileNumError}
           isPassword={false}
+          isNumeric={true}
+          maxLength={10}
         />
 
         <TouchableOpacity style={Styles.button} onPress={onSubmit}>
@@ -151,16 +180,17 @@ export default SignUp;
 const Styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    flex: 1,
     backgroundColor: '#000000',
+    flex: 1,
   },
   subContainer: {
     alignItems: 'center',
-    marginTop: windowHeight * 0.35,
     backgroundColor: '#ffffff',
     width: windowWidth,
-    height: windowHeight,
-    borderRadius: 20,
+    height: windowHeight * 0.65,
+    top: windowHeight * 0.35,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
   },
   text: {
     marginVertical: windowHeight * 0.03,
@@ -173,7 +203,7 @@ const Styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     position: 'absolute',
-    bottom: windowHeight * 1.3,
+    bottom: windowHeight,
   },
   backImage1: {
     position: 'absolute',

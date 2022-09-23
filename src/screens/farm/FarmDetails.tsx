@@ -48,7 +48,7 @@ const FarmDetails: FC = () => {
             navigation.goBack();
           }}
         >
-          <Text style={Styles.backButton}>BACK</Text>
+          <Text style={Styles.backButton}>Back</Text>
         </TouchableOpacity>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
@@ -72,21 +72,23 @@ const FarmDetails: FC = () => {
                     farmEdit();
                   }}
                 >
-                  <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: '#479dfb' }}>
+                  <Text style={{ fontSize: windowHeight * 0.014, fontFamily: 'Poppins-Bold', color: '#479dfb' }}>
                     Edit Farm Details
                   </Text>
                 </TouchableOpacity>
-                <Text style={{ fontSize: windowHeight * 0.018 }}>Avg FCR: 1.2</Text>
+                <Text style={{ fontSize: windowHeight * 0.018, fontFamily: 'Poppins-Regular',color: '#000000' }}>Avg FCR: 1.2</Text>
               </View>
               <View style={{ flexDirection: 'column', justifyContent: 'flex-end', marginRight: 10, marginBottom: 8 }}>
-                <Text style={{ fontSize: windowHeight * 0.014, fontWeight: '500', color: '#000000' }}>
+                <Text style={{ fontSize: windowHeight * 0.014, fontWeight: '500', color: '#000000',fontFamily: 'Poppins-Regular', }}>
                   #{farmStore.farmID}
                 </Text>
-                <Text style={{ fontSize: windowHeight * 0.014, fontWeight: '400', color: '#000000' }}>Location</Text>
+                <Text style={{ fontSize: windowHeight * 0.014, fontWeight: '400',fontFamily: 'Poppins-Regular', color: '#000000' }}>Location</Text>
               </View>
             </View>
           </View>
         </View>
+
+        {/*to integrate the blue cards component*/}
         <View style={{ marginTop: windowHeight * 0.05, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
           <View style={Styles.infoCard}>
             <View style={{ flexDirection: 'column', padding: windowWidth * 0.02 }}>
@@ -110,6 +112,8 @@ const FarmDetails: FC = () => {
             </View>
           </View>
         </View>
+
+        
         <View
           style={{
             marginVertical: windowHeight * 0.02,
@@ -118,7 +122,7 @@ const FarmDetails: FC = () => {
             alignSelf: 'center',
           }}
         >
-          <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '400', color: '#000000' }}>
+          <Text style={{ fontSize: windowHeight * 0.022, fontFamily: 'Poppins-Regular', color: '#000000' }}>
             {farmStore.farmDescription}
           </Text>
         </View>
@@ -129,7 +133,7 @@ const FarmDetails: FC = () => {
           <Text>GRAPH</Text>
         </View>
         <View style={{ marginVertical: windowHeight * 0.05 }}>
-          <Text style={{ alignSelf: 'center', fontSize: 20, fontWeight: '800', color: '#000000' }}>All Ponds</Text>
+          <Text style={{ alignSelf: 'center', fontSize: 20, fontFamily: 'Poppins-Bold', color: '#000000' }}>All Ponds</Text>
           <PondCardArray />
         </View>
         <View style={{ marginVertical: windowHeight * 0.01 }}>
@@ -162,8 +166,9 @@ const Styles = StyleSheet.create({
   },
   backButton: {
     color: '#ffffff',
-    fontSize: windowHeight * 0.02,
+    fontSize: windowHeight * 0.023,
     paddingLeft: windowWidth * 0.025,
+    fontFamily: 'Poppins-Regular',
   },
   header: {
     flexDirection: 'row',
@@ -187,8 +192,8 @@ const Styles = StyleSheet.create({
   farmName: {
     fontSize: windowHeight * 0.022,
     marginTop: 5,
-    fontWeight: '700',
     color: '#000000',
+    fontFamily: 'Poppins-Bold',
   },
   EditFarmDetails: {
     backgroundColor: '#f4f7f8',

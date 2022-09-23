@@ -439,13 +439,26 @@ const AddCycle: FC = () => {
             navigation.goBack();
           }}
         >
-          <Text style={PageStyles.backButton}>BACK</Text>
+          <Text style={PageStyles.backButton}>Back</Text>
         </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
-      <View style={{ backgroundColor: orangeColor2, height: windowHeight * 0.04 }}>
-        <View>
-          <Text style={PageStyles.text}> + Add New Cycle</Text>
+      <View style={{ backgroundColor: orangeColor2, height: windowHeight * 0.045 }}>
+        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+          <Text
+            style={[
+              PageStyles.AddCycleText,
+              {
+                fontSize: windowWidth * 0.069,
+                fontFamily: 'Poppins-Regular',
+                marginLeft: windowWidth * 0.055,
+                marginTop: windowHeight * -0.003,
+              },
+            ]}
+          >
+            +
+          </Text>
+          <Text style={PageStyles.AddCycleText}> Add New Cycle</Text>
         </View>
       </View>
 
@@ -458,7 +471,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text> Select Pond*:</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}> Select Pond*</Text>
             <DropDownPicker
               open={selectPondOpen}
               value={selectPondValue}
@@ -469,6 +482,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
           <View
@@ -478,7 +492,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text> Select Species*:</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}> Select Species*</Text>
             <DropDownPicker
               open={selectSpeciesOpen}
               value={selectSpeciesValue}
@@ -489,6 +503,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
           <View
@@ -498,7 +513,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text>Species PL-Stage*:</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}>Species PL-Stage*</Text>
             <DropDownPicker
               open={speciesPLStageOpen}
               value={speciesPLStageValue}
@@ -509,6 +524,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
           <LabelTextInput
@@ -528,7 +544,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text> Select Seed Company*:</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}> Select Seed Company*</Text>
             <DropDownPicker
               open={selectSeedCompanyOpen}
               value={selectSeedCompanyValue}
@@ -539,6 +555,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
+              style={{ backgroundColor: '#F5F6F8', borderRadius: 10 }}
             />
           </View>
           <LabelTextInput
@@ -579,7 +596,7 @@ const AddCycle: FC = () => {
           />
           <View style={{ height: windowHeight * 0.02 }} />
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text style={{ color: blackColor }}>Seed images*</Text>
+            <Text style={PageStyles.text}>Seed images*</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -616,7 +633,7 @@ const AddCycle: FC = () => {
           </View>
 
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text style={{ color: blackColor }}>Prepared Pond Images*</Text>
+            <Text style={PageStyles.text}>Prepared Pond Images*</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -664,7 +681,7 @@ const AddCycle: FC = () => {
                 initialState();
               }}
             >
-              <Text style={PageStyles.buttonText}>Discard</Text>
+              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Discard</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[PageStyles.endButton, { backgroundColor: saveColour }]}
@@ -672,7 +689,7 @@ const AddCycle: FC = () => {
                 onSave();
               }}
             >
-              <Text style={PageStyles.buttonText}>Save</Text>
+              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -686,22 +703,23 @@ export default AddCycle;
 const PageStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff',
   },
-  text: {
+  AddCycleText: {
     color: whiteColor,
-    justifyContent: 'center',
-    paddingLeft: windowWidth * 0.02,
-    paddingTop: windowHeight * 0.008,
+    fontSize: windowWidth * 0.04,
+    fontFamily: 'Poppins-Bold',
+    marginTop: windowHeight * 0.005,
   },
   backButton: {
     color: '#ffffff',
-    fontSize: windowHeight * 0.02,
+    fontSize: windowHeight * 0.023,
     paddingLeft: windowWidth * 0.025,
+    fontFamily: 'Poppins-Regular',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
     height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',
@@ -717,6 +735,11 @@ const PageStyles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
+  },
+  text: {
+    color: blackColor,
+    fontFamily: 'Poppins-SemiBold',
+    //fontSize:
   },
   imageButton: {
     height: windowHeight * 0.03,

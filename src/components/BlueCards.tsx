@@ -36,7 +36,7 @@ export default BlueCards;
 
 const Styles = StyleSheet.create({
   infoCard: {
-    height: windowHeight * 0.083,
+    height: windowHeight * 0.09,
     width: windowWidth * 0.29,
     backgroundColor: '#0059ab',
     marginHorizontal: windowWidth * 0.01,

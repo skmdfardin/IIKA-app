@@ -563,7 +563,7 @@ const PondDetailsActive: FC = () => {
                 fontSize: windowWidth * 0.05,
                 color: '#000000',
                 margin: windowHeight * 0.025,
-                marginBottom: windowHeight * -0.035
+                marginBottom: windowHeight * -0.035,
               }}
             >
               Pond Details

@@ -367,19 +367,27 @@ const AddPond: FC = () => {
             navigation.goBack();
           }}
         >
-          <Text style={PageStyles.buttonText}>BACK</Text>
+          <Text style={PageStyles.backButton}>Back</Text>
         </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
-      <View
-        style={{
-          backgroundColor: '#0059AB',
-          height: windowHeight * 0.04,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Text style={{ color: whiteColor }}> + Add New Pond</Text>
+      <View style={{ backgroundColor: '#0059AB', height: windowHeight * 0.045 }}>
+        <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+          <Text
+            style={[
+              PageStyles.AddPondText,
+              {
+                fontSize: windowWidth * 0.069,
+                fontFamily: 'Poppins-Regular',
+                marginLeft: windowWidth * 0.05,
+                marginTop: windowHeight * -0.003,
+              },
+            ]}
+          >
+            +
+          </Text>
+          <Text style={PageStyles.AddPondText}> Add New Pond</Text>
+        </View>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -388,9 +396,10 @@ const AddPond: FC = () => {
             style={{
               width: windowWidth * 0.9,
               marginBottom: pondConstructOpen ? windowHeight * 0.15 : windowHeight * 0.02,
+              marginTop: windowHeight * 0.02,
             }}
           >
-            <Text> Choose pond construct type:</Text>
+            <Text style={PageStyles.text}> Choose pond construct type:</Text>
             <DropDownPicker
               open={pondConstructOpen}
               value={pondConstructValue}
@@ -401,12 +410,13 @@ const AddPond: FC = () => {
               stickyHeader={true}
               placeholder={''}
               listMode="SCROLLVIEW"
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
           <View
             style={{ width: windowWidth * 0.9, marginBottom: pondTypeOpen ? windowHeight * 0.15 : windowHeight * 0.02 }}
           >
-            <Text> Choose pond type:</Text>
+            <Text style={PageStyles.text}> Choose pond type:</Text>
             <DropDownPicker
               open={pondTypeOpen}
               value={pondTypeValue}
@@ -416,6 +426,7 @@ const AddPond: FC = () => {
               setItems={setPondTypeItems}
               placeholder={''}
               listMode="SCROLLVIEW"
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
 
@@ -485,8 +496,8 @@ const AddPond: FC = () => {
             value={pondDesc}
           />
 
-          <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>pond images*</Text>
+          <View style={{ width: windowWidth * 0.9, flex: 1, marginTop:10}}>
+            <Text style = {{fontFamily: 'Poppins-SemiBold', color: '#000000'}}>pond images*</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -534,21 +545,21 @@ const AddPond: FC = () => {
               }}
             >
               <TouchableOpacity
-                style={[PageStyles.endButton, { backgroundColor: discardColour }]}
-                onPress={() => {
-                  initialState();
-                }}
-              >
-                <Text style={PageStyles.buttonText}>Discard</Text>
-              </TouchableOpacity>
+              style={[PageStyles.endButton, { backgroundColor: discardColour }]}
+              onPress={() => {
+                initialState();
+              }}
+            >
+              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Discard</Text>
+            </TouchableOpacity>
               <TouchableOpacity
-                style={[PageStyles.endButton, { backgroundColor: saveColour }]}
-                onPress={() => {
-                  onSave();
-                }}
-              >
-                <Text style={PageStyles.buttonText}>Save</Text>
-              </TouchableOpacity>
+              style={[PageStyles.endButton, { backgroundColor: saveColour }]}
+              onPress={() => {
+                onSave();
+              }}
+            >
+              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Save</Text>
+            </TouchableOpacity>
             </View>
           )}
         </View>
@@ -562,6 +573,7 @@ export default AddPond;
 const PageStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff',
   },
   header: {
     flexDirection: 'row',
@@ -569,6 +581,19 @@ const PageStyles = StyleSheet.create({
     height: windowHeight * 0.07,
     backgroundColor: '#000000',
     alignItems: 'center',
+  },
+  AddPondText: {
+    color: whiteColor,
+    fontSize: windowWidth * 0.04,
+    fontFamily: 'Poppins-Bold',
+    marginTop: windowHeight * 0.005,
+  },
+  backButton: {
+    color: '#ffffff',
+    fontSize: windowHeight * 0.023,
+    paddingLeft: windowWidth * 0.025,
+    paddingTop: 9,
+    fontFamily: 'Poppins-Regular',
   },
   logo: {
     resizeMode: 'contain',
@@ -590,6 +615,12 @@ const PageStyles = StyleSheet.create({
     fontSize: windowHeight * 0.02,
     paddingLeft: windowWidth * 0.025,
   },
+  text: {
+    color: blackColor,
+    fontFamily: 'Poppins-SemiBold',
+    marginBottom: windowHeight * 0.005 
+    //fontSize:
+  },
   certificateButton: {
     height: windowHeight * 0.05,
     width: windowWidth * 0.5,
@@ -610,7 +641,7 @@ const PageStyles = StyleSheet.create({
   },
   imageButton: {
     height: windowHeight * 0.03,
-    width: windowWidth * 0.35,
+    width: windowWidth * 0.3,
     borderRadius: 10,
     backgroundColor: '#0059AB',
     alignItems: 'center',
@@ -637,8 +668,8 @@ const PageStyles = StyleSheet.create({
     borderRadius: 5,
   },
   addImage: {
-    height: windowHeight * 0.2,
-    width: windowWidth * 0.4,
+    height: windowHeight * 0.171,
+    width: windowWidth * 0.35,
     margin: windowWidth * 0.01,
     backgroundColor: '#F5F6F8',
     borderStyle: 'dashed',

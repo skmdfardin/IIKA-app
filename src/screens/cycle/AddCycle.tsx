@@ -453,7 +453,7 @@ const AddCycle: FC = () => {
               {
                 fontSize: windowWidth * 0.069,
                 fontFamily: 'Poppins-Regular',
-                marginLeft: windowWidth * 0.055,
+                marginLeft: windowWidth * 0.05,
                 marginTop: windowHeight * -0.003,
               },
             ]}
@@ -727,6 +727,7 @@ const PageStyles = StyleSheet.create({
     color: '#ffffff',
     fontSize: windowHeight * 0.023,
     paddingLeft: windowWidth * 0.025,
+    paddingTop: 9,
     fontFamily: 'Poppins-Regular',
   },
   header: {

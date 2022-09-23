@@ -15,6 +15,7 @@ import {
 import { NavigationParamList } from '../../types/navigation';
 import { CallGetApi } from '../../utilites/Util';
 import { useSelector } from 'react-redux';
+import BlueCards from '../../components/BlueCards';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -105,7 +106,7 @@ const PondDetailsInactive: FC = () => {
             navigation.goBack();
           }}
         >
-          <Text style={Styles.backButton}>BACK</Text>
+          <Text style={[Styles.backButton,{fontFamily: 'Poppins-Regular'}]}>Back</Text>
         </TouchableOpacity>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
@@ -124,7 +125,7 @@ const PondDetailsInactive: FC = () => {
               borderTopLeftRadius: 10,
             }}
           >
-            <Text style={{ color: whiteColor }}>#{pondID.toString()}</Text>
+            <Text style={{ color: whiteColor, fontFamily: 'Poppins-Regular' }}>#{pondID.toString()}</Text>
             <View
               style={{
                 backgroundColor: whiteColor,
@@ -135,7 +136,7 @@ const PondDetailsInactive: FC = () => {
                 justifyContent: 'center',
               }}
             >
-              <Text>Inactive</Text>
+              <Text style = {{fontFamily: 'Poppins-Bold', fontSize:13, color: '#000000'}}>Inactive</Text>
               <View
                 style={{
                   height: windowHeight * 0.0175,
@@ -164,9 +165,9 @@ const PondDetailsInactive: FC = () => {
               }}
             />
             <View style={{ marginLeft: windowWidth * 0.02 }}>
-              <Text>{farmName}</Text>
-              <Text>{pondName}</Text>
-              <Text>{pondType}</Text>
+              <Text style = {Styles.text}>{farmName}</Text>
+              <Text style ={{fontFamily: 'Poppins-Bold', fontSize:17, color:'#000000',marginTop:-5}}>{pondName}</Text>
+              <Text style = {Styles.text}>{pondType}</Text>
             </View>
           </View>
           <View
@@ -218,34 +219,12 @@ const PondDetailsInactive: FC = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>Total Cycles</Text>
-              <View style={{ alignContent: 'flex-end' }}>
-                <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>235</Text>
-                  <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
-                Completed Cycles
-              </Text>
-              <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>10</Text>
-            </View>
-          </View>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-              <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
-              <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>1.234</Text>
-            </View>
-          </View>
+        <View style={{flexDirection:'row', justifyContent:'center'}}>
+        <BlueCards cardHeading={'Total Harvest'} cardValue={235} weight={'tn'} />
+        <BlueCards cardHeading={'Completed Cycles'} cardValue={10} />
+        <BlueCards cardHeading={'AVG. FCR'} cardValue={1.234}/>
         </View>
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: windowHeight*0.03 }}>
           <ImageCarousel1
             imageItem={pondImages}
             callBackIndex={(index: number) => {
@@ -254,7 +233,7 @@ const PondDetailsInactive: FC = () => {
           />
         </View>
         <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
-          <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>{pondDescrition}</Text>
+          <Text style={{ fontSize: windowHeight * 0.018, fontFamily: 'Poppins-Regular', color: '#000000' }}>{pondDescrition}</Text>
         </View>
         <View style={[Styles.graph, Styles.shadowProp]}>
           <Text>GRAPH</Text>
@@ -281,8 +260,13 @@ const Styles = StyleSheet.create({
   },
   backButton: {
     color: '#ffffff',
-    fontSize: windowHeight * 0.02,
+    fontSize: windowHeight * 0.023,
     paddingLeft: windowWidth * 0.025,
+    marginTop: 8
+  },
+  text:{
+    fontFamily: 'Poppins-Regular'
+
   },
   header: {
     flexDirection: 'row',
@@ -368,7 +352,7 @@ const Styles = StyleSheet.create({
     color: '#459BFF',
     marginVertical: windowHeight * 0.01,
     marginHorizontal: windowHeight * 0.02,
-    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold'
   },
   subTabContainer: {
     marginTop: windowHeight * 0.01,

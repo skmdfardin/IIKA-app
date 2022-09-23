@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { windowHeight, windowWidth } from '../media/css/common';
 
 interface Props {
@@ -17,7 +17,7 @@ const BlueCards: FC<Props> = (props) => {
             {props.cardHeading}
           </Text>
           <View style={{ flexDirection: 'row', marginTop: windowHeight*-0.006}}>
-            <Text style={{ fontSize: windowHeight * 0.027, fontFamily: 'Poppins-Bold', color: 'white' }}>{props.cardValue}</Text>
+            <Text style={{ fontSize: windowHeight * 0.025, fontFamily: 'Poppins-Bold', color: 'white' }}>{props.cardValue}</Text>
             {props.weight && (
               <View style={{ marginTop: windowHeight*0.003 }}>
                 <Text style={{ fontSize: windowHeight * 0.017, fontFamily: 'Poppins-Light', color: 'white' }}>

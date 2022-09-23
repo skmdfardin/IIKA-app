@@ -17,6 +17,7 @@ import {
 import { NavigationParamList } from '../../types/navigation';
 import { CallGetApi } from '../../utilites/Util';
 import { useSelector } from 'react-redux';
+import BlueCards from '../../components/BlueCards';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -221,7 +222,7 @@ const PondDetailsActive: FC = () => {
             navigation.goBack();
           }}
         >
-          <Text style={Styles.backButton}>BACK</Text>
+          <Text style={Styles.backButton}>Back</Text>
         </TouchableOpacity>
         <Image style={Styles.logo} source={require(logo)} />
       </View>
@@ -240,7 +241,7 @@ const PondDetailsActive: FC = () => {
               borderTopLeftRadius: 10,
             }}
           >
-            <Text style={{ color: whiteColor }}>#{pondID.toString()}</Text>
+            <Text style={{ color: whiteColor, fontFamily: 'Poppins-Regular' }}>#{pondID.toString()}</Text>
             <View
               style={{
                 backgroundColor: whiteColor,
@@ -251,7 +252,7 @@ const PondDetailsActive: FC = () => {
                 justifyContent: 'center',
               }}
             >
-              <Text>Active</Text>
+              <Text style={{ fontFamily: 'Poppins-Regular', color: '#000000' }}>Active</Text>
               <View
                 style={{
                   height: windowHeight * 0.0175,
@@ -280,9 +281,20 @@ const PondDetailsActive: FC = () => {
               }}
             />
             <View style={{ marginLeft: windowWidth * 0.02 }}>
-              <Text>{farmName}</Text>
-              <Text>{pondName}</Text>
-              <Text>{pondType}</Text>
+              <Text style={{ fontFamily: 'Poppins-Regular', color: '#000000' }}>{farmName}</Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Bold',
+                  color: '#000000',
+                  fontSize: windowWidth * 0.045,
+                  marginTop: windowHeight * -0.005,
+                }}
+              >
+                {pondName}
+              </Text>
+              <Text style={{ fontFamily: 'Poppins-Regular', color: '#000000', marginTop: windowHeight * -0.005 }}>
+                {pondType}
+              </Text>
             </View>
           </View>
           <View
@@ -327,7 +339,16 @@ const PondDetailsActive: FC = () => {
             }}
           >
             <View>
-              <Text>Vannamei</Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Regular',
+                  color: '#000000',
+                  fontSize: windowWidth * 0.045,
+                  marginTop: windowHeight * -0.005,
+                }}
+              >
+                Vannamei
+              </Text>
               <View
                 style={{
                   backgroundColor: pearlGreyColour,
@@ -340,8 +361,27 @@ const PondDetailsActive: FC = () => {
               </View>
             </View>
             <View>
-              <Text>#{cycleID}</Text>
-              <Text>2022-02-02</Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-SemiBold',
+                  color: '#000000',
+                  fontSize: windowWidth * 0.028,
+                  marginTop: windowHeight * -0.005,
+                  alignSelf: 'flex-end',
+                }}
+              >
+                #{cycleID}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'Poppins-Regular',
+                  color: '#000000',
+                  marginTop: windowHeight * -0.005,
+                  alignSelf: 'flex-end',
+                }}
+              >
+                2022-02-02
+              </Text>
               <TouchableOpacity
                 style={[Styles.button]}
                 onPress={() => {
@@ -359,7 +399,14 @@ const PondDetailsActive: FC = () => {
               }}
             >
               <View style={currentTab === 'Details' ? Styles.tabActive : Styles.tabInactive}>
-                <Text style={currentTab === 'Details' ? Styles.tabTextActive : Styles.tabTextInactive}>Details</Text>
+                <Text
+                  style={[
+                    currentTab === 'Details' ? Styles.tabTextActive : Styles.tabTextInactive,
+                    { fontFamily: 'Poppins-Regular' },
+                  ]}
+                >
+                  Details
+                </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -368,7 +415,14 @@ const PondDetailsActive: FC = () => {
               }}
             >
               <View style={currentTab === 'Records' ? Styles.tabActive : Styles.tabInactive}>
-                <Text style={currentTab === 'Records' ? Styles.tabTextActive : Styles.tabTextInactive}>Records</Text>
+                <Text
+                  style={[
+                    currentTab === 'Records' ? Styles.tabTextActive : Styles.tabTextInactive,
+                    { fontFamily: 'Poppins-Regular' },
+                  ]}
+                >
+                  Records
+                </Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -396,7 +450,7 @@ const PondDetailsActive: FC = () => {
                     },
                   ]}
                 >
-                  <Text style={{ color: whiteColor, fontWeight: '900', fontSize: windowWidth * 0.045 }}>
+                  <Text style={{ color: whiteColor, fontFamily: 'Poppins-Bold', fontSize: windowWidth * 0.045 }}>
                     Active Pond Details
                   </Text>
                   {pondDetailsDropStatus ? (
@@ -422,20 +476,20 @@ const PondDetailsActive: FC = () => {
                   >
                     <View style={Styles.infoCard2}>
                       <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
-                          Seed(kg)
+                        <Text style={{ fontSize: windowHeight * 0.015, fontFamily: 'Poppins-Bold', color: blackColor }}>
+                          Seed (kg)
                         </Text>
-                        <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                        <Text style={{ fontSize: windowHeight * 0.024, fontFamily: 'Poppins-Bold', color: blackColor }}>
                           2546Kg
                         </Text>
                       </View>
                     </View>
                     <View style={Styles.infoCard2}>
                       <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
+                        <Text style={{ fontSize: windowHeight * 0.015, fontFamily: 'Poppins-Bold', color: blackColor }}>
                           Seeding Date
                         </Text>
-                        <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                        <Text style={{ fontSize: windowHeight * 0.024, fontFamily: 'Poppins-Bold', color: blackColor }}>
                           {seedingDate}
                         </Text>
                       </View>
@@ -449,12 +503,12 @@ const PondDetailsActive: FC = () => {
                     }}
                   >
                     <View style={{ width: windowWidth * 0.5 }}>
-                      <Text style={{ color: blackColor, fontWeight: '600' }}>Species:</Text>
-                      <Text style={{ color: blackColor, fontWeight: '600' }}>Species PL stage:</Text>
-                      <Text style={{ color: blackColor, fontWeight: '600' }}>Total Number Of Larvey:</Text>
-                      <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation cost:</Text>
-                      <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Company:</Text>
-                      <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Cost:</Text>
+                      <Text style={Styles.tableColumn1}>Species:</Text>
+                      <Text style={Styles.tableColumn1}>Species PL stage:</Text>
+                      <Text style={Styles.tableColumn1}>Total Number Of Larvey:</Text>
+                      <Text style={Styles.tableColumn1}>Pond Preperation cost:</Text>
+                      <Text style={Styles.tableColumn1}>Seed Company:</Text>
+                      <Text style={Styles.tableColumn1}>Seed Cost:</Text>
                     </View>
                     <View
                       style={{
@@ -463,21 +517,21 @@ const PondDetailsActive: FC = () => {
                         marginLeft: windowWidth * 0.01,
                       }}
                     >
-                      <Text style={{ color: blackColor }}>Vennami</Text>
-                      <Text style={{ color: blackColor }}>{getPLStage(speciesPLStage)}</Text>
-                      <Text style={{ color: blackColor }}>{noOfLarve}</Text>
-                      <Text style={{ color: blackColor }}>₹ {pondPrepCost}</Text>
-                      <Text style={{ color: blackColor }}>{seedCompany}</Text>
-                      <Text style={{ color: blackColor }}>₹ {seedCost}</Text>
+                      <Text style={Styles.tableColumn2}>Vennami</Text>
+                      <Text style={Styles.tableColumn2}>{getPLStage(speciesPLStage)}</Text>
+                      <Text style={Styles.tableColumn2}>{noOfLarve}</Text>
+                      <Text style={Styles.tableColumn2}>₹ {pondPrepCost}</Text>
+                      <Text style={Styles.tableColumn2}>{seedCompany}</Text>
+                      <Text style={Styles.tableColumn2}>₹ {seedCost}</Text>
                     </View>
                   </View>
                   <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
-                    <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
+                    <Text style={{ fontSize: windowHeight * 0.018, fontFamily: 'Poppins-Regular', color: '#000000' }}>
                       {cycleDescription}
                     </Text>
                   </View>
                   <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
+                    <Text style={{ color: blackColor, fontFamily: 'Poppins-SemiBold' }}>Seed Images</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
                       {seedImages.map((seed, index) => {
                         return (
@@ -489,7 +543,7 @@ const PondDetailsActive: FC = () => {
                     </View>
                   </View>
                   <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation images</Text>
+                    <Text style={{ color: blackColor, fontFamily: 'Poppins-SemiBold' }}>Pond Preperation images</Text>
                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
                       {cyclePondImages.map((seed, index) => {
                         return (
@@ -503,36 +557,24 @@ const PondDetailsActive: FC = () => {
                 </View>
               )}
             </View>
-            <View style={{ marginTop: 25, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
-              <View style={Styles.infoCard}>
-                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
-                    Total Cycles
-                  </Text>
-                  <View style={{ alignContent: 'flex-end' }}>
-                    <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                      <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>235</Text>
-                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={Styles.infoCard}>
-                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>
-                    Completed Cycles
-                  </Text>
-                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>10</Text>
-                </View>
-              </View>
-              <View style={Styles.infoCard}>
-                <View style={{ flexDirection: 'column', paddingTop: 10, padding: 13 }}>
-                  <Text style={{ fontSize: windowHeight * 0.013, fontWeight: '900', color: 'white' }}>AVG. FCR</Text>
-                  <Text style={{ fontSize: windowHeight * 0.022, fontWeight: '900', color: 'white' }}>1.234</Text>
-                </View>
-              </View>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Bold',
+                fontSize: windowWidth * 0.05,
+                color: '#000000',
+                margin: windowHeight * 0.025,
+                marginBottom: windowHeight * -0.035
+              }}
+            >
+              Pond Details
+            </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <BlueCards cardHeading={'Total Cycles'} cardValue={235} weight={'tn'} />
+              <BlueCards cardHeading={'Completed Cycles'} cardValue={10} />
+              <BlueCards cardHeading={'AVG. FCR'} cardValue={1.234} />
             </View>
-            <View style={{ marginTop: 10 }}>
+
+            <View style={{ marginTop: 20 }}>
               <ImageCarousel1
                 imageItem={pondImages}
                 callBackIndex={(index: number) => {
@@ -541,7 +583,7 @@ const PondDetailsActive: FC = () => {
               />
             </View>
             <View style={{ marginTop: 25, margin: 7, alignSelf: 'center' }}>
-              <Text style={{ fontSize: windowHeight * 0.018, fontWeight: '400', color: '#000000' }}>
+              <Text style={{ fontSize: windowHeight * 0.018, fontFamily: 'Poppins-Regular', color: '#000000' }}>
                 {pondDescrition}
               </Text>
             </View>
@@ -574,10 +616,22 @@ const Styles = StyleSheet.create({
     backgroundColor: whiteColor,
     margin: windowWidth * 0.02,
   },
+  tableColumn1: {
+    color: blackColor,
+    fontFamily: 'Poppins-SemiBold',
+    marginBottom: 3,
+  },
+  tableColumn2: {
+    color: blackColor,
+    fontFamily: 'Poppins-Regular',
+    marginBottom: 3,
+  },
   backButton: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
     paddingLeft: windowWidth * 0.05,
+    fontFamily: 'Poppins-Regular',
+    marginTop: 5,
   },
   header: {
     flexDirection: 'row',
@@ -663,7 +717,7 @@ const Styles = StyleSheet.create({
     color: '#459BFF',
     marginVertical: windowHeight * 0.01,
     marginHorizontal: windowHeight * 0.02,
-    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold',
   },
   subTabContainer: {
     marginTop: windowHeight * 0.01,
@@ -716,6 +770,6 @@ const Styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff',
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
 });

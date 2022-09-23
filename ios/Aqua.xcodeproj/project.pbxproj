@@ -32,6 +32,8 @@
 		BBD32BBD898646659B0A13E1 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4E051CB63C54FD3915126CA /* Poppins-SemiBoldItalic.ttf */; };
 		913223B5594644108B8C8854 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 256CCF0BBCA346FCA766498D /* Poppins-Thin.ttf */; };
 		FB69E84242DD44E0A4DEBABC /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC4EEB4EBA524A40B0630EBF /* Poppins-ThinItalic.ttf */; };
+		0226220AA814459994F6ECFB /* OpenSans-Italic-VariableFont_wdth,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8178B7F12784D6BA3613EAF /* OpenSans-Italic-VariableFont_wdth,wght.ttf */; };
+		D95E7DB5A46947D4B378C70F /* OpenSans-VariableFont_wdth,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 307B6507C9D14077954E5A79 /* OpenSans-VariableFont_wdth,wght.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +82,8 @@
 		B4E051CB63C54FD3915126CA /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-SemiBoldItalic.ttf"; path = "../assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		256CCF0BBCA346FCA766498D /* Poppins-Thin.ttf */ = {isa = PBXFileReference; name = "Poppins-Thin.ttf"; path = "../assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		CC4EEB4EBA524A40B0630EBF /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; name = "Poppins-ThinItalic.ttf"; path = "../assets/fonts/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D8178B7F12784D6BA3613EAF /* OpenSans-Italic-VariableFont_wdth,wght.ttf */ = {isa = PBXFileReference; name = "OpenSans-Italic-VariableFont_wdth,wght.ttf"; path = "../assets/fonts/OpenSans-Italic-VariableFont_wdth,wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		307B6507C9D14077954E5A79 /* OpenSans-VariableFont_wdth,wght.ttf */ = {isa = PBXFileReference; name = "OpenSans-VariableFont_wdth,wght.ttf"; path = "../assets/fonts/OpenSans-VariableFont_wdth,wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +210,8 @@
 				B4E051CB63C54FD3915126CA /* Poppins-SemiBoldItalic.ttf */,
 				256CCF0BBCA346FCA766498D /* Poppins-Thin.ttf */,
 				CC4EEB4EBA524A40B0630EBF /* Poppins-ThinItalic.ttf */,
+				D8178B7F12784D6BA3613EAF /* OpenSans-Italic-VariableFont_wdth,wght.ttf */,
+				307B6507C9D14077954E5A79 /* OpenSans-VariableFont_wdth,wght.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -325,6 +331,8 @@
 				BBD32BBD898646659B0A13E1 /* Poppins-SemiBoldItalic.ttf in Resources */,
 				913223B5594644108B8C8854 /* Poppins-Thin.ttf in Resources */,
 				FB69E84242DD44E0A4DEBABC /* Poppins-ThinItalic.ttf in Resources */,
+				0226220AA814459994F6ECFB /* OpenSans-Italic-VariableFont_wdth,wght.ttf in Resources */,
+				D95E7DB5A46947D4B378C70F /* OpenSans-VariableFont_wdth,wght.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

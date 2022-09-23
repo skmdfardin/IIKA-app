@@ -174,7 +174,7 @@ export const styles = StyleSheet.create({
     fontWeight: '900',
   },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: '#000000',
     shadowOffset: {
       width: 0,
       height: 5,
@@ -182,7 +182,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.36,
     shadowRadius: 6.68,
 
-    elevation: 11,
+    elevation: 5,
   },
 });
 

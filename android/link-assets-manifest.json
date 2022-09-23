@@ -2,6 +2,14 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/OpenSans-Italic-VariableFont_wdth,wght.ttf",
+      "sha1": "c9bbed35fd86891c986d21c9bc3d258a5a260218"
+    },
+    {
+      "path": "assets/fonts/OpenSans-VariableFont_wdth,wght.ttf",
+      "sha1": "8c03eba04459415261e441e255441d6f5c1ff1da"
+    },
+    {
       "path": "assets/fonts/Poppins-Black.ttf",
       "sha1": "645e04c53c6b5b35bce654a811ebce16af8aa721"
     },

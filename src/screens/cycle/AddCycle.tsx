@@ -471,7 +471,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text style = {[PageStyles.text,{marginBottom: windowHeight * 0.005}]}> Select Pond*</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}> Select Pond*</Text>
             <DropDownPicker
               open={selectPondOpen}
               value={selectPondValue}
@@ -482,7 +482,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
-              style={{backgroundColor: '#F5F6F8'}}
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
           <View
@@ -492,7 +492,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text style = {[PageStyles.text,{marginBottom: windowHeight * 0.005}]}> Select Species*</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}> Select Species*</Text>
             <DropDownPicker
               open={selectSpeciesOpen}
               value={selectSpeciesValue}
@@ -503,8 +503,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
-              style={{backgroundColor: '#F5F6F8'}}
-              
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
           <View
@@ -514,7 +513,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text style = {[PageStyles.text,{marginBottom: windowHeight * 0.005}]}>Species PL-Stage*</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}>Species PL-Stage*</Text>
             <DropDownPicker
               open={speciesPLStageOpen}
               value={speciesPLStageValue}
@@ -525,7 +524,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
-              style={{backgroundColor: '#F5F6F8'}}
+              style={{ backgroundColor: '#F5F6F8' }}
             />
           </View>
           <LabelTextInput
@@ -545,7 +544,7 @@ const AddCycle: FC = () => {
               marginTop: windowHeight * 0.02,
             }}
           >
-            <Text style = {[PageStyles.text,{marginBottom: windowHeight * 0.005}]}> Select Seed Company*</Text>
+            <Text style={[PageStyles.text, { marginBottom: windowHeight * 0.005 }]}> Select Seed Company*</Text>
             <DropDownPicker
               open={selectSeedCompanyOpen}
               value={selectSeedCompanyValue}
@@ -556,7 +555,7 @@ const AddCycle: FC = () => {
               placeholder={''}
               listMode="SCROLLVIEW"
               dropDownDirection="BOTTOM"
-              style={{backgroundColor: '#F5F6F8',borderRadius:10}}
+              style={{ backgroundColor: '#F5F6F8', borderRadius: 10 }}
             />
           </View>
           <LabelTextInput
@@ -682,7 +681,7 @@ const AddCycle: FC = () => {
                 initialState();
               }}
             >
-              <Text style={PageStyles.buttonText}>Discard</Text>
+              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Discard</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[PageStyles.endButton, { backgroundColor: saveColour }]}
@@ -690,7 +689,7 @@ const AddCycle: FC = () => {
                 onSave();
               }}
             >
-              <Text style={PageStyles.buttonText}>Save</Text>
+              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>

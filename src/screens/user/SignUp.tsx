@@ -203,7 +203,7 @@ const Styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     position: 'absolute',
-    bottom: windowHeight,
+    bottom: windowHeight * 1.3,
   },
   backImage1: {
     position: 'absolute',

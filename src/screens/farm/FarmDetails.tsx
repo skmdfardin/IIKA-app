@@ -5,6 +5,7 @@ import ImageCarousel1 from '../../components/ImageCarousel1';
 import PondCardArray from '../../components/pondComponenets/PondCardArray';
 import { windowHeight, windowWidth, whiteColor } from '../../media/css/common';
 import { useSelector } from 'react-redux';
+import BlueCards from '../../components/BlueCards';
 
 const logo = '../../media/AquaLogo.gif';
 
@@ -87,33 +88,11 @@ const FarmDetails: FC = () => {
             </View>
           </View>
         </View>
-
-        {/*to integrate the blue cards component*/}
-        <View style={{ marginTop: windowHeight * 0.05, flexDirection: 'row', flex: 1, alignSelf: 'center' }}>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', padding: windowWidth * 0.02 }}>
-              <Text style={{ fontSize: windowHeight * 0.017, fontWeight: '900', color: 'white' }}>Total Harvest</Text>
-              <View style={{ flexDirection: 'row', marginTop: 2 }}>
-                <Text style={{ fontSize: windowHeight * 0.03, fontWeight: '900', color: 'white' }}>235</Text>
-                <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '300', color: 'white' }}>tn</Text>
-              </View>
-            </View>
-          </View>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', padding: windowWidth * 0.02 }}>
-              <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: 'white' }}>Active Cycles</Text>
-              <Text style={{ fontSize: windowHeight * 0.03, fontWeight: '900', color: 'white' }}>10</Text>
-            </View>
-          </View>
-          <View style={Styles.infoCard}>
-            <View style={{ flexDirection: 'column', padding: windowWidth * 0.02 }}>
-              <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: 'white' }}>Total Ponds</Text>
-              <Text style={{ fontSize: windowHeight * 0.03, fontWeight: '900', color: 'white' }}>235</Text>
-            </View>
-          </View>
+        <View style={{flexDirection:'row', justifyContent:'center'}}>
+        <BlueCards cardHeading={'Total Harvest'} cardValue={235} weight={'tn'} />
+        <BlueCards cardHeading={'Active Cycles'} cardValue={10} />
+        <BlueCards cardHeading={'Total Ponds'} cardValue={46}/>
         </View>
-
-        
         <View
           style={{
             marginVertical: windowHeight * 0.02,

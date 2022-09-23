@@ -520,7 +520,7 @@ const AddPond: FC = () => {
                           removeimage(image.name!);
                         }}
                       >
-                        <Text style={PageStyles.buttonText}>remove image</Text>
+                        <Text style={[PageStyles.buttonText,{fontSize:windowHeight*0.015}]}>remove image</Text>
                       </TouchableOpacity>
                     </View>
                   );
@@ -613,7 +613,8 @@ const PageStyles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
-    paddingLeft: windowWidth * 0.025,
+    paddingLeft: windowWidth * 0.008,
+    fontFamily:'Poppins-Regular'
   },
   text: {
     color: blackColor,
@@ -640,18 +641,22 @@ const PageStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageButton: {
-    height: windowHeight * 0.03,
-    width: windowWidth * 0.3,
+    height: windowHeight * 0.029,
+    width: windowWidth * 0.25,
     borderRadius: 10,
     backgroundColor: '#0059AB',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  imageContainer: { margin: windowWidth * 0.01, alignItems: 'center', justifyContent: 'center' },
+  imageContainer: { 
+    margin: windowWidth * 0.01, 
+    alignItems: 'center', 
+    justifyContent: 'center' 
+  },
   image: {
     backgroundColor: whiteColor,
-    height: windowHeight * 0.17,
-    width: windowWidth * 0.34,
+    height: windowHeight * 0.128,
+    width: windowWidth * 0.263,
     borderColor: '#BDBDBD',
     borderWidth: 2,
     borderStyle: 'solid',
@@ -668,8 +673,8 @@ const PageStyles = StyleSheet.create({
     borderRadius: 5,
   },
   addImage: {
-    height: windowHeight * 0.171,
-    width: windowWidth * 0.35,
+    height: windowHeight * 0.147,
+    width: windowWidth * 0.3,
     margin: windowWidth * 0.01,
     backgroundColor: '#F5F6F8',
     borderStyle: 'dashed',

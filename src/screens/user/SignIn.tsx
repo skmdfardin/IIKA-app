@@ -137,14 +137,6 @@ const SignIn: FC = () => {
           errorState={isSignInError}
           isPassword={true}
         />
-        {isSignInError && (
-          <View style={[Styles.errorContainer, { width: windowWidth * 0.9 }]}>
-            <TouchableOpacity onPress={toggle}>
-              <Text style={Styles.errorText}>X</Text>
-            </TouchableOpacity>
-            <Text style={Styles.errorText}>{signInError}</Text>
-          </View>
-        )}
         {
           <TouchableOpacity style={Styles.button} onPress={onSubmit}>
             <Text style={Styles.buttonText}>Sign In</Text>

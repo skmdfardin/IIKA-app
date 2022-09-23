@@ -7,7 +7,7 @@ import CustomeTextInput from '../../components/CustomTextInput';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { NavigationParamList } from '../../types/navigation';
-import { ComparePassword, CheckEmail } from '../../service/validation';
+import { ComparePassword, CheckEmail, CheckPhone } from '../../service/validation';
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';
@@ -45,6 +45,7 @@ const SignUp: FC = () => {
   const validate = () => {
     const comparePassword = ComparePassword(password, confirmPassword);
     const checkEmail = CheckEmail(email);
+    const checkMobile = CheckPhone(mobileNum.toString());
     let isError = false;
     if (comparePassword !== null) {
       setConfirmPasswordError(true);
@@ -54,6 +55,13 @@ const SignUp: FC = () => {
       isError = false;
     }
     if (checkEmail !== null) {
+      setEmailError(true);
+      isError = true;
+    } else {
+      setEmailError(false);
+      isError = false;
+    }
+    if (checkMobile !== null) {
       setEmailError(true);
       isError = true;
     } else {

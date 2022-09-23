@@ -372,6 +372,7 @@ const EditProfileScreen: FunctionComponent<EditProfileScreenProps> = () => {
                       width={windowWidth * 0.7}
                       value={values.mobileNo}
                       isNumeric={true}
+                      maxLength={10}
                     />
                   </View>
                   <LabelTextInput

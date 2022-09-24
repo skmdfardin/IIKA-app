@@ -42,12 +42,14 @@ const SignUp: FC = () => {
     setConfirmPasswordError(false);
     setMobileNumError(false);
   };
-  const validate = () => {
-    const comparePassword = ComparePassword(password, confirmPassword);
-    const checkEmail = CheckEmail(email);
+  const validate = async () => {
+    console.log('check2');
+    const comparePassword = await ComparePassword(password, confirmPassword);
+    const checkEmail = await CheckEmail(email);
     const checkMobile = CheckPhone(mobileNum.toString());
     let isError = false;
     if (comparePassword !== null) {
+      console.log('check password');
       setConfirmPasswordError(true);
       isError = true;
     } else {
@@ -55,29 +57,34 @@ const SignUp: FC = () => {
       isError = false;
     }
     if (checkEmail !== null) {
+      console.log('check email');
       setEmailError(true);
       isError = true;
     } else {
       setEmailError(false);
       isError = false;
     }
-    if (checkMobile !== null) {
-      setEmailError(true);
-      isError = true;
-    } else {
-      setEmailError(false);
-      isError = false;
-    }
+    // if (checkMobile !== null) {
+    //   setEmailError(true);
+    //   isError = true;
+    // } else {
+    //   setEmailError(false);
+    //   isError = false;
+    // }
     if (!isError) {
+      console.log('check false');
       return false;
     } else {
       return true;
     }
   };
   const onSubmit = async () => {
+    console.log('check1');
     if (validate()) {
+      console.log('check3');
       let data;
       try {
+        console.log('check4');
         const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -91,6 +98,7 @@ const SignUp: FC = () => {
           }),
         };
         const response = await fetch(signInURL, requestOptions);
+        console.log('RESPONCE IN SIGN UP', response);
         data = await response.json();
         if (data.response) {
           console.log('DATA /n', data);
@@ -176,7 +184,13 @@ const SignUp: FC = () => {
           maxLength={10}
         />
 
-        <TouchableOpacity style={Styles.button} onPress={onSubmit}>
+        <TouchableOpacity
+          style={Styles.button}
+          onPress={() => {
+            console.log('pressed');
+            onSubmit();
+          }}
+        >
           <Text style={Styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
       </View>

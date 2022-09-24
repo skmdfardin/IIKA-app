@@ -168,18 +168,22 @@ const AddFarm: FC = () => {
       }
     }
     CallPostApi(url, formData, token).then((response) => {
-      console.log('RESPONSE', response?.data);
-      const farmData = response?.data;
-      const temp = farmData.farm_images;
-      const farmImageArray = temp.map((item: any) => {
-        return item.image.replace('localhost', '103.127.146.20');
-      });
-      dispatch(storeFarmName({ farmName: farmData.farm_name }));
-      dispatch(storeFarmImages({ farmImages: farmImageArray }));
-      dispatch(storeFarmID({ farmID: farmData.farm_id }));
-      dispatch(storeFarmDescription({ farmDescription: farmData.description }));
+      try {
+        console.log('RESPONSE', response?.data);
+        const farmData = response?.data;
+        const temp = farmData.farm_images;
+        const farmImageArray = temp.map((item: any) => {
+          return item.image.replace('localhost', '103.127.146.20');
+        });
+        dispatch(storeFarmName({ farmName: farmData.farm_name }));
+        dispatch(storeFarmImages({ farmImages: farmImageArray }));
+        dispatch(storeFarmID({ farmID: farmData.id }));
+        dispatch(storeFarmDescription({ farmDescription: farmData.description }));
 
-      navigation.goBack();
+        navigation.goBack();
+      } catch (error) {
+        console.log(error);
+      }
     });
   };
 

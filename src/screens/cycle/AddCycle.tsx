@@ -587,7 +587,7 @@ const AddCycle: FC = () => {
               setSeedQuantity(text);
             }}
             width={windowWidth * 0.9}
-            value={pondPreparationCost}
+            value={seedQuantity}
             isNumeric={true}
           />
           <LabelTextInput

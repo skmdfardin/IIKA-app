@@ -496,8 +496,8 @@ const AddPond: FC = () => {
             value={pondDesc}
           />
 
-          <View style={{ width: windowWidth * 0.9, flex: 1, marginTop:10}}>
-            <Text style = {{fontFamily: 'Poppins-SemiBold', color: '#000000'}}>pond images*</Text>
+          <View style={{ width: windowWidth * 0.9, flex: 1, marginTop: 10 }}>
+            <Text style={{ fontFamily: 'Poppins-SemiBold', color: '#000000' }}>pond images*</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -545,21 +545,21 @@ const AddPond: FC = () => {
               }}
             >
               <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: discardColour }]}
-              onPress={() => {
-                initialState();
-              }}
-            >
-              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Discard</Text>
-            </TouchableOpacity>
+                style={[PageStyles.endButton, { backgroundColor: discardColour }]}
+                onPress={() => {
+                  initialState();
+                }}
+              >
+                <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>Discard</Text>
+              </TouchableOpacity>
               <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: saveColour }]}
-              onPress={() => {
-                onSave();
-              }}
-            >
-              <Text style={[PageStyles.buttonText, {fontFamily:'OpenSans-VariableFont_wdth,wght'}]}>Save</Text>
-            </TouchableOpacity>
+                style={[PageStyles.endButton, { backgroundColor: saveColour }]}
+                onPress={() => {
+                  onSave();
+                }}
+              >
+                <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>Save</Text>
+              </TouchableOpacity>
             </View>
           )}
         </View>
@@ -618,7 +618,7 @@ const PageStyles = StyleSheet.create({
   text: {
     color: blackColor,
     fontFamily: 'Poppins-SemiBold',
-    marginBottom: windowHeight * 0.005 
+    marginBottom: windowHeight * 0.005,
     //fontSize:
   },
   certificateButton: {

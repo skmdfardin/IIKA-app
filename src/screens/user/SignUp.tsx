@@ -46,7 +46,7 @@ const SignUp: FC = () => {
     console.log('check2');
     const comparePassword = await ComparePassword(password, confirmPassword);
     const checkEmail = await CheckEmail(email);
-    const checkMobile = CheckPhone(mobileNum.toString());
+    const checkMobile = await CheckPhone(mobileNum.toString());
     let isError = false;
     if (comparePassword !== null) {
       console.log('check password');
@@ -64,13 +64,13 @@ const SignUp: FC = () => {
       setEmailError(false);
       isError = false;
     }
-    // if (checkMobile !== null) {
-    //   setEmailError(true);
-    //   isError = true;
-    // } else {
-    //   setEmailError(false);
-    //   isError = false;
-    // }
+    if (checkMobile !== null) {
+      setEmailError(true);
+      isError = true;
+    } else {
+      setEmailError(false);
+      isError = false;
+    }
     if (!isError) {
       console.log('check false');
       return false;

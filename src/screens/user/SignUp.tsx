@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
@@ -72,7 +72,6 @@ const SignUp: FC = () => {
       isError = false;
     }
     if (!isError) {
-      console.log('check false');
       return false;
     } else {
       return true;
@@ -80,7 +79,7 @@ const SignUp: FC = () => {
   };
   const onSubmit = async () => {
     console.log('check1');
-    if (validate()) {
+    if (await validate()) {
       console.log('check3');
       let data;
       try {
@@ -128,77 +127,79 @@ const SignUp: FC = () => {
         <Image style={Styles.backImage3} source={require(fishLogo)} />
         <Image style={Styles.logo} source={require(logo)} />
       </View>
+      <ScrollView>
+        <View style={Styles.subContainer}>
+          <Text style={Styles.text}>Create an account</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <CustomeTextInput
+              placeholder="First Name"
+              onChangeText={(text) => setFirstName(text)}
+              fieldWidth={windowWidth * 0.45}
+              errorMessage=" First Name Error"
+              errorState={false}
+              isPassword={false}
+            />
+            <CustomeTextInput
+              placeholder="Last Name"
+              onChangeText={(text) => setLastName(text)}
+              fieldWidth={windowWidth * 0.45}
+              errorMessage="Name error"
+              errorState={false}
+              isPassword={false}
+            />
+          </View>
+          <CustomeTextInput
+            placeholder="Email ID"
+            onChangeText={(text) => setEmail(text)}
+            fieldWidth={0}
+            errorMessage="Enter a proper email"
+            errorState={emailError}
+            isPassword={false}
+          />
+          <CustomeTextInput
+            placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            fieldWidth={0}
+            errorMessage=""
+            errorState={passwordError}
+            isPassword={true}
+          />
+          <CustomeTextInput
+            placeholder="Confirm Password"
+            onChangeText={(text) => setConfirmPassword(text)}
+            fieldWidth={0}
+            errorMessage="Passwords do not match"
+            errorState={confirmPasswordError}
+            isPassword={true}
+          />
+          <CustomeTextInput
+            placeholder="Enter Mobile no"
+            onChangeText={(text) => setMobileNum(parseInt(text, 10))}
+            fieldWidth={0}
+            errorMessage=""
+            errorState={mobileNumError}
+            isPassword={false}
+            isNumeric={true}
+            maxLength={10}
+          />
 
-      <View style={Styles.subContainer}>
-        <Text style={Styles.text}>Create an account</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <CustomeTextInput
-            placeholder="First Name"
-            onChangeText={(text) => setFirstName(text)}
-            fieldWidth={windowWidth * 0.45}
-            errorMessage=" First Name Error"
-            errorState={false}
-            isPassword={false}
-          />
-          <CustomeTextInput
-            placeholder="Last Name"
-            onChangeText={(text) => setLastName(text)}
-            fieldWidth={windowWidth * 0.45}
-            errorMessage="Name error"
-            errorState={false}
-            isPassword={false}
-          />
+          <TouchableOpacity
+            style={Styles.button}
+            onPress={() => {
+              console.log('pressed');
+              onSubmit();
+            }}
+          >
+            <Text style={Styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
         </View>
-        <CustomeTextInput
-          placeholder="Email ID"
-          onChangeText={(text) => setEmail(text)}
-          fieldWidth={0}
-          errorMessage="Enter a proper email"
-          errorState={emailError}
-          isPassword={false}
-        />
-        <CustomeTextInput
-          placeholder="Password"
-          onChangeText={(text) => setPassword(text)}
-          fieldWidth={0}
-          errorMessage=""
-          errorState={passwordError}
-          isPassword={true}
-        />
-        <CustomeTextInput
-          placeholder="Confirm Password"
-          onChangeText={(text) => setConfirmPassword(text)}
-          fieldWidth={0}
-          errorMessage="Passwords do not match"
-          errorState={confirmPasswordError}
-          isPassword={true}
-        />
-        <CustomeTextInput
-          placeholder="Enter Mobile no"
-          onChangeText={(text) => setMobileNum(parseInt(text, 10))}
-          fieldWidth={0}
-          errorMessage=""
-          errorState={mobileNumError}
-          isPassword={false}
-          isNumeric={true}
-          maxLength={10}
-        />
-
-        <TouchableOpacity
-          style={Styles.button}
-          onPress={() => {
-            console.log('pressed');
-            onSubmit();
-          }}
-        >
-          <Text style={Styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 };
 
 export default SignUp;
+
 const Styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -209,8 +210,8 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#ffffff',
     width: windowWidth,
-    height: windowHeight * 0.65,
-    top: windowHeight * 0.35,
+    height: windowHeight * 0.6,
+    marginTop: windowHeight * 0.4,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },

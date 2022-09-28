@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import React, { FC, useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
 import {
@@ -19,6 +19,7 @@ import { windowHeight, windowWidth } from '../../media/css/common';
 import { CallGetApi } from '../../utilites/Util';
 import { storePondArray } from '../../reduxstore/pondSlice';
 import { NavigationParamList } from '../../types/navigation';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
@@ -39,10 +40,6 @@ const SignIn: FC = () => {
 
   const goToSignUp = () => {
     navigation.navigate('sign_up');
-  };
-
-  const toggle = () => {
-    setIsSignInError(!signInError);
   };
 
   const resetState = () => {
@@ -119,43 +116,45 @@ const SignIn: FC = () => {
         <Image style={Styles.backImage3} source={require(fishLogo)} />
         <Image style={Styles.logo} source={require(logo)} />
       </View>
-      <View style={Styles.subContainer}>
-        <Text style={Styles.text}>LogIn</Text>
-        <CustomeTextInput
-          placeholder="Enter Email"
-          onChangeText={(text) => setEmailId(text)}
-          fieldWidth={0}
-          errorMessage=""
-          errorState={false}
-          isPassword={false}
-        />
-        <CustomeTextInput
-          placeholder="Password"
-          onChangeText={(text) => setPassword(text)}
-          fieldWidth={0}
-          errorMessage={signInError}
-          errorState={isSignInError}
-          isPassword={true}
-        />
-        {
-          <TouchableOpacity style={Styles.button} onPress={onSubmit}>
-            <Text style={Styles.buttonText}>Sign In</Text>
+      <ScrollView>
+        <View style={Styles.subContainer}>
+          <Text style={Styles.text}>LogIn</Text>
+          <CustomeTextInput
+            placeholder="Enter Email"
+            onChangeText={(text) => setEmailId(text)}
+            fieldWidth={0}
+            errorMessage=""
+            errorState={false}
+            isPassword={false}
+          />
+          <CustomeTextInput
+            placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            fieldWidth={0}
+            errorMessage={signInError}
+            errorState={isSignInError}
+            isPassword={true}
+          />
+          {
+            <TouchableOpacity style={Styles.button} onPress={onSubmit}>
+              <Text style={Styles.buttonText}>Sign In</Text>
+            </TouchableOpacity>
+          }
+          <View style={Styles.googleContainer}>
+            <Image style={Styles.glogo} source={require(glogo)} />
+            <Text>Log In via Google</Text>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={Styles.text}>New user?</Text>
+            <TouchableOpacity onPress={goToSignUp}>
+              <Text style={Styles.text}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity onPress={onForgotPassword}>
+            <Text>Forgot password?</Text>
           </TouchableOpacity>
-        }
-        <View style={Styles.googleContainer}>
-          <Image style={Styles.glogo} source={require(glogo)} />
-          <Text>Log In via Google</Text>
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={Styles.text}>New user?</Text>
-          <TouchableOpacity onPress={goToSignUp}>
-            <Text style={Styles.text}>Sign Up</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity onPress={onForgotPassword}>
-          <Text>Forgot password?</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -173,8 +172,9 @@ const Styles = StyleSheet.create({
     marginTop: windowHeight * 0.4,
     backgroundColor: '#ffffff',
     width: windowWidth,
-    height: windowHeight,
-    borderRadius: 20,
+    height: windowHeight * 0.6,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
   },
   googleContainer: {
     alignItems: 'center',

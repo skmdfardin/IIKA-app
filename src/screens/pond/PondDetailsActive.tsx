@@ -631,7 +631,7 @@ const Styles = StyleSheet.create({
   backButton: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
-    paddingLeft: windowWidth * 0.05,
+    paddingLeft: windowWidth * 0.025,
     fontFamily: 'Poppins-Regular',
     marginTop: 5,
   },
@@ -763,8 +763,8 @@ const Styles = StyleSheet.create({
   },
   button: {
     height: windowHeight * 0.04,
-    borderRadius: 10,
-    backgroundColor: successColor,
+    borderRadius: 12,
+    backgroundColor: '#00a25b',
     paddingHorizontal: windowWidth * 0.05,
     justifyContent: 'center',
     alignItems: 'center',

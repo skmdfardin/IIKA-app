@@ -56,6 +56,7 @@ const PondCardArray: FC = () => {
                   source={{
                     uri: image,
                   }}
+                  imageStyle={{ borderRadius: 5}}
                 >
                   {pond.is_active_pond && (
                     <>
@@ -135,8 +136,7 @@ const Styles = StyleSheet.create({
     backgroundColor: whiteColor,
   },
   image: {
-    borderRadius: 8,
-    margin: 5.5,
+    margin: 7,
     marginBottom: 1,
     height: windowHeight * 0.08,
     width: windowWidth * 0.26,
@@ -153,7 +153,7 @@ const Styles = StyleSheet.create({
     marginLeft: 7,
     marginTop:-3,
     color: '#000000',
-    fontFamily:'Poppins-Medium',
+    fontFamily:'Poppins-Regular',
   },
   shadowProp: {
     shadowColor: '#000000',

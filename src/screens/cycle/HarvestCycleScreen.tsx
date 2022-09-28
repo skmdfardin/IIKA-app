@@ -567,7 +567,7 @@ const HarvestCycleScreen: FC = () => {
             navigation.goBack();
           }}
         >
-          <Text style={Styles.backButton}>BACK</Text>
+          <Text style={Styles.backButton}>Back</Text>
         </TouchableOpacity>
         <Image style={PageStyles.logo} source={require(logo)} />
       </View>
@@ -577,25 +577,37 @@ const HarvestCycleScreen: FC = () => {
           <View style={{ flexDirection: 'column', width: windowWidth * 0.9 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={Stylings.customText}>{pondName}</Text>
-              <Text style={{ marginTop: windowWidth * 0.03 }}>#{pondID.toString()}</Text>
+              <Text style={{ marginTop: windowWidth * 0.03, fontFamily: 'Poppins-Regular' }}>#{pondID.toString()}</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ marginTop: windowWidth * 0.01, color: 'midnightblue', fontWeight: '800' }}>
+              <Text style={{ marginTop: windowWidth * 0.01, color: 'midnightblue', fontFamily: 'Poppins-Bold' }}>
                 {farmStore.farmName}
               </Text>
-              <Text style={{ alignSelf: 'flex-end', marginTop: windowWidth * 0.01 }}>Location</Text>
+              <Text style={{ alignSelf: 'flex-end', marginTop: windowWidth * 0.01, fontFamily: 'Poppins-Regular' }}>
+                Location
+              </Text>
             </View>
             <View
               style={{ flexDirection: 'row', marginTop: windowHeight * 0.04, flex: 1, justifyContent: 'space-between' }}
             >
-              <Text style={{ fontSize: 20, fontWeight: '400', color: 'black' }}>Vannamei</Text>
+              <Text style={{ fontSize: 20, fontWeight: '400', color: '#000000', fontFamily: 'Poppins-Regular' }}>
+                Vannamei
+              </Text>
               <View
                 style={{
                   flexDirection: 'column',
                   height: windowHeight * 0.05,
                 }}
               >
-                <Text style={{ fontSize: 11, color: 'black', marginLeft: windowWidth * 0.03, fontWeight: '800' }}>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: 'black',
+                    marginLeft: windowWidth * 0.03,
+                    fontFamily: 'Poppins-Bold',
+                    alignSelf: 'flex-end',
+                  }}
+                >
                   #{cycleID.toString()}
                 </Text>
                 <Text style={{ fontSize: 11, color: 'black' }}>12.03.2022</Text>
@@ -649,20 +661,20 @@ const HarvestCycleScreen: FC = () => {
                 >
                   <View style={Styles.infoCard2}>
                     <View style={{ flexDirection: 'column' }}>
-                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
-                        Seed(kg)
+                      <Text style={{ fontSize: windowHeight * 0.015, fontFamily: 'Poppins-Bold', color: blackColor }}>
+                        Seed (kg)
                       </Text>
-                      <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                      <Text style={{ fontSize: windowHeight * 0.024, fontFamily: 'Poppins-Bold', color: blackColor }}>
                         {seedQuantity}Kg
                       </Text>
                     </View>
                   </View>
                   <View style={Styles.infoCard2}>
                     <View style={{ flexDirection: 'column' }}>
-                      <Text style={{ fontSize: windowHeight * 0.015, fontWeight: '900', color: blackColor }}>
+                      <Text style={{ fontSize: windowHeight * 0.015, fontFamily: 'Poppins-Bold', color: blackColor }}>
                         Seeding Date
                       </Text>
-                      <Text style={{ fontSize: windowHeight * 0.024, fontWeight: '900', color: blackColor }}>
+                      <Text style={{ fontSize: windowHeight * 0.024, fontFamily: 'Poppins-Bold', color: blackColor }}>
                         {seedingDate}
                       </Text>
                     </View>
@@ -676,12 +688,12 @@ const HarvestCycleScreen: FC = () => {
                   }}
                 >
                   <View style={{ width: windowWidth * 0.5 }}>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Species:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Species PL stage:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Total Number Of Larvey:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation cost:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Company:</Text>
-                    <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Cost:</Text>
+                    <Text style={Stylings.tableColumn1}>Species:</Text>
+                    <Text style={Stylings.tableColumn1}>Species PL stage:</Text>
+                    <Text style={Stylings.tableColumn1}>Total Number Of Larvey:</Text>
+                    <Text style={Stylings.tableColumn1}>Pond Preperation cost:</Text>
+                    <Text style={Stylings.tableColumn1}>Seed Company:</Text>
+                    <Text style={Stylings.tableColumn1}>Seed Cost:</Text>
                   </View>
                   <View
                     style={{
@@ -690,12 +702,12 @@ const HarvestCycleScreen: FC = () => {
                       marginLeft: windowWidth * 0.01,
                     }}
                   >
-                    <Text style={{ color: blackColor }}>Vennami</Text>
-                    <Text style={{ color: blackColor }}>{getPLStage(speciesPLStage)}</Text>
-                    <Text style={{ color: blackColor }}>{noOfLarve}</Text>
-                    <Text style={{ color: blackColor }}>₹ {pondPrepCost}</Text>
-                    <Text style={{ color: blackColor }}>{seedCompany}</Text>
-                    <Text style={{ color: blackColor }}>₹ {seedCost}</Text>
+                    <Text style={Stylings.tableColumn2}>Vennami</Text>
+                    <Text style={Stylings.tableColumn2}>{getPLStage(speciesPLStage)}</Text>
+                    <Text style={Stylings.tableColumn2}>{noOfLarve}</Text>
+                    <Text style={Stylings.tableColumn2}>₹ {pondPrepCost}</Text>
+                    <Text style={Stylings.tableColumn2}>{seedCompany}</Text>
+                    <Text style={Stylings.tableColumn2}>₹ {seedCost}</Text>
                   </View>
                 </View>
                 <View style={{ alignSelf: 'center', marginHorizontal: windowWidth * 0.04 }}>
@@ -704,7 +716,9 @@ const HarvestCycleScreen: FC = () => {
                   </Text>
                 </View>
                 <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
-                  <Text style={{ color: blackColor, fontWeight: '600' }}>Seed Images</Text>
+                  <Text style={{ color: blackColor, fontFamily: 'Poppins-SemiBold', marginBottom: 5 }}>
+                    Seed Images
+                  </Text>
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
                     {seedImages.map((seed, index) => {
                       return (
@@ -716,7 +730,9 @@ const HarvestCycleScreen: FC = () => {
                   </View>
                 </View>
                 <View style={{ marginHorizontal: windowWidth * 0.04, marginVertical: windowHeight * 0.01 }}>
-                  <Text style={{ color: blackColor, fontWeight: '600' }}>Pond Preperation images</Text>
+                  <Text style={{ color: blackColor, fontFamily: 'Poppins-SemiBold', marginBottom: 5 }}>
+                    Pond Preperation images
+                  </Text>
                   <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: windowWidth * 0.02 }}>
                     {cyclePondImages.map((seed, index) => {
                       return (
@@ -731,7 +747,11 @@ const HarvestCycleScreen: FC = () => {
             )}
           </View>
           <View style={{ justifyContent: 'space-between', marginVertical: windowHeight * 0.025 }}>
-            <Text style={{ alignSelf: 'center', fontSize: 20, color: 'black', fontWeight: '800' }}>Harvest Type</Text>
+            <Text
+              style={{ alignSelf: 'center', fontSize: 20, color: 'black', fontFamily: 'Poppins-Bold', marginBottom: 5 }}
+            >
+              Harvest Type
+            </Text>
             <RadioForm
               radio_props={harvestTypeItems}
               animation={false}
@@ -806,9 +826,9 @@ const HarvestCycleScreen: FC = () => {
               value={waterTemperature}
               isNumeric={true}
             />
-            <View style={{ height: windowHeight * 0.15, justifyContent: 'space-between', alignContent: 'center' }}>
-              <Text style={{ marginTop: windowHeight * 0.03, alignSelf: 'center', fontWeight: 'bold', color: 'black' }}>
-                Are You using chill kill?(Dropdown)
+            <View style={{ height: windowHeight * 0.15, justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={{ marginTop: windowHeight * 0.03, marginBottom: 10, fontWeight: 'bold', color: 'black' }}>
+                Are You using chill kill?
               </Text>
               <RadioForm
                 radio_props={chillKill}
@@ -829,7 +849,7 @@ const HarvestCycleScreen: FC = () => {
                 marginTop: windowHeight * 0.02,
               }}
             >
-              <Text> Sold to*:</Text>
+              <Text style={Stylings.text}> Sold to*</Text>
               <DropDownPicker
                 open={selectSeedCompanyOpen}
                 value={selectSeedCompanyValue}
@@ -840,10 +860,14 @@ const HarvestCycleScreen: FC = () => {
                 placeholder={''}
                 listMode="SCROLLVIEW"
                 dropDownDirection="BOTTOM"
+                style={{ backgroundColor: '#F5F6F8' }}
+                dropDownContainerStyle={{
+                  backgroundColor: '#F5F6F8',
+                }}
               />
             </View>
             <LabelTextInput
-              nameOfField="Harvest Cost(₹)"
+              nameOfField="Harvest Cost (₹)"
               onChange={(text) => {
                 setHarvestCost(text);
               }}
@@ -852,7 +876,7 @@ const HarvestCycleScreen: FC = () => {
               isNumeric={true}
             />
             <LabelTextInput
-              nameOfField="Harvest Notes(Optional)"
+              nameOfField="Harvest Notes (Optional)"
               onChange={(text) => {
                 setharvestNotes(text);
               }}
@@ -860,8 +884,8 @@ const HarvestCycleScreen: FC = () => {
               value={harvestNotes}
             />
           </View>
-          <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>Animal Images*</Text>
+          <View style={{ width: windowWidth * 0.9, flex: 1, marginTop: windowHeight * 0.02 }}>
+            <Text style={Stylings.text}>Harvested Animal Images</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -898,7 +922,7 @@ const HarvestCycleScreen: FC = () => {
           </View>
 
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>Post Harvest Pond Images*</Text>
+            <Text style={Stylings.text}>Post Harvest Pond Images</Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -934,7 +958,10 @@ const HarvestCycleScreen: FC = () => {
             </View>
           </View>
           <View style={{ width: windowWidth * 0.9, flex: 1 }}>
-            <Text>Logistics Images*</Text>
+            <Text style={[Stylings.text, { marginBottom: windowHeight * -0.005 }]}>Harvest Logistics</Text>
+            <Text style={{ fontFamily: 'Poppins-Regular', fontSize: windowHeight * 0.018 }}>
+              Truck/Van/Lorry & License plate images
+            </Text>
             <View
               style={{
                 width: windowWidth * 0.9,
@@ -972,7 +999,7 @@ const HarvestCycleScreen: FC = () => {
           <View
             style={{
               flexDirection: 'row',
-              width: windowWidth * 0.6,
+              width: windowWidth * 0.7,
               justifyContent: 'space-around',
             }}
           >
@@ -982,15 +1009,24 @@ const HarvestCycleScreen: FC = () => {
                 initialState();
               }}
             >
-              <Text style={PageStyles.buttonText}>Discard</Text>
+              <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[PageStyles.endButton, { backgroundColor: saveColour }]}
+              style={{
+                backgroundColor: '#33b57c',
+                height: windowHeight * 0.045,
+                width: windowWidth * 0.4,
+                marginVertical: windowHeight * 0.02,
+                borderRadius: 10,
+                justifyContent: 'center',
+              }}
               onPress={() => {
                 onSave();
               }}
             >
-              <Text style={PageStyles.buttonText}>Save</Text>
+              <Text style={[PageStyles.buttonText, { fontFamily: 'OpenSans-VariableFont_wdth,wght' }]}>
+                Record Harvest
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -1043,12 +1079,25 @@ const Stylings = StyleSheet.create({
     fontWeight: '800',
     color: '#000000',
   },
+  text: {
+    color: blackColor,
+    fontFamily: 'Poppins-SemiBold',
+  },
   customText: {
     fontSize: 20,
-    // marginLeft: windowWid,
     marginTop: windowWidth * 0.03,
-    fontWeight: '700',
+    fontFamily: 'Poppins-SemiBold',
     color: '#000000',
+  },
+  tableColumn1: {
+    color: blackColor,
+    fontFamily: 'Poppins-SemiBold',
+    marginBottom: 3,
+  },
+  tableColumn2: {
+    color: blackColor,
+    fontFamily: 'Poppins-Regular',
+    marginBottom: 3,
   },
   Filter: {
     fontSize: 15,
@@ -1253,6 +1302,8 @@ const PageStyles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
+    alignSelf: 'center',
+    fontFamily: 'Poppins-Regular',
   },
   imageButton: {
     height: windowHeight * 0.03,
@@ -1287,7 +1338,7 @@ const PageStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   endButton: {
-    height: windowHeight * 0.05,
+    height: windowHeight * 0.045,
     width: windowWidth * 0.2,
     marginVertical: windowHeight * 0.02,
     borderRadius: 10,
@@ -1312,6 +1363,8 @@ const Styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: windowHeight * 0.02,
     paddingLeft: windowWidth * 0.025,
+    fontFamily: 'Poppins-Regular',
+    marginTop: 5,
   },
   image: {
     borderRadius: 8,

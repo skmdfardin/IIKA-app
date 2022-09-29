@@ -13,7 +13,7 @@ export const CallPostApi = async (urlString: string, formData: any, token: strin
       data: formData,
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Aqua-Auth-Token': token,
+        'IIKA-Auth-Token': token,
       },
     });
   } catch (error) {

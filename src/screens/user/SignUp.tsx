@@ -7,7 +7,6 @@ import CustomeTextInput from '../../components/CustomTextInput';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { NavigationParamList } from '../../types/navigation';
-import { ComparePassword, CheckEmail, CheckPhone } from '../../service/validation';
 
 const fishLogo = '../../media/FishLogo.gif';
 const logo = '../../media/AquaLogo.gif';

@@ -22,11 +22,11 @@ const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
       if (percentage <= 10) {
         setProgressWords('Loading Basic assets...');
       } else if (percentage > 10 && percentage <= 30) {
-        setProgressWords('Loading Farms...');
+        setProgressWords('Loading Headphones...');
       } else if (percentage > 30 && percentage <= 57) {
-        setProgressWords('Loading Ponds...');
+        setProgressWords('Loading Neckbands...');
       } else if (percentage > 57 && percentage <= 70) {
-        setProgressWords('Retreiving IOT sensor Data...');
+        setProgressWords('Searching for Offers...');
       } else if (percentage > 70 && percentage <= 84) {
         setProgressWords('Compiling Data...');
       } else if (percentage > 70 && percentage <= 84) {
@@ -55,7 +55,7 @@ const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
   return (
     <View style={Styles.contrainer}>
       <Text style={Styles.loadText}>{progressWords}</Text>
-      <ProgressBar progress={progressCount} color="#ffffff" style={Styles.progressBarStyle} />
+      <ProgressBar progress={progressCount} color="#e0bf57" style={Styles.progressBarStyle} />
       <View
         style={{
           width: progressCount > 0.04 ? windowWidth * 0.9 * progressCount : windowWidth * 0.9 * 0.05,

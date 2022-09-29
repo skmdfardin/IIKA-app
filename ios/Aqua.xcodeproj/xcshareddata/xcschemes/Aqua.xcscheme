@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "Aqua.app"
-               BlueprintName = "Aqua"
-               ReferencedContainer = "container:Aqua.xcodeproj">
+               BuildableName = "IIKA.app"
+               BlueprintName = "IIKA"
+               ReferencedContainer = "container:IIKA.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
                BuildableName = "AquaTests.xctest"
                BlueprintName = "AquaTests"
-               ReferencedContainer = "container:Aqua.xcodeproj">
+               ReferencedContainer = "container:IIKA.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Aqua.app"
-            BlueprintName = "Aqua"
-            ReferencedContainer = "container:Aqua.xcodeproj">
+            BuildableName = "IIKA.app"
+            BlueprintName = "IIKA"
+            ReferencedContainer = "container:IIKA.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "Aqua.app"
-            BlueprintName = "Aqua"
-            ReferencedContainer = "container:Aqua.xcodeproj">
+            BuildableName = "IIKA.app"
+            BlueprintName = "IIKA"
+            ReferencedContainer = "container:IIKA.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -1,27 +1,27 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { FC } from 'react';
-import { View, StyleSheet, Image, Text, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, Text, Dimensions, StatusBar, SafeAreaView } from 'react-native';
 import LoadingBar from '../../components/LoadingBar';
 import { NavigationParamList } from '../../types/navigation';
 
+const splashScreen = '../../media/splashScreen.png'
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const logo = '../../media/AquaLogo.gif';
-const fishLogo = '../../media/FishLogo.gif';
+
 
 type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
 
 const SplashScreen: FC = () => {
   const navigation = useNavigation<naviType>();
   return (
+    // <SafeAreaView>
+
     <View style={Styles.container}>
+      <StatusBar hidden={true} />
       <View style={Styles.imageContainer}>
-        <Image style={Styles.backImage1} source={require(fishLogo)} />
-        <Image style={Styles.backImage2} source={require(fishLogo)} />
-        <Image style={Styles.backImage3} source={require(fishLogo)} />
-        <Image style={Styles.logo} source={require(logo)} />
+        <Image style={Styles.backImage1} source={require(splashScreen)} />
       </View>
       <View style={Styles.textContainer}>
         <Text style={Styles.text}>"The Question is not what you look at,</Text>
@@ -29,7 +29,7 @@ const SplashScreen: FC = () => {
       </View>
       <LoadingBar
         onExit={() => {
-          navigation.navigate('slider_screen');
+          console.log("The navigation stack is already working");
         }}
       />
     </View>
@@ -57,6 +57,7 @@ const Styles = StyleSheet.create({
     position: 'absolute',
     resizeMode: 'cover',
     opacity: 0.3,
+    marginTop: windowWidth * 0.1,
     width: windowWidth,
     height: windowHeight * 0.9,
   },

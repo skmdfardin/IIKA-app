@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NavigationParamList } from '../../types/navigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-interface SliderScreenProps {}
+interface SliderScreenProps { }
 type naviType = NativeStackNavigationProp<NavigationParamList, 'slider_screen'>;
 
 const logo = '../../media/AquaLogo.gif';
@@ -27,7 +27,7 @@ const imageItem: Array<ImageItems> = [
   {
     title: '"The question is not what you look at, but what you see."',
     filepath: require('../../media/SplashSlider/image6.png'),
-    descriptionText: 'End-to-End Aqua Farm Management App',
+    descriptionText: 'End-to-End IIKA Farm Management App',
   },
   {
     title: 'beautiful handpicked collection lines Aquaculture made easy',

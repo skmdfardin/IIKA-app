@@ -11,14 +11,14 @@ interface LoadingBarProps {
 
 const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
   const [progressCount, setProgressCount] = useState(0);
-  const [percentage, setPerscentage] = useState(0);
+  const [percentage, setPercentage] = useState(0);
   const [progressWords, setProgressWords] = useState('');
 
   useEffect(() => {
     const timer = setInterval(() => {
       const temp = parseFloat((progressCount >= 1 ? 1 : progressCount + 0.02).toFixed(2));
       setProgressCount(temp);
-      setPerscentage(Math.floor(progressCount * 100));
+      setPercentage(Math.floor(progressCount * 100));
       if (percentage <= 10) {
         setProgressWords('Loading Basic assets...');
       } else if (percentage > 10 && percentage <= 30) {
@@ -53,7 +53,7 @@ const LoadingBar: FC<LoadingBarProps> = (props: LoadingBarProps) => {
   };
 
   return (
-    <View style={Styles.contrainer}>
+    <View style={Styles.container}>
       <Text style={Styles.loadText}>{progressWords}</Text>
       <ProgressBar progress={progressCount} color="#e0bf57" style={Styles.progressBarStyle} />
       <View
@@ -71,10 +71,11 @@ export default LoadingBar;
 
 const Styles = StyleSheet.create({
   progressBarStyle: {
-    height: 5,
+    height: windowWidth * 0.025,
     width: windowWidth * 0.9,
+    borderRadius: 10
   },
-  contrainer: {
+  container: {
     marginTop: windowHeight * 0.2,
   },
   text: {
@@ -84,7 +85,7 @@ const Styles = StyleSheet.create({
   },
   loadText: {
     color: '#FFFFFF',
-    fontSize: windowHeight * 0.015,
+    fontSize: windowHeight * 0.02,
     textAlign: 'center',
     marginBottom: windowHeight * 0.01,
   },

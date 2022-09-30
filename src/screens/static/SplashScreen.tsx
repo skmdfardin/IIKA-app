@@ -30,6 +30,7 @@ const SplashScreen: FC = () => {
       <LoadingBar
         onExit={() => {
           console.log("The navigation stack is already working");
+          navigation.navigate('slider_screen');
         }}
       />
     </View>
@@ -56,7 +57,7 @@ const Styles = StyleSheet.create({
   backImage1: {
     position: 'absolute',
     resizeMode: 'cover',
-    opacity: 0.3,
+    opacity: 1,
     marginTop: windowWidth * 0.1,
     width: windowWidth,
     height: windowHeight * 0.9,
@@ -87,7 +88,7 @@ const Styles = StyleSheet.create({
   },
   text: {
     color: '#FFFFFF',
-    fontSize: windowHeight * 0.015,
+    fontSize: windowHeight * 0.02,
   },
   progress: {
     height: 5,

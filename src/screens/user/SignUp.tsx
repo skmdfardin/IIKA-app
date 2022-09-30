@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
@@ -8,8 +8,8 @@ import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { NavigationParamList } from '../../types/navigation';
 
-const fishLogo = '../../media/FishLogo.gif';
-const logo = '../../media/AquaLogo.gif';
+const fishLogo = '../../media/profile.png';
+const logo = '../../media/profile.png';
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/register';
 
 type naviType = NativeStackNavigationProp<NavigationParamList, 'sign_up'>;
@@ -41,80 +41,40 @@ const SignUp: FC = () => {
     setConfirmPasswordError(false);
     setMobileNumError(false);
   };
-  const validate = async () => {
-    console.log('check2');
-    const comparePassword = await ComparePassword(password, confirmPassword);
-    const checkEmail = await CheckEmail(email);
-    const checkMobile = await CheckPhone(mobileNum.toString());
-    let isError = false;
-    if (comparePassword !== null) {
-      console.log('check password');
-      setConfirmPasswordError(true);
-      isError = true;
-    } else {
-      setConfirmPasswordError(false);
-      isError = false;
-    }
-    if (checkEmail !== null) {
-      console.log('check email');
-      setEmailError(true);
-      isError = true;
-    } else {
-      setEmailError(false);
-      isError = false;
-    }
-    if (checkMobile !== null) {
-      setEmailError(true);
-      isError = true;
-    } else {
-      setEmailError(false);
-      isError = false;
-    }
-    if (!isError) {
-      return false;
-    } else {
-      return true;
-    }
-  };
+
   const onSubmit = async () => {
-    console.log('check1');
-    if (await validate()) {
-      console.log('check3');
-      let data;
-      try {
-        console.log('check4');
-        const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: email,
-            first_name: firstName,
-            last_name: lastName,
-            password: password,
-            password2: confirmPassword,
-            phone_no: mobileNum,
-          }),
-        };
-        const response = await fetch(signInURL, requestOptions);
-        console.log('RESPONCE IN SIGN UP', response);
-        data = await response.json();
-        if (data.response) {
-          console.log('DATA /n', data);
-          dispatch(storeEmailId({ email: data.email }));
-          dispatch(storeFirstName({ firstName: data.first_name }));
-          dispatch(storeLastName({ lastName: data.last_name }));
-          dispatch(storeMobile({ mobile: data.phone_no }));
-          dispatch(storeUserName({ userName: data.username }));
-          console.log('responce', data.responce);
-          console.log('Data', data);
-          resetState();
-          navigation.navigate('new_user_landing');
-        } else {
-          console.log('Response', data);
-        }
-      } catch (error) {
-        console.log('Error', error);
+    let data;
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          first_name: firstName,
+          last_name: lastName,
+          password: password,
+          password2: confirmPassword,
+          phone_no: mobileNum,
+        }),
+      };
+      const response = await fetch(signInURL, requestOptions);
+      data = await response.json();
+      if (data.response) {
+        console.log('DATA /n', data);
+        dispatch(storeEmailId({ email: data.email }));
+        dispatch(storeFirstName({ firstName: data.first_name }));
+        dispatch(storeLastName({ lastName: data.last_name }));
+        dispatch(storeMobile({ mobile: data.phone_no }));
+        dispatch(storeUserName({ userName: data.username }));
+        console.log('responce', data.responce);
+        console.log('Data', data);
+        resetState();
+        // navigation.navigate('new_user_landing');
+      } else {
+        console.log('Response', data);
       }
+    } catch (error) {
+      console.log('Error', error);
     }
   };
 
@@ -126,93 +86,81 @@ const SignUp: FC = () => {
         <Image style={Styles.backImage3} source={require(fishLogo)} />
         <Image style={Styles.logo} source={require(logo)} />
       </View>
-      <ScrollView>
-        <View style={Styles.subContainer}>
-          <Text style={Styles.text}>Create an account</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <CustomeTextInput
-              placeholder="First Name"
-              onChangeText={(text) => setFirstName(text)}
-              fieldWidth={windowWidth * 0.45}
-              errorMessage=" First Name Error"
-              errorState={false}
-              isPassword={false}
-            />
-            <CustomeTextInput
-              placeholder="Last Name"
-              onChangeText={(text) => setLastName(text)}
-              fieldWidth={windowWidth * 0.45}
-              errorMessage="Name error"
-              errorState={false}
-              isPassword={false}
-            />
-          </View>
+      <View style={Styles.subContainer}>
+        <Text style={Styles.text}>Create an account</Text>
+        <View style={{ flexDirection: 'row' }}>
           <CustomeTextInput
-            placeholder="Email ID"
-            onChangeText={(text) => setEmail(text)}
-            fieldWidth={0}
-            errorMessage="Enter a proper email"
-            errorState={emailError}
+            placeholder="First Name"
+            onChangeText={(text) => setFirstName(text)}
+            fieldWidth={windowWidth * 0.45}
+            errorMessage=" First Name Error"
+            errorState={false}
             isPassword={false}
           />
           <CustomeTextInput
-            placeholder="Password"
-            onChangeText={(text) => setPassword(text)}
-            fieldWidth={0}
-            errorMessage=""
-            errorState={passwordError}
-            isPassword={true}
-          />
-          <CustomeTextInput
-            placeholder="Confirm Password"
-            onChangeText={(text) => setConfirmPassword(text)}
-            fieldWidth={0}
-            errorMessage="Passwords do not match"
-            errorState={confirmPasswordError}
-            isPassword={true}
-          />
-          <CustomeTextInput
-            placeholder="Enter Mobile no"
-            onChangeText={(text) => setMobileNum(parseInt(text, 10))}
-            fieldWidth={0}
-            errorMessage=""
-            errorState={mobileNumError}
+            placeholder="Last Name"
+            onChangeText={(text) => setLastName(text)}
+            fieldWidth={windowWidth * 0.45}
+            errorMessage="Name error"
+            errorState={false}
             isPassword={false}
-            isNumeric={true}
-            maxLength={10}
           />
-
-          <TouchableOpacity
-            style={Styles.button}
-            onPress={() => {
-              console.log('pressed');
-              onSubmit();
-            }}
-          >
-            <Text style={Styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
         </View>
-      </ScrollView>
+        <CustomeTextInput
+          placeholder="Email ID"
+          onChangeText={(text) => setEmail(text)}
+          fieldWidth={0}
+          errorMessage="Email Error"
+          errorState={emailError}
+          isPassword={false}
+        />
+        <CustomeTextInput
+          placeholder="Password"
+          onChangeText={(text) => setPassword(text)}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={passwordError}
+          isPassword={true}
+        />
+        <CustomeTextInput
+          placeholder="Confirm Password"
+          onChangeText={(text) => setConfirmPassword(text)}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={confirmPasswordError}
+          isPassword={true}
+        />
+        <CustomeTextInput
+          placeholder="Enter Mobile no"
+          onChangeText={(text) => setMobileNum(parseInt(text, 10))}
+          fieldWidth={0}
+          errorMessage="test!"
+          errorState={mobileNumError}
+          isPassword={false}
+        />
+
+        <TouchableOpacity style={Styles.button} onPress={onSubmit}>
+          <Text style={Styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 export default SignUp;
-
 const Styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: '#000000',
     flex: 1,
+    backgroundColor: '#000000',
   },
   subContainer: {
     alignItems: 'center',
+    marginTop: windowHeight * 0.35,
     backgroundColor: '#ffffff',
     width: windowWidth,
-    height: windowHeight * 0.6,
-    marginTop: windowHeight * 0.4,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
+    height: windowHeight,
+    borderRadius: 20,
   },
   text: {
     marginVertical: windowHeight * 0.03,

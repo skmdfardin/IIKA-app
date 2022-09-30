@@ -1,4 +1,4 @@
-package com.aqua.newarchitecture.modules;
+package com.iika.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

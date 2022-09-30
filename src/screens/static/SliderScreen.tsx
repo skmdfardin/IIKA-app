@@ -10,8 +10,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 interface SliderScreenProps { }
 type naviType = NativeStackNavigationProp<NavigationParamList, 'slider_screen'>;
 
-const logo = '../../media/AquaLogo.gif';
-const fishLogo = '../../media/FishLogo.gif';
+const logo = '../../media/splashScreen.png';
+const fishLogo = '../../media/splashScreen.png';
 
 export interface ImageItems {
   title: string;
@@ -27,28 +27,28 @@ const imageItem: Array<ImageItems> = [
   {
     title: '"The question is not what you look at, but what you see."',
     filepath: require('../../media/SplashSlider/image6.png'),
-    descriptionText: 'End-to-End IIKA Farm Management App',
+    descriptionText: 'Audio Accessories',
   },
   {
-    title: 'beautiful handpicked collection lines Aquaculture made easy',
+    title: 'Beautiful handpicked collection Choosing Accessories made easy',
     filepath: require('../../media/SplashSlider/image9.png'),
-    descriptionText: 'Advanced Data Analytics, Recommendations & Predictions',
+    descriptionText: 'Smart Devices',
   },
   {
     title: '"The question is not what you look at, but what you see."',
     filepath: require('../../media/SplashSlider/image8.png'),
-    descriptionText: 'Automate your Farm with IOT Devices',
+    descriptionText: 'Wearable Devices',
   },
 ];
 
 const textList: Array<SliderTextItems> = [
   {
-    titleText: 'Aquaculture made easy',
-    descriptionText: 'beautiful handpicked collections in two lines',
+    titleText: 'Accessories made easy',
+    descriptionText: 'Beautiful Handpicked Collections',
   },
   {
-    titleText: 'Advanced Data Management & Analytics',
-    descriptionText: '"The question is not what you look at, but what you see."',
+    titleText: 'Best-In-Class Loyalty Program',
+    descriptionText: '"Freebies to choose from"',
   },
   {
     titleText: 'Get Started',
@@ -73,12 +73,13 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
     >
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <View style={{ flexDirection: 'column', marginStart: windowWidth * 0.05, marginEnd: windowWidth * 0.05 }}>
+
           <Image
-            style={{ width: 100, marginTop: windowWidth * 0.01, alignSelf: 'flex-end', resizeMode: 'contain' }}
+            style={{ width: windowWidth * 0.5, height: windowWidth * 0.5, alignSelf: 'flex-end', resizeMode: 'contain' }}
             source={require(logo)}
           />
           {currentSliderIndex === 0 && (
-            <Image style={{ width: 60, resizeMode: 'contain', height: 65 }} source={require(fishLogo)} />
+            <Text style={{ color: 'white' }}>Helloo</Text>
           )}
           <Text
             style={[
@@ -173,6 +174,7 @@ const SliderScreen: FunctionComponent<SliderScreenProps> = () => {
                   }}
                   onPress={() => {
                     navigation.navigate('sign_in');
+                    console.log('navigation.navigate');
                   }}
                 >
                   <Text

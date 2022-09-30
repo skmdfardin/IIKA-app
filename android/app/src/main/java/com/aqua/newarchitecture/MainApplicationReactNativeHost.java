@@ -1,4 +1,4 @@
-package com.aqua.newarchitecture;
+package com.iika.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.aqua.BuildConfig;
-import com.aqua.newarchitecture.components.MainComponentsRegistry;
-import com.aqua.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.iika.BuildConfig;
+import com.iika.newarchitecture.components.MainComponentsRegistry;
+import com.iika.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

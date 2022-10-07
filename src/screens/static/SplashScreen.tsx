@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { FC } from 'react';
 import { View, StyleSheet, Image, Text, Dimensions, StatusBar, SafeAreaView } from 'react-native';
 import LoadingBar from '../../components/LoadingBar';
-import { NavigationParamList } from '../../types/navigation';
+import { StackNavigationParamList } from '../../types/navigation';
 
 const splashScreen = '../../media/splashScreen.png'
 const windowWidth = Dimensions.get('window').width;
@@ -11,7 +11,7 @@ const windowHeight = Dimensions.get('window').height;
 
 
 
-type naviType = NativeStackNavigationProp<NavigationParamList, 'splash_screen'>;
+type naviType = NativeStackNavigationProp<StackNavigationParamList, 'splash_screen'>;
 
 const SplashScreen: FC = () => {
   const navigation = useNavigation<naviType>();
@@ -94,4 +94,5 @@ const Styles = StyleSheet.create({
     height: 5,
     width: windowWidth * 0.9,
   },
+
 });

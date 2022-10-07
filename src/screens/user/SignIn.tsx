@@ -14,11 +14,11 @@ import {
   storeIsProfileComplete,
   storeProfileImage,
 } from '../../reduxstore/userSlice';
-import { storeFarmDescription, storeFarmID, storeFarmImages, storeFarmName } from '../../reduxstore/farmSlice';
+import { storeIikaDescription, storeIikaID, storeIikaImages, storeIikaName } from '../../reduxstore/iikaSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
 import { CallGetApi } from '../../utilites/Util';
-import { storePondArray } from '../../reduxstore/pondSlice';
-import { NavigationParamList } from '../../types/navigation';
+import { storeProductArray } from '../../reduxstore/productSlice';
+import { StackNavigationParamList } from '../../types/navigation';
 
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/login';
 const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
@@ -26,7 +26,7 @@ const profileURL = 'http://103.127.146.20:4000/api/v1/account/profile';
 const fishLogo = '../../media/profile.png';
 const logo = '../../media/profile.png';
 const glogo = '../../media/googleLogo.png';
-type naviType = NativeStackNavigationProp<NavigationParamList, 'sign_in'>;
+type naviType = NativeStackNavigationProp<StackNavigationParamList, 'sign_in'>;
 
 const SignIn: FC = () => {
   const [emailId, setEmailId] = useState('');
@@ -77,25 +77,25 @@ const SignIn: FC = () => {
           dispatch(storeIsProfileComplete({ isProfileComplete: true }));
           dispatch(storeProfileImage({ profileImage: profileImageUrl }));
         }
-        if (data.farm_id !== null) {
-          const farmURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-farm-summary/';
-          const pondURL = 'http://103.127.146.20:4000/api/v1/farms/farmregist/' + data.farm_id + '/get-related-ponds/';
-          const farmApicall: any = await CallGetApi(farmURL, data.email);
-          const farmData = farmApicall.data.result;
-          const temp = farmData.farm_images;
-          const farmImageArray = temp.map((item: any) => {
+        if (data.iika_id !== null) {
+          const iikaURL = 'http://103.127.146.20:4000/api/v1/iikas/iikaregist/' + data.iika_id + '/get-iika-summary/';
+          const productURL = 'http://103.127.146.20:4000/api/v1/iikas/iikaregist/' + data.iika_id + '/get-related-products/';
+          const iikaApicall: any = await CallGetApi(iikaURL, data.email);
+          const iikaData = iikaApicall.data.result;
+          const temp = iikaData.iika_images;
+          const iikaImageArray = temp.map((item: any) => {
             return item.image.replace('localhost', '103.127.146.20');
           });
-          const pondApiCall: any = await CallGetApi(pondURL, data.email);
-          if (pondApiCall.data.result.ponds !== null) {
-            const pondData = pondApiCall.data.result.ponds;
-            console.log('POND DATA', pondData);
-            dispatch(storePondArray({ pondDataArray: pondData }));
+          const productApiCall: any = await CallGetApi(productURL, data.email);
+          if (productApiCall.data.result.products !== null) {
+            const productData = productApiCall.data.result.products;
+            console.log('PRODUCT DATA', productData);
+            dispatch(storeProductArray({ productDataArray: productData }));
           }
-          dispatch(storeFarmName({ farmName: farmData.farm_name }));
-          dispatch(storeFarmImages({ farmImages: farmImageArray }));
-          dispatch(storeFarmID({ farmID: data.farm_id }));
-          dispatch(storeFarmDescription({ farmDescription: farmData.description }));
+          dispatch(storeIikaName({ iikaName: iikaData.iika_name }));
+          dispatch(storeIikaImages({ iikaImages: iikaImageArray }));
+          dispatch(storeIikaID({ iikaID: data.iika_id }));
+          dispatch(storeIikaDescription({ iikaDescription: iikaData.description }));
         }
         dispatch(storeEmailId({ email: data.email }));
         dispatch(storeFirstName({ firstName: data.first_name }));
@@ -146,7 +146,10 @@ const SignIn: FC = () => {
           </View>
         )}
         {
-          <TouchableOpacity style={Styles.button} onPress={onSubmit}>
+          <TouchableOpacity style={Styles.button} onPress={() => {
+            console.log('sign_in api called');
+            navigation.navigate('product_display_screen');
+          }}>
             <Text style={Styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
         }

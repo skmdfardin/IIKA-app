@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Class responsible to load the TurboModules. This class has native methods and needs a
- * corresponding C++ implementation/header file to work correctly (already placed inside the jni/
+ * corresproducting C++ implementation/header file to work correctly (already placed inside the jni/
  * folder for you).
  *
  * <p>Please note that this class is used ONLY if you opt-in for the New Architecture (see the

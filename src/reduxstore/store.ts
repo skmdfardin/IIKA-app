@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import farmSlice from './farmSlice';
+import iikaSlice from './iikaSlice';
 import userSlice from './userSlice';
-import pondSlice from './pondSlice';
+import productSlice from './productSlice';
 
 const rootReducer = combineReducers({
   userStore: userSlice,
-  farmStore: farmSlice,
-  pondStore: pondSlice,
+  iikaStore: iikaSlice,
+  productStore: productSlice,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

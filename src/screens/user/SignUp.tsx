@@ -6,13 +6,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import CustomeTextInput from '../../components/CustomTextInput';
 import { storeEmailId, storeFirstName, storeLastName, storeMobile, storeUserName } from '../../reduxstore/userSlice';
 import { windowHeight, windowWidth } from '../../media/css/common';
-import { NavigationParamList } from '../../types/navigation';
+import { StackNavigationParamList } from '../../types/navigation';
 
 const fishLogo = '../../media/profile.png';
 const logo = '../../media/profile.png';
 const signInURL = 'http://103.127.146.20:4000/api/v1/account/register';
 
-type naviType = NativeStackNavigationProp<NavigationParamList, 'sign_up'>;
+type naviType = NativeStackNavigationProp<StackNavigationParamList, 'sign_up'>;
 
 const SignUp: FC = () => {
   const [firstName, setFirstName] = useState('');

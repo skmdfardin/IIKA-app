@@ -4,11 +4,11 @@ import { windowHeight, windowWidth, whiteColor, commonBlueColor } from '../../me
 import ImageCarousel from '../../components/ImageCarousel';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationParamList } from '../../types/navigation';
+import { StackNavigationParamList } from '../../types/navigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 interface SliderScreenProps { }
-type naviType = NativeStackNavigationProp<NavigationParamList, 'slider_screen'>;
+type naviType = NativeStackNavigationProp<StackNavigationParamList, 'slider_screen'>;
 
 const logo = '../../media/splashScreen.png';
 const fishLogo = '../../media/splashScreen.png';
